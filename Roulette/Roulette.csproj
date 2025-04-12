@@ -1,0 +1,33 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Bilder_Roulette\dunkelblau.png" />
+    <None Remove="Bilder_Roulette\hellblau.png" />
+    <None Remove="Bilder_Roulette\pink.png" />
+    <None Remove="Bilder_Roulette\Rot.png" />
+    <None Remove="Bilder_Roulette\Rotes_VierEck.png" />
+    <None Remove="Bilder_Roulette\Roulette_Zusatzaufgabe.png" />
+    <None Remove="Bilder_Roulette\Schwarzes_VierEck.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Bilder_Roulette\dunkelblau.png" />
+    <Resource Include="Bilder_Roulette\hellblau.png" />
+    <Resource Include="Bilder_Roulette\pink.png" />
+    <Resource Include="Bilder_Roulette\Rot.png" />
+    <Resource Include="Bilder_Roulette\Rotes_VierEck.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Bilder_Roulette\Roulette_Zusatzaufgabe.png" />
+    <Resource Include="Bilder_Roulette\Schwarzes_VierEck.png" />
+  </ItemGroup>
+
+</Project>
