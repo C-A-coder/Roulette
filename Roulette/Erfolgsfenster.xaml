@@ -6,8 +6,8 @@
       xmlns:local="clr-namespace:Roulette"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
-      Title="Erfolgsfenster">
-    
+      Title="Erfolgsfenster_BJ">
+
     <Grid Background="LightBlue">
         <Grid.RowDefinitions>
             <RowDefinition/>
@@ -15,7 +15,7 @@
         </Grid.RowDefinitions>
 
         <Button Background="CadetBlue" VerticalAlignment="Top" MinHeight="200" Click="btn_schließen_Click">
-            <TextBlock Text="Schließen durch klicken"
+            <TextBlock Text="Schließen durch Klicken"
                VerticalAlignment="Top" HorizontalAlignment="Left"
                Foreground="Black" FontSize="70" TextDecorations="Underline"/>
         </Button>
@@ -27,8 +27,8 @@ FontSize="50"/>
         <Label x:Name="lbl_ende" Content="abc"
        Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center"
        FontSize="50"/>
-        <Label x:Name="lbl_maxEinsatz" Content="def"
+        <!--<Label x:Name="lbl_maxEinsatz" Content="maxEinsatz"
        Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,150,0,0"
-       FontSize="50"/>
+       FontSize="30"/>-->
     </Grid>
 </Page>

@@ -9,6 +9,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Audio\animalcrossing.mp3" />
+    <None Remove="Audio\chickenDinner.mp3" />
+    <None Remove="Audio\Forever.mp3" />
+    <None Remove="Audio\geiga.mp3" />
+    <None Remove="Audio\SchindlerSoundtrack.mp3" />
+    <None Remove="Audio\victory.mp3" />
+    <None Remove="Audio\violin.m4a" />
     <None Remove="Bilder_Roulette\dunkelblau.png" />
     <None Remove="Bilder_Roulette\hellblau.png" />
     <None Remove="Bilder_Roulette\pink.png" />
@@ -16,6 +23,30 @@
     <None Remove="Bilder_Roulette\Rotes_VierEck.png" />
     <None Remove="Bilder_Roulette\Roulette_Zusatzaufgabe.png" />
     <None Remove="Bilder_Roulette\Schwarzes_VierEck.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Audio\animalcrossing.mp3">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Audio\chickenDinner.mp3">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Audio\Forever.mp3">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Audio\geiga.mp3">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Audio\SchindlerSoundtrack.mp3">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Audio\victory.mp3">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Audio\violin.m4a">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>

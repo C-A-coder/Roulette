@@ -5,796 +5,903 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Roulette"
         mc:Ignorable="d"
-        Title="MainWindow" Height="650" Width="1400" Background="#07734D">
+        Title="MainWindow" Height="830" Width="1550" Background="#07734D"
+        WindowStartupLocation="CenterScreen">
+
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="100"/>
-            <ColumnDefinition Width="75"/>
-            <ColumnDefinition Width="25"/>
-            <ColumnDefinition Width="75"/>
-            <ColumnDefinition Width="25"/>
-            <ColumnDefinition Width="75"/>
-            <ColumnDefinition Width="25"/>
-            <ColumnDefinition Width="75"/>
-            <ColumnDefinition Width="25"/>
-            <ColumnDefinition Width="75"/>
-            <ColumnDefinition Width="25"/>
-            <ColumnDefinition Width="75"/>
-            <ColumnDefinition Width="25"/>
-            <ColumnDefinition Width="75"/>
-            <ColumnDefinition Width="25"/>
-            <ColumnDefinition Width="75"/>
-            <ColumnDefinition Width="25"/>
-            <ColumnDefinition Width="75"/>
-            <ColumnDefinition Width="25"/>
-            <ColumnDefinition Width="75"/>
-            <ColumnDefinition Width="25"/>
-            <ColumnDefinition Width="75"/>
-            <ColumnDefinition Width="25"/>
-            <ColumnDefinition Width="75"/>
-            <ColumnDefinition Width="25"/>
-            <ColumnDefinition Width="75"/>
+            <ColumnDefinition Width="4*"/>
+            <ColumnDefinition Width="4*"/>
+            <ColumnDefinition Width="0.5*"/>
+            <ColumnDefinition Width="4*"/>
+            <ColumnDefinition Width="0.5*"/>
+            <ColumnDefinition Width="4*"/>
+            <ColumnDefinition Width="0.5*"/>
+            <ColumnDefinition Width="4*"/>
+            <ColumnDefinition Width="0.5*"/>
+            <ColumnDefinition Width="4*"/>
+            <ColumnDefinition Width="0.5*"/>
+            <ColumnDefinition Width="4*"/>
+            <ColumnDefinition Width="0.5*"/>
+            <ColumnDefinition Width="4*"/>
+            <ColumnDefinition Width="0.5*"/>
+            <ColumnDefinition Width="4*"/>
+            <ColumnDefinition Width="0.5*"/>
+            <ColumnDefinition Width="4*"/>
+            <ColumnDefinition Width="0.5*"/>
+            <ColumnDefinition Width="4*"/>
+            <ColumnDefinition Width="0.5*"/>
+            <ColumnDefinition Width="4*"/>
+            <ColumnDefinition Width="0.5*"/>
+            <ColumnDefinition Width="4*"/>
+            <ColumnDefinition Width="4*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="100"/>
-            <RowDefinition Height="75"/>
-            <RowDefinition Height="75"/>
-            <RowDefinition Height="75"/>
-            <RowDefinition Height="75"/>
-            <RowDefinition Height="75"/>
-            <RowDefinition Height="75"/>
-            <RowDefinition Height="75"/>
+            <RowDefinition Height="6*"/>
+            <RowDefinition Height="8*"/>
+            <RowDefinition Height="12.5*"/>
+            <RowDefinition Height="12.5*"/>
+            <RowDefinition Height="12.5*"/>
+            <RowDefinition Height="12.5*"/>
+            <RowDefinition Height="12.5*"/>
+            <RowDefinition Height="12.5*"/>
+            <RowDefinition Height="12.5*"/>
         </Grid.RowDefinitions>
 
+        <StackPanel Grid.ColumnSpan="5" Orientation="Horizontal" HorizontalAlignment="Left" >
+            <!--Beenden-->
+            <Button x:Name="btn_beenden" Content="Beenden" Click="btn_beenden_Click"
+         Width="80" Height="35" 
+         FontSize="20" Background="Red" ToolTip="Spiel beenden"/>
+
+            <Button x:Name="btn_regel" Content="Regel" Click="btn_regel_Click"
+         Width="80" Height="35" 
+ FontSize="20" Background="Yellow"/>
+
+            <Button x:Name="btn_protokoll" Content="Protokoll" Click="btn_Protokoll_Click"
+         Width="85" Height="35" 
+         Background="SteelBlue" FontSize="20"/>
+        </StackPanel>
+
         <!--<Button x:Name="btn_runde" Content="Runde"
-                Grid.Column="6" Grid.ColumnSpan="2" Grid.Row="6" VerticalAlignment="Center" HorizontalAlignment="Center"
+                Grid.Column="6" Grid.ColumnSpan="2" Grid.Row="7" VerticalAlignment="Center" HorizontalAlignment="Center"
                 FontSize="20"/>
-        --><!--Click="btn_runde_Click"-->
+        -->
+        <!--Click="btn_runde_Click"-->
 
         <!--Reihe 0 von Rechts 2to1-->
         <Button Content="2to1" Click="btn_2to3"
-HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20" Grid.Column="25" Grid.Row="1" Foreground="Black" FontWeight="ExtraBlack"/>
+HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20" Grid.Column="25" Grid.Row="2" Foreground="Black" FontWeight="ExtraBlack">
+            <Button.Background>
+                <LinearGradientBrush StartPoint="0,0.5" EndPoint="1,0.5">
+                    <GradientStop Color="Turquoise" Offset="0"/>
+                    <GradientStop Color="Tan" Offset="0.5"/>
+                    <GradientStop Color="Pink" Offset="1"/>
+                </LinearGradientBrush>
+            </Button.Background>
+        </Button>
         <Button Content="2to1" Click="btn_2to2"
-HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20" Grid.Column="25" Grid.Row="2" Foreground="Black" FontWeight="ExtraBlack"/>
+HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20" Grid.Column="25" Grid.Row="3" Foreground="Black" FontWeight="ExtraBlack">
+            <Button.Background>
+                <LinearGradientBrush StartPoint="0,0.5" EndPoint="1,0.5">
+                    <GradientStop Color="Turquoise" Offset="0"/>
+                    <GradientStop Color="Tan" Offset="0.5"/>
+                    <GradientStop Color="Pink" Offset="1"/>
+                </LinearGradientBrush>
+            </Button.Background>
+        </Button>
         <Button Content="2to1" Click="btn_2to1"
-HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20" Grid.Column="25" Grid.Row="3" Foreground="Black" FontWeight="ExtraBlack"/>
-
-        <!--Reihe 1 von Rechts 34-35-36-->
-        <Button Content="36"
-               HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="45" Grid.Column="23" Grid.Row="1" Width="75" Height="75" Background="Red" Foreground="White" Click="btn_36_Click"/>
-        <Button Content="35"
-       HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="45" Grid.Column="23" Grid.Row="2" Width="75" Height="75" Background="Black" Foreground="White" Click="btn_35_Click"/>
-        <Button Content="34"
-       HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="45" Grid.Column="23" Grid.Row="3" Width="75" Height="75" Background="Red" Foreground="White" Click="btn_34_Click"/>
-
-        <!--Reihe 2 von Rechts 31-32-33-->
-        <Button Content="31"
-       HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="45" Grid.Column="21" Grid.Row="3" Width="75" Height="75" Background="Black" Foreground="White" Click="btn_31_Click"/>
-        <Button Content="32"
-       HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="45" Grid.Column="21" Grid.Row="2" Width="75" Height="75" Background="Red" Foreground="White" Click="btn_32_Click"/>
-        <Button Content="33"
-       HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="45" Grid.Column="21" Grid.Row="1" Width="75" Height="75" Background="Black" Foreground="White" Click="btn_33_Click"/>
-
-        <!--Reihe 3 von Rechts 28-29-30-->
-        <Button Content="28"
-HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="45" Grid.Column="19" Grid.Row="3" Width="75" Height="75" Background="Black" Foreground="White" Click="btn_28_Click"/>
-        <Button Content="29"
-HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="45" Grid.Column="19" Grid.Row="2" Width="75" Height="75" Background="Black" Foreground="White" Click="btn_29_Click"/>
-        <Button Content="30"
-HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="45" Grid.Column="19" Grid.Row="1" Width="75" Height="75" Background="Red" Foreground="White" Click="btn_30_Click"/>
-
-        <!--Reihe 4 von Rechts 25-26-27-->
-        <Button Content="25"
-HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="45" Grid.Column="17" Grid.Row="3" Width="75" Height="75" Background="Red" Foreground="White" Click="btn_25_Click"/>
-        <Button Content="26"
-HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="45" Grid.Column="17" Grid.Row="2" Width="75" Height="75" Background="Black" Foreground="White" Click="btn_26_Click"/>
-        <Button Content="27"
-HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="45" Grid.Column="17" Grid.Row="1" Width="75" Height="75" Background="Red" Foreground="White" Click="btn_27_Click"/>
-
-        <!--Reihe 5 von Rechts 22-23-24-->
-        <Button Content="24"
-HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="45" Grid.Column="15" Grid.Row="1" Width="75" Height="75" Background="Black" Foreground="White" Click="btn_24_Click"/>
-        <Button Content="23"
-HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="45" Grid.Column="15" Grid.Row="2" Width="75" Height="75" Background="Red" Foreground="White" Click="btn_23_Click"/>
-        <Button Content="22"
-HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="45" Grid.Column="15" Grid.Row="3" Width="75" Height="75" Background="Black" Foreground="White" Click="btn_22_Click"/>
-
-        <!--Reihe 6 von Rechts 19-20-21-->
-        <Button Content="21"
-HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="45" Grid.Column="13" Grid.Row="1" Width="75" Height="75" Background="Red" Foreground="White" Click="btn_21_Click"/>
-        <Button Content="20"
-HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="45" Grid.Column="13" Grid.Row="2" Width="75" Height="75" Background="Black" Foreground="White" Click="btn_20_Click"/>
-        <Button Content="19"
-HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="45" Grid.Column="13" Grid.Row="3" Width="75" Height="75" Background="Red" Foreground="White" Click="btn_19_Click"/>
-
-        <!--Reihe 7 von Rechts 16-17-38-->
-        <Button Content="18"
-HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="45" Grid.Column="11" Grid.Row="1" Width="75" Height="75" Background="Red" Foreground="White" Click="btn_18_Click"/>
-        <Button Content="17"
-HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="45" Grid.Column="11" Grid.Row="2" Width="75" Height="75" Background="Black" Foreground="White" Click="btn_17_Click"/>
-        <Button Content="16"
-HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="45" Grid.Column="11" Grid.Row="3" Width="75" Height="75" Background="Red" Foreground="White" Click="btn_16_Click"/>
-
-        <!--Reihe 8 von Rechts 13-14-15-->
-        <Button Content="15"
-HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="45" Grid.Column="9" Grid.Row="1" Width="75" Height="75" Background="Black" Foreground="White" Click="btn_15_Click"/>
-        <Button Content="14"
-HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="45" Grid.Column="9" Grid.Row="2" Width="75" Height="75" Background="Red" Foreground="White" Click="btn_14_Click"/>
-        <Button Content="13"
-HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="45" Grid.Column="9" Grid.Row="3"  Width="75" Height="75" Background="Black" Foreground="White" Click="btn_13_Click"/>
-
-        <!--Reihe 9 von Rechts 10-11-12-->
-        <Button Content="12"
-HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="45" Grid.Column="7" Grid.Row="1" Width="75" Height="75" Background="Red" Foreground="White" Click="btn_12_Click"/>
-        <Button Content="11"
-HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="45" Grid.Column="7" Grid.Row="2" Width="75" Height="75" Background="Black" Foreground="White" Click="btn_11_Click"/>
-        <Button Content="10"
-HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="45" Grid.Column="7" Grid.Row="3" Width="75" Height="75" Background="Black" Foreground="White" Click="btn_10_Click"/>
-
-        <!--Reihe 10 von Rechts 7-8-9-->
-        <Button Content="9"
-HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" FontSize="45" Grid.Column="5" Grid.Row="1" Width="75" Height="75" Background="Red" Foreground="White" Click="btn_9_Click"/>
-        <Button Content="8"
-HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" FontSize="45" Grid.Column="5" Grid.Row="2" Width="75" Height="75" Background="Black" Foreground="White" Click="btn_8_Click"/>
-        <Button Content="7"
-HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" FontSize="45" Grid.Column="5" Grid.Row="3" Width="75" Height="75" Background="Red" Foreground="White" Click="btn_7_Click"/>
-
-        <!--Reihe 11 von Rechts 4-5-6-->
-        <Button Content="6"
-HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" FontSize="45" Grid.Column="3" Grid.Row="1" Width="75" Height="75" Background="Black" Foreground="White" Click="btn_6_Click"/>
-        <Button Content="5"
-HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" FontSize="45" Grid.Column="3" Grid.Row="2" Width="75" Height="75" Background="Red" Foreground="White" Click="btn_5_Click"/>
-        <Button Content="4"
-HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" FontSize="45" Grid.Column="3" Grid.Row="3" Width="75" Height="75" Background="Black" Foreground="White" Click="btn_4_Click"/>
-
-        <!--Reihe 12 von Rechts 1-2-3-->
-        <Button Content="3"
-HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" FontSize="45" Grid.Column="1" Grid.Row="1" Width="75" Height="75" Background="Red" Foreground="White" Click="btn_3_Click"/>
-        <Button Content="2"
-HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" FontSize="45" Grid.Column="1" Grid.Row="2" Width="75" Height="75" Background="Black" Foreground="White" Click="btn_2_Click"/>
-        <Button Content="1"
-HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" FontSize="45" Grid.Column="1" Grid.Row="3" Width="75" Height="75" Background="Red" Foreground="White" Click="btn_1_Click"/>
+HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20" Grid.Column="25" Grid.Row="4" Foreground="Black" FontWeight="ExtraBlack">
+            <Button.Background>
+                <LinearGradientBrush StartPoint="0,0.5" EndPoint="1,0.5">
+                    <GradientStop Color="Turquoise" Offset="0"/>
+                    <GradientStop Color="Tan" Offset="0.5"/>
+                    <GradientStop Color="Pink" Offset="1"/>
+                </LinearGradientBrush>
+            </Button.Background>
+        </Button>
 
         <!--Zwischenfelder-->
         <!--Reihe 1 von Links 3-6-->
-        <Border CornerRadius="30" Background="LightCyan"
-                Grid.Column="2" Grid.ColumnSpan="1" VerticalAlignment="Center" Grid.Row="1" HorizontalAlignment="Center" Height="25" Width="50">
-            <Button Background="Transparent" Click="btn_3_6_Click"/>
+        <Border CornerRadius="30" Background="LightCyan" Opacity="0.05"
+        Grid.Column="1" Grid.ColumnSpan="3" VerticalAlignment="Center" Grid.Row="2" HorizontalAlignment="Center" Height="50" Width="50">
+            <Button Background="Transparent" Click="btn_6_9_Click" BorderThickness="0"/>
         </Border>
 
         <!--Reihe 1 von Links 2-5-->
-        <Border CornerRadius="30" Background="LightCyan"
-        Grid.Column="2" Grid.Row="2" Grid.ColumnSpan="1" VerticalAlignment="Center" HorizontalAlignment="Center" Height="25" Width="50">
+        <Border CornerRadius="30" Background="LightCyan" Opacity="0.05"
+        Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="3" VerticalAlignment="Center" HorizontalAlignment="Center" Height="50" Width="50">
             <Button Background="Transparent" Click="btn_2_5_Click"/>
         </Border>
 
         <!--Reihe 1 von Links 1-4-->
-        <Border CornerRadius="30" Background="LightCyan"
-Grid.Column="2" Grid.Row="3" Grid.ColumnSpan="1" VerticalAlignment="Center" HorizontalAlignment="Center" Height="25" Width="50">
+        <Border CornerRadius="30" Background="LightCyan" Opacity="0.05"
+Grid.Column="1" Grid.Row="4" Grid.ColumnSpan="3" VerticalAlignment="Center" HorizontalAlignment="Center" Height="50" Width="50">
             <Button Background="Transparent" Click="btn_1_4_Click"/>
         </Border>
 
         <!--Reihe 1 von Links 3-2-6-5-->
-        <Border CornerRadius="30" Background="Cyan" BorderBrush="Transparent"
-Grid.Column="2" Grid.Row="1" Grid.RowSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center" Height="35" Width="60">
+        <Border CornerRadius="30" Background="Cyan" BorderBrush="Transparent" Opacity="0.05"
+Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="2" Grid.RowSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center" Height="35" Width="60">
             <Button Background="Transparent" Click="btn_2_3_5_6_Click"/>
         </Border>
 
         <!--Reihe 1 von Links 1-2-4-5-->
-        <Border CornerRadius="30" Background="Cyan" BorderBrush="Transparent"
-Grid.Column="2" Grid.Row="2" Grid.RowSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center" Height="35" Width="60">
+        <Border CornerRadius="30" Background="Cyan" BorderBrush="Transparent" Opacity="0.05"
+Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="3" Grid.RowSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center" Height="35" Width="60">
             <Button Background="Transparent" Click="btn_1_2_4_5_Click"/>
         </Border>
 
         <!--Reihe 1 von Links 3-2-->
-        <Border CornerRadius="30" Background="LightCyan" BorderBrush="Transparent"
-Grid.Column="1" Grid.Row="1" Grid.RowSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center" Height="25" Width="50">
-            <Button Background="Transparent" Click="btn_3_2_Click"/>
+        <Border CornerRadius="30" Background="LightCyan" Opacity="0.05" BorderBrush="Transparent"
+Grid.Column="1" Grid.Row="2" Grid.RowSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center" Height="50" Width="50">
+            <Button Background="Transparent" Click="btn_3_2_Click" BorderThickness="0"/>
         </Border>
 
         <!--Reihe 1 von Links 2-1-->
-        <Border CornerRadius="30" Background="LightCyan"
-Grid.Column="1" Grid.Row="2" Grid.RowSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center" Height="25" Width="50">
-            <Button Background="Transparent" Click="btn_2_1_Click"/>
+        <Border CornerRadius="30" Background="LightCyan" Opacity="0.05"
+Grid.Column="1" Grid.Row="3" Grid.RowSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center" Height="50" Width="50">
+            <Button Background="Transparent" Click="btn_2_1_Click" BorderThickness="0"/>
         </Border>
 
         <!---->
         <!--Reihe 2 von Links 6-9-->
-        <Border CornerRadius="30" Background="LightCyan"
-                Grid.Column="4" Grid.ColumnSpan="1" VerticalAlignment="Center" Grid.Row="1" HorizontalAlignment="Center" Height="25" Width="50">
+        <Border CornerRadius="30" Background="LightCyan" Opacity="0.05"
+                Grid.Column="3"  Grid.ColumnSpan="3" VerticalAlignment="Center" Grid.Row="2" HorizontalAlignment="Center" Height="50" Width="50">
             <Button Background="Transparent" Click="btn_6_9_Click"/>
         </Border>
 
         <!--Reihe 2 von Links 5-8-->
-        <Border CornerRadius="30" Background="LightCyan"
-        Grid.Column="4" Grid.Row="2" Grid.ColumnSpan="1" VerticalAlignment="Center" HorizontalAlignment="Center" Height="25" Width="50">
+        <Border CornerRadius="30" Background="LightCyan" Opacity="0.05"
+        Grid.Column="3" Grid.Row="3" Grid.ColumnSpan="3" VerticalAlignment="Center" HorizontalAlignment="Center" Height="50" Width="50">
             <Button Background="Transparent" Click="btn_5_8_Click"/>
         </Border>
 
         <!--Reihe 2 von Links 4-7-->
-        <Border CornerRadius="30" Background="LightCyan"
-Grid.Column="4" Grid.Row="3" Grid.ColumnSpan="1" VerticalAlignment="Center" HorizontalAlignment="Center" Height="25" Width="50">
+        <Border CornerRadius="30" Background="LightCyan" Opacity="0.05"
+Grid.Column="3" Grid.ColumnSpan="3" Grid.Row="4" VerticalAlignment="Center" HorizontalAlignment="Center" Height="50" Width="50">
             <Button Background="Transparent" Click="btn_4_7_Click"/>
         </Border>
 
         <!--Reihe 2 von Links 5-6-8-9-->
-        <Border CornerRadius="30" Background="Cyan" BorderBrush="Transparent"
-Grid.Column="4" Grid.Row="1" Grid.RowSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center" Height="35" Width="60">
+        <Border CornerRadius="30" Background="Cyan" BorderBrush="Transparent" Opacity="0.05"
+Grid.Column="3" Grid.ColumnSpan="3" Grid.Row="2" Grid.RowSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center" Height="35" Width="60">
             <Button Background="Transparent" Click="btn_5_6_8_9_Click"/>
         </Border>
 
         <!--Reihe 2 von Links 4-5-7-8-->
-        <Border CornerRadius="30" Background="Cyan" BorderBrush="Transparent"
-Grid.Column="4" Grid.Row="2" Grid.RowSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center" Height="35" Width="60">
+        <Border CornerRadius="30" Background="Cyan" BorderBrush="Transparent" Opacity="0.05"
+Grid.Column="3" Grid.ColumnSpan="3" Grid.Row="3" Grid.RowSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center" Height="35" Width="60">
             <Button Background="Transparent" Click="btn_4_5_7_8_Click"/>
         </Border>
 
         <!--Reihe 2 von Links 5-6-->
-        <Border CornerRadius="30" Background="LightCyan" BorderBrush="Transparent"
-Grid.Column="3" Grid.Row="1" Grid.RowSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center" Height="25" Width="50">
-            <Button Background="Transparent" Click="btn_5_6_Click"/>
+        <Border CornerRadius="30" Background="LightCyan" Opacity="0.05" BorderBrush="Transparent"
+Grid.Column="3" Grid.Row="2" Grid.RowSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center" Height="50" Width="50">
+            <Button Background="Transparent" Click="btn_5_6_Click" BorderThickness="0"/>
         </Border>
 
         <!--Reihe 2 von Links 4-5-->
-        <Border CornerRadius="30" Background="LightCyan"
-Grid.Column="3" Grid.Row="2" Grid.RowSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center" Height="25" Width="50">
-            <Button Background="Transparent" Click="btn_4_5_Click"/>
+        <Border CornerRadius="30" Background="LightCyan" Opacity="0.05"
+Grid.Column="3" Grid.Row="3" Grid.RowSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center" Height="50" Width="50">
+            <Button Background="Transparent" Click="btn_4_5_Click" BorderThickness="0"/>
         </Border>
 
         <!---->
         <!--Reihe 3 von Links 9-12-->
-        <Border CornerRadius="30" Background="LightCyan"
-                Grid.Column="6" Grid.ColumnSpan="1" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" Height="25" Width="50">
-            <Button Background="Transparent" Click="btn_9_12_Click"/>
+        <Border CornerRadius="30" Background="LightCyan" Opacity="0.05"
+                Grid.Column="5" Grid.ColumnSpan="3" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Center" Height="50" Width="50">
+            <Button Background="Transparent" Click="btn_9_12_Click" BorderThickness="0"/>
         </Border>
 
         <!--Reihe 3 von Links 8-11-->
-        <Border CornerRadius="30" Background="LightCyan"
-        Grid.Column="6" Grid.Row="2" Grid.ColumnSpan="1" VerticalAlignment="Center" HorizontalAlignment="Center" Height="25" Width="50">
-            <Button Background="Transparent" Click="btn_8_11_Click"/>
+        <Border CornerRadius="30" Background="LightCyan" Opacity="0.05"
+        Grid.Column="5" Grid.Row="3" Grid.ColumnSpan="3" VerticalAlignment="Center" HorizontalAlignment="Center" Height="50" Width="50">
+            <Button Background="Transparent" Click="btn_8_11_Click" BorderThickness="0"/>
         </Border>
 
         <!--Reihe 3 von Links 7-10-->
-        <Border CornerRadius="30" Background="LightCyan"
-Grid.Column="6" Grid.Row="3" Grid.ColumnSpan="1" VerticalAlignment="Center" HorizontalAlignment="Center" Height="25" Width="50">
-            <Button Background="Transparent" Click="btn_7_10_Click"/>
+        <Border CornerRadius="30" Background="LightCyan" Opacity="0.05"
+Grid.Column="5" Grid.Row="4" Grid.ColumnSpan="3" VerticalAlignment="Center" HorizontalAlignment="Center" Height="50" Width="50">
+            <Button Background="Transparent" Click="btn_7_10_Click" BorderThickness="0"/>
         </Border>
 
         <!--Reihe 3 von Links 8-9-11-12-->
-        <Border CornerRadius="30" Background="Cyan" BorderBrush="Transparent"
-Grid.Column="6" Grid.Row="1" Grid.RowSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center" Height="35" Width="60">
-            <Button Background="Transparent" Click="btn_8_9_11_12_Click"/>
+        <Border CornerRadius="30" Background="Cyan" BorderBrush="Transparent" Opacity="0.05"
+Grid.Column="5" Grid.ColumnSpan="3" Grid.Row="2" Grid.RowSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center" Height="35" Width="60">
+            <Button Background="Transparent" Click="btn_8_9_11_12_Click" BorderThickness="0"/>
         </Border>
 
         <!--Reihe 3 von Links 7-8-10-11-->
-        <Border CornerRadius="30" Background="Cyan" BorderBrush="Transparent"
-Grid.Column="6" Grid.Row="2" Grid.RowSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center" Height="35" Width="60">
-            <Button Background="Transparent" Click="btn_7_8_10_11_Click"/>
+        <Border CornerRadius="30" Background="Cyan" BorderBrush="Transparent" Opacity="0.05"
+Grid.Column="5" Grid.ColumnSpan="3" Grid.Row="3" Grid.RowSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center" Height="35" Width="60">
+            <Button Background="Transparent" Click="btn_7_8_10_11_Click" BorderThickness="0"/>
         </Border>
 
         <!--Reihe 3 von Links 8-9-->
-        <Border CornerRadius="30" Background="LightCyan" BorderBrush="Transparent"
-Grid.Column="5" Grid.Row="1" Grid.RowSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center" Height="25" Width="50">
-            <Button Background="Transparent" Click="btn_8_9_Click"/>
+        <Border CornerRadius="30" Background="LightCyan" Opacity="0.05" BorderBrush="Transparent"
+Grid.Column="5" Grid.Row="2" Grid.RowSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center" Height="50" Width="50">
+            <Button Background="Transparent" Click="btn_8_9_Click" BorderThickness="0"/>
         </Border>
 
         <!--Reihe 3 von Links 7-8-->
-        <Border CornerRadius="30" Background="LightCyan"
-Grid.Column="5" Grid.Row="2" Grid.RowSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center" Height="25" Width="50">
-            <Button Background="Transparent" Click="btn_7_8_Click"/>
+        <Border CornerRadius="30" Background="LightCyan" Opacity="0.05"
+Grid.Column="5" Grid.Row="3" Grid.RowSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center" Height="50" Width="50">
+            <Button Background="Transparent" Click="btn_7_8_Click" BorderThickness="0"/>
         </Border>
         <!---->
 
         <!---->
         <!--Reihe 4 von Links 12-15-->
-        <Border CornerRadius="30" Background="LightCyan"
-                Grid.Column="8" Grid.ColumnSpan="1" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" Height="25" Width="50">
-            <Button Background="Transparent" Click="btn_12_15_Click"/>
+        <Border CornerRadius="30" Background="LightCyan" Opacity="0.05"
+                Grid.Column="7" Grid.ColumnSpan="3" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Center" Height="50" Width="50">
+            <Button Background="Transparent" Click="btn_12_15_Click" BorderThickness="0"/>
         </Border>
 
         <!--Reihe 4 von Links 11-14-->
-        <Border CornerRadius="30" Background="LightCyan"
-        Grid.Column="8" Grid.Row="2" Grid.ColumnSpan="1" VerticalAlignment="Center" HorizontalAlignment="Center" Height="25" Width="50">
-            <Button Background="Transparent" Click="btn_11_14_Click"/>
+        <Border CornerRadius="30" Background="LightCyan" Opacity="0.05"
+        Grid.Column="7" Grid.Row="3" Grid.ColumnSpan="3" VerticalAlignment="Center" HorizontalAlignment="Center" Height="50" Width="50">
+            <Button Background="Transparent" Click="btn_11_14_Click" BorderThickness="0"/>
         </Border>
 
         <!--Reihe 4 von Links 10-13-->
-        <Border CornerRadius="30" Background="LightCyan"
-Grid.Column="8" Grid.Row="3" Grid.ColumnSpan="1" VerticalAlignment="Center" HorizontalAlignment="Center" Height="25" Width="50">
-            <Button Background="Transparent" Click="btn_10_13_Click"/>
+        <Border CornerRadius="30" Background="LightCyan" Opacity="0.05"
+Grid.Column="7" Grid.Row="4" Grid.ColumnSpan="3" VerticalAlignment="Center" HorizontalAlignment="Center" Height="50" Width="50">
+            <Button Background="Transparent" Click="btn_10_13_Click" BorderThickness="0"/>
         </Border>
 
         <!--Reihe 4 von Links 11-12-14-15-->
-        <Border CornerRadius="30" Background="Cyan" BorderBrush="Transparent"
-Grid.Column="8" Grid.Row="1" Grid.RowSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center" Height="35" Width="60">
-            <Button Background="Transparent" Click="btn_11_12_14_15_Click"/>
+        <Border CornerRadius="30" Background="Cyan" BorderBrush="Transparent" Opacity="0.05"
+Grid.Column="7" Grid.ColumnSpan="3" Grid.Row="2" Grid.RowSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center" Height="35" Width="60">
+            <Button Background="Transparent" Click="btn_11_12_14_15_Click" BorderThickness="0"/>
         </Border>
 
         <!--Reihe 4 von Links 10-11-13-14-->
-        <Border CornerRadius="30" Background="Cyan" BorderBrush="Transparent"
-Grid.Column="8" Grid.Row="2" Grid.RowSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center" Height="35" Width="60">
-            <Button Background="Transparent" Click="btn_10_11_13_14_Click"/>
+        <Border CornerRadius="30" Background="Cyan" BorderBrush="Transparent" Opacity="0.05"
+Grid.Column="7" Grid.ColumnSpan="3" Grid.Row="3" Grid.RowSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center" Height="35" Width="60">
+            <Button Background="Transparent" Click="btn_10_11_13_14_Click" BorderThickness="0"/>
         </Border>
 
         <!--Reihe 4 von Links 12-11-->
-        <Border CornerRadius="30" Background="LightCyan" BorderBrush="Transparent"
-Grid.Column="7" Grid.Row="1" Grid.RowSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center" Height="25" Width="50">
-            <Button Background="Transparent" Click="btn_11_12_Click"/>
+        <Border CornerRadius="30" Background="LightCyan" Opacity="0.05" BorderBrush="Transparent"
+Grid.Column="7" Grid.Row="2" Grid.RowSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center" Height="50" Width="50">
+            <Button Background="Transparent" Click="btn_11_12_Click" BorderThickness="0"/>
         </Border>
 
         <!--Reihe 4 von Links 10-11-->
-        <Border CornerRadius="30" Background="LightCyan"
-Grid.Column="7" Grid.Row="2" Grid.RowSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center" Height="25" Width="50">
-            <Button Background="Transparent" Click="btn_10_11_Click"/>
+        <Border CornerRadius="30" Background="LightCyan" Opacity="0.05"
+Grid.Column="7" Grid.Row="3" Grid.RowSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center" Height="50" Width="50">
+            <Button Background="Transparent" Click="btn_10_11_Click" BorderThickness="0"/>
         </Border>
         <!---->
 
         <!---->
         <!--Reihe 5 von Links 15-18-->
-        <Border CornerRadius="30" Background="LightCyan"
-                Grid.Column="10" Grid.ColumnSpan="1" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" Height="25" Width="50">
-            <Button Background="Transparent" Click="btn_15_18_Click"/>
+        <Border CornerRadius="30" Background="LightCyan" Opacity="0.05"
+                Grid.Column="9" Grid.ColumnSpan="3" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Center" Height="50" Width="50">
+            <Button Background="Transparent" Click="btn_15_18_Click" BorderThickness="0"/>
         </Border>
 
         <!--Reihe 5 von Links 14-17-->
-        <Border CornerRadius="30" Background="LightCyan"
-        Grid.Column="10" Grid.Row="2" Grid.ColumnSpan="1" VerticalAlignment="Center" HorizontalAlignment="Center" Height="25" Width="50">
-            <Button Background="Transparent" Click="btn_14_17_Click"/>
+        <Border CornerRadius="30" Background="LightCyan" Opacity="0.05"
+        Grid.Column="9" Grid.ColumnSpan="3" Grid.Row="3" VerticalAlignment="Center" HorizontalAlignment="Center" Height="50" Width="50">
+            <Button Background="Transparent" Click="btn_14_17_Click" BorderThickness="0"/>
         </Border>
 
         <!--Reihe 5 von Links 13-16-->
-        <Border CornerRadius="30" Background="LightCyan"
-Grid.Column="10" Grid.Row="3" Grid.ColumnSpan="1" VerticalAlignment="Center" HorizontalAlignment="Center" Height="25" Width="50">
-            <Button Background="Transparent" Click="btn_13_16_Click"/>
+        <Border CornerRadius="30" Background="LightCyan" Opacity="0.05"
+Grid.Column="9" Grid.Row="4" Grid.ColumnSpan="3" VerticalAlignment="Center" HorizontalAlignment="Center" Height="50" Width="50">
+            <Button Background="Transparent" Click="btn_13_16_Click" BorderThickness="0"/>
         </Border>
 
         <!--Reihe 5 von Links 14-15-17-18-->
-        <Border CornerRadius="30" Background="Cyan" BorderBrush="Transparent"
-Grid.Column="10" Grid.Row="1" Grid.RowSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center" Height="35" Width="60">
-            <Button Background="Transparent" Click="btn_14_15_17_18_Click"/>
+        <Border CornerRadius="30" Background="Cyan" BorderBrush="Transparent" Opacity="0.05"
+Grid.Column="9" Grid.ColumnSpan="3" Grid.Row="2" Grid.RowSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center" Height="35" Width="60">
+            <Button Background="Transparent" Click="btn_14_15_17_18_Click" BorderThickness="0"/>
         </Border>
 
         <!--Reihe 5 von Links 13-14-16-17-->
-        <Border CornerRadius="30" Background="Cyan" BorderBrush="Transparent"
-Grid.Column="10" Grid.Row="2" Grid.RowSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center" Height="35" Width="60">
-            <Button Background="Transparent" Click="btn_13_14_16_17_Click"/>
+        <Border CornerRadius="30" Background="Cyan" BorderBrush="Transparent" Opacity="0.05"
+Grid.Column="9" Grid.ColumnSpan="3" Grid.Row="3" Grid.RowSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center" Height="35" Width="60">
+            <Button Background="Transparent" Click="btn_13_14_16_17_Click" BorderThickness="0"/>
         </Border>
 
         <!--Reihe 5 von Links 14-15-->
-        <Border CornerRadius="30" Background="LightCyan" BorderBrush="Transparent"
-Grid.Column="9" Grid.Row="1" Grid.RowSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center" Height="25" Width="50">
-            <Button Background="Transparent" Click="btn_14_15_Click"/>
+        <Border CornerRadius="30" Background="LightCyan" Opacity="0.05" BorderBrush="Transparent"
+Grid.Column="9" Grid.Row="2" Grid.RowSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center" Height="50" Width="50">
+            <Button Background="Transparent" Click="btn_14_15_Click" BorderThickness="0"/>
         </Border>
 
         <!--Reihe 5 von Links 13-14-->
-        <Border CornerRadius="30" Background="LightCyan"
-Grid.Column="9" Grid.Row="2" Grid.RowSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center" Height="25" Width="50">
-            <Button Background="Transparent" Click="btn_13_14_Click"/>
+        <Border CornerRadius="30" Background="LightCyan" Opacity="0.05"
+Grid.Column="9" Grid.Row="3" Grid.RowSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center" Height="50" Width="50">
+            <Button Background="Transparent" Click="btn_13_14_Click" BorderThickness="0"/>
         </Border>
         <!---->
 
         <!---->
         <!--Reihe 6 von Links 18-21-->
-        <Border CornerRadius="30" Background="LightCyan"
-                Grid.Column="12" Grid.ColumnSpan="1" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" Height="25" Width="50">
-            <Button Background="Transparent" Click="btn_18_21_Click"/>
+        <Border CornerRadius="30" Background="LightCyan" Opacity="0.05"
+                Grid.Column="11" Grid.ColumnSpan="3" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Center" Height="50" Width="50">
+            <Button Background="Transparent" Click="btn_18_21_Click" BorderThickness="0"/>
         </Border>
 
         <!--Reihe 6 von Links 17-20-->
-        <Border CornerRadius="30" Background="LightCyan"
-        Grid.Column="12" Grid.Row="2" Grid.ColumnSpan="1" VerticalAlignment="Center" HorizontalAlignment="Center" Height="25" Width="50">
-            <Button Background="Transparent" Click="btn_17_20_Click"/>
+        <Border CornerRadius="30" Background="LightCyan" Opacity="0.05"
+        Grid.Column="11" Grid.ColumnSpan="3" Grid.Row="3" VerticalAlignment="Center" HorizontalAlignment="Center" Height="50" Width="50">
+            <Button Background="Transparent" Click="btn_17_20_Click" BorderThickness="0"/>
         </Border>
 
         <!--Reihe 6 von Links 16-19-->
-        <Border CornerRadius="30" Background="LightCyan"
-Grid.Column="12" Grid.Row="3" Grid.ColumnSpan="1" VerticalAlignment="Center" HorizontalAlignment="Center" Height="25" Width="50">
-            <Button Background="Transparent" Click="btn_16_19_Click"/>
+        <Border CornerRadius="30" Background="LightCyan" Opacity="0.05"
+Grid.Column="11" Grid.Row="4" Grid.ColumnSpan="3" VerticalAlignment="Center" HorizontalAlignment="Center" Height="50" Width="50">
+            <Button Background="Transparent" Click="btn_16_19_Click" BorderThickness="0"/>
         </Border>
 
         <!--Reihe 6 von Links 17-18-20-21-->
-        <Border CornerRadius="30" Background="Cyan" BorderBrush="Transparent"
-Grid.Column="12" Grid.Row="1" Grid.RowSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center" Height="35" Width="60">
-            <Button Background="Transparent" Click="btn_17_18_20_21_Click"/>
+        <Border CornerRadius="30" Background="Cyan" BorderBrush="Transparent" Opacity="0.05"
+Grid.Column="11" Grid.ColumnSpan="3" Grid.Row="2" Grid.RowSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center" Height="35" Width="60">
+            <Button Background="Transparent" Click="btn_17_18_20_21_Click" BorderThickness="0"/>
         </Border>
 
         <!--Reihe 6 von Links 16-17-19-20-->
-        <Border CornerRadius="30" Background="Cyan" BorderBrush="Transparent"
-Grid.Column="12" Grid.Row="2" Grid.RowSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center" Height="35" Width="60">
-            <Button Background="Transparent" Click="btn_16_17_19_20_Click"/>
+        <Border CornerRadius="30" Background="Cyan" BorderBrush="Transparent" Opacity="0.05"
+Grid.Column="11" Grid.ColumnSpan="3" Grid.Row="3" Grid.RowSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center" Height="35" Width="60">
+            <Button Background="Transparent" Click="btn_16_17_19_20_Click" BorderThickness="0"/>
         </Border>
 
         <!--Reihe 6 von Links 17-18-->
-        <Border CornerRadius="30" Background="LightCyan" BorderBrush="Transparent"
-Grid.Column="11" Grid.Row="1" Grid.RowSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center" Height="25" Width="50">
-            <Button Background="Transparent" Click="btn_17_18_Click"/>
+        <Border CornerRadius="30" Background="LightCyan" Opacity="0.05" BorderBrush="Transparent"
+Grid.Column="11" Grid.Row="2" Grid.RowSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center" Height="50" Width="50">
+            <Button Background="Transparent" Click="btn_17_18_Click" BorderThickness="0"/>
         </Border>
 
         <!--Reihe 6 von Links 16-17-->
-        <Border CornerRadius="30" Background="LightCyan"
-Grid.Column="11" Grid.Row="2" Grid.RowSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center" Height="25" Width="50">
-            <Button Background="Transparent" Click="btn_16_17_Click"/>
+        <Border CornerRadius="30" Background="LightCyan" Opacity="0.05"
+Grid.Column="11" Grid.Row="3" Grid.RowSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center" Height="50" Width="50">
+            <Button Background="Transparent" Click="btn_16_17_Click" BorderThickness="0"/>
         </Border>
         <!---->
 
         <!---->
         <!--Reihe 7 von Links 21-24-->
-        <Border CornerRadius="30" Background="LightCyan"
-                Grid.Column="14" Grid.ColumnSpan="1" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" Height="25" Width="50">
-            <Button Background="Transparent" Click="btn_21_24_Click"/>
+        <Border CornerRadius="30" Background="LightCyan" Opacity="0.05"
+                Grid.Column="13" Grid.ColumnSpan="3" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Center" Height="50" Width="50">
+            <Button Background="Transparent" Click="btn_21_24_Click" BorderThickness="0"/>
         </Border>
 
         <!--Reihe 7 von Links 20-23-->
-        <Border CornerRadius="30" Background="LightCyan"
-        Grid.Column="14" Grid.Row="2" Grid.ColumnSpan="1" VerticalAlignment="Center" HorizontalAlignment="Center" Height="25" Width="50">
-            <Button Background="Transparent" Click="btn_20_23_Click"/>
+        <Border CornerRadius="30" Background="LightCyan" Opacity="0.05"
+        Grid.Column="13" Grid.Row="3" Grid.ColumnSpan="3" VerticalAlignment="Center" HorizontalAlignment="Center" Height="50" Width="50">
+            <Button Background="Transparent" Click="btn_20_23_Click" BorderThickness="0"/>
         </Border>
 
         <!--Reihe 7 von Links 19-22-->
-        <Border CornerRadius="30" Background="LightCyan"
-Grid.Column="14" Grid.Row="3" Grid.ColumnSpan="1" VerticalAlignment="Center" HorizontalAlignment="Center" Height="25" Width="50">
-            <Button Background="Transparent" Click="btn_19_22_Click"/>
+        <Border CornerRadius="30" Background="LightCyan" Opacity="0.05"
+Grid.Column="13" Grid.Row="4" Grid.ColumnSpan="3" VerticalAlignment="Center" HorizontalAlignment="Center" Height="50" Width="50">
+            <Button Background="Transparent" Click="btn_19_22_Click" BorderThickness="0"/>
         </Border>
 
         <!--Reihe 7 von Links 20-21-23-24-->
-        <Border CornerRadius="30" Background="Cyan" BorderBrush="Transparent"
-Grid.Column="14" Grid.Row="1" Grid.RowSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center" Height="35" Width="60">
-            <Button Background="Transparent" Click="btn_20_21_23_24_Click"/>
+        <Border CornerRadius="30" Background="Cyan" BorderBrush="Transparent" Opacity="0.05"
+Grid.Column="13" Grid.ColumnSpan="3" Grid.Row="2" Grid.RowSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center" Height="35" Width="60">
+            <Button Background="Transparent" Click="btn_20_21_23_24_Click" BorderThickness="0"/>
         </Border>
 
         <!--Reihe 7 von Links 19-20-22-23-->
-        <Border CornerRadius="30" Background="Cyan" BorderBrush="Transparent"
-Grid.Column="14" Grid.Row="2" Grid.RowSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center" Height="35" Width="60">
-            <Button Background="Transparent" Click="btn_19_20_22_23_Click"/>
+        <Border CornerRadius="30" Background="Cyan" BorderBrush="Transparent" Opacity="0.05"
+Grid.Column="13" Grid.ColumnSpan="3" Grid.Row="3" Grid.RowSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center" Height="35" Width="60">
+            <Button Background="Transparent" Click="btn_19_20_22_23_Click" BorderThickness="0"/>
         </Border>
 
         <!--Reihe 7 von Links 20-21-->
-        <Border CornerRadius="30" Background="LightCyan" BorderBrush="Transparent"
-Grid.Column="13" Grid.Row="1" Grid.RowSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center" Height="25" Width="50">
-            <Button Background="Transparent" Click="btn_20_21_Click"/>
+        <Border CornerRadius="30" Background="LightCyan" Opacity="0.05" BorderBrush="Transparent"
+Grid.Column="13" Grid.Row="2" Grid.RowSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center" Height="50" Width="50">
+            <Button Background="Transparent" Click="btn_20_21_Click" BorderThickness="0"/>
         </Border>
 
         <!--Reihe 7 von Links 19-20-->
-        <Border CornerRadius="30" Background="LightCyan"
-Grid.Column="13" Grid.Row="2" Grid.RowSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center" Height="25" Width="50">
-            <Button Background="Transparent" Click="btn_19_20_Click"/>
-            <!--dddddddddddd-->
+        <Border CornerRadius="30" Background="LightCyan" Opacity="0.05"
+Grid.Column="13" Grid.Row="3" Grid.RowSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center" Height="50" Width="50">
+            <Button Background="Transparent" Click="btn_19_20_Click" BorderThickness="0"/>
         </Border>
         <!---->
 
         <!---->
         <!--Reihe 8 von Links 24-27-->
-        <Border CornerRadius="30" Background="LightCyan"
-                Grid.Column="16" Grid.ColumnSpan="1" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" Height="25" Width="50">
-            <Button Background="Transparent" Click="btn_24_27_Click"/>
+        <Border CornerRadius="30" Background="LightCyan" Opacity="0.05"
+                Grid.Column="15" Grid.ColumnSpan="3" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Center" Height="50" Width="50">
+            <Button Background="Transparent" Click="btn_24_27_Click" BorderThickness="0"/>
         </Border>
 
         <!--Reihe 8 von Links 23-26-->
-        <Border CornerRadius="30" Background="LightCyan"
-        Grid.Column="16" Grid.Row="2" Grid.ColumnSpan="1" VerticalAlignment="Center" HorizontalAlignment="Center" Height="25" Width="50">
-            <Button Background="Transparent" Click="btn_23_26_Click"/>
+        <Border CornerRadius="30" Background="LightCyan" Opacity="0.05"
+        Grid.Column="15" Grid.Row="3" Grid.ColumnSpan="3" VerticalAlignment="Center" HorizontalAlignment="Center" Height="50" Width="50">
+            <Button Background="Transparent" Click="btn_23_26_Click" BorderThickness="0"/>
         </Border>
 
         <!--Reihe 8 von Links 22-25-->
-        <Border CornerRadius="30" Background="LightCyan"
-Grid.Column="16" Grid.Row="3" Grid.ColumnSpan="1" VerticalAlignment="Center" HorizontalAlignment="Center" Height="25" Width="50">
-            <Button Background="Transparent" Click="btn_22_25_Click"/>
+        <Border CornerRadius="30" Background="LightCyan" Opacity="0.05"
+Grid.Column="15" Grid.Row="4" Grid.ColumnSpan="3" VerticalAlignment="Center" HorizontalAlignment="Center" Height="50" Width="50">
+            <Button Background="Transparent" Click="btn_22_25_Click" BorderThickness="0"/>
         </Border>
 
         <!--Reihe 8 von Links 23-24-26-27-->
-        <Border CornerRadius="30" Background="Cyan" BorderBrush="Transparent"
-Grid.Column="16" Grid.Row="1" Grid.RowSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center" Height="35" Width="60">
-            <Button Background="Transparent" Click="btn_23_24_26_27_Click"/>
+        <Border CornerRadius="30" Background="Cyan" BorderBrush="Transparent" Opacity="0.05"
+Grid.Column="15" Grid.ColumnSpan="3" Grid.Row="2" Grid.RowSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center" Height="35" Width="60">
+            <Button Background="Transparent" Click="btn_23_24_26_27_Click" BorderThickness="0"/>
         </Border>
 
         <!--Reihe 8 von Links 22-23-25-26-->
-        <Border CornerRadius="30" Background="Cyan" BorderBrush="Transparent"
-Grid.Column="16" Grid.Row="2" Grid.RowSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center" Height="35" Width="60">
-            <Button Background="Transparent" Click="btn_22_23_25_26_Click"/>
+        <Border CornerRadius="30" Background="Cyan" BorderBrush="Transparent" Opacity="0.05"
+Grid.Column="15" Grid.ColumnSpan="3" Grid.Row="3" Grid.RowSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center" Height="35" Width="60">
+            <Button Background="Transparent" Click="btn_22_23_25_26_Click" BorderThickness="0"/>
         </Border>
 
         <!--Reihe 8 von Links 23-24-->
-        <Border CornerRadius="30" Background="LightCyan" BorderBrush="Transparent"
-Grid.Column="15" Grid.Row="1" Grid.RowSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center" Height="25" Width="50">
-            <Button Background="Transparent" Click="btn_23_24_Click"/>
+        <Border CornerRadius="30" Background="LightCyan" Opacity="0.05" BorderBrush="Transparent"
+Grid.Column="15" Grid.Row="2" Grid.RowSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center" Height="50" Width="50">
+            <Button Background="Transparent" Click="btn_23_24_Click" BorderThickness="0"/>
         </Border>
 
         <!--Reihe 8 von Links 22-23-->
-        <Border CornerRadius="30" Background="LightCyan"
-Grid.Column="15" Grid.Row="2" Grid.RowSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center" Height="25" Width="50">
-            <Button Background="Transparent" Click="btn_22_23_Click"/>
+        <Border CornerRadius="30" Background="LightCyan" Opacity="0.05"
+Grid.Column="15" Grid.Row="3" Grid.RowSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center" Height="50" Width="50">
+            <Button Background="Transparent" Click="btn_22_23_Click" BorderThickness="0"/>
         </Border>
         <!---->
 
         <!---->
         <!--Reihe 9 von Links 27-30-->
-        <Border CornerRadius="30" Background="LightCyan"
-                Grid.Column="18" Grid.ColumnSpan="1" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" Height="25" Width="50">
-            <Button Background="Transparent" Click="btn_27_30_Click"/>
+        <Border CornerRadius="30" Background="LightCyan" Opacity="0.05"
+                Grid.Column="17" Grid.ColumnSpan="3" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Center" Height="50" Width="50">
+            <Button Background="Transparent" Click="btn_27_30_Click" BorderThickness="0"/>
         </Border>
 
         <!--Reihe 9 von Links 26-29-->
-        <Border CornerRadius="30" Background="LightCyan"
-        Grid.Column="18" Grid.Row="2" Grid.ColumnSpan="1" VerticalAlignment="Center" HorizontalAlignment="Center" Height="25" Width="50">
-            <Button Background="Transparent" Click="btn_26_29_Click"/>
+        <Border CornerRadius="30" Background="LightCyan" Opacity="0.05"
+        Grid.Column="17" Grid.Row="3" Grid.ColumnSpan="3" VerticalAlignment="Center" HorizontalAlignment="Center" Height="50" Width="50">
+            <Button Background="Transparent" Click="btn_26_29_Click" BorderThickness="0"/>
         </Border>
 
         <!--Reihe 9 von Links 25-28-->
-        <Border CornerRadius="30" Background="LightCyan"
-Grid.Column="18" Grid.Row="3" Grid.ColumnSpan="1" VerticalAlignment="Center" HorizontalAlignment="Center" Height="25" Width="50">
-            <Button Background="Transparent" Click="btn_25_28_Click"/>
+        <Border CornerRadius="30" Background="LightCyan" Opacity="0.05"
+Grid.Column="17" Grid.Row="4" Grid.ColumnSpan="3" VerticalAlignment="Center" HorizontalAlignment="Center" Height="50" Width="50">
+            <Button Background="Transparent" Click="btn_25_28_Click" BorderThickness="0"/>
         </Border>
 
         <!--Reihe 9 von Links 26-27-29-30-->
-        <Border CornerRadius="30" Background="Cyan" BorderBrush="Transparent"
-Grid.Column="18" Grid.Row="1" Grid.RowSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center" Height="35" Width="60">
-            <Button Background="Transparent" Click="btn_26_27_29_30_Click"/>
+        <Border CornerRadius="30" Background="Cyan" BorderBrush="Transparent" Opacity="0.05"
+Grid.Column="17" Grid.ColumnSpan="3" Grid.Row="2" Grid.RowSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center" Height="35" Width="60">
+            <Button Background="Transparent" Click="btn_26_27_29_30_Click" BorderThickness="0"/>
         </Border>
 
         <!--Reihe 9 von Links 25-26-28-29-->
-        <Border CornerRadius="30" Background="Cyan" BorderBrush="Transparent"
-Grid.Column="18" Grid.Row="2" Grid.RowSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center" Height="35" Width="60">
-            <Button Background="Transparent" Click="btn_25_26_28_29_Click"/>
+        <Border CornerRadius="30" Background="Cyan" BorderBrush="Transparent" Opacity="0.05"
+Grid.Column="17" Grid.ColumnSpan="3" Grid.Row="3" Grid.RowSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center" Height="35" Width="60">
+            <Button Background="Transparent" Click="btn_25_26_28_29_Click" BorderThickness="0"/>
         </Border>
 
         <!--Reihe 9 von Links 26-27-->
-        <Border CornerRadius="30" Background="LightCyan" BorderBrush="Transparent"
-Grid.Column="17" Grid.Row="1" Grid.RowSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center" Height="25" Width="50">
-            <Button Background="Transparent" Click="btn_26_27_Click"/>
+        <Border CornerRadius="30" Background="LightCyan" Opacity="0.05" BorderBrush="Transparent"
+Grid.Column="17" Grid.Row="2" Grid.RowSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center" Height="50" Width="50">
+            <Button Background="Transparent" Click="btn_26_27_Click" BorderThickness="0"/>
         </Border>
 
         <!--Reihe 9 von Links 25-26-->
-        <Border CornerRadius="30" Background="LightCyan"
-Grid.Column="17" Grid.Row="2" Grid.RowSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center" Height="25" Width="50">
-            <Button Background="Transparent" Click="btn_25_26_Click"/>
+        <Border CornerRadius="30" Background="LightCyan" Opacity="0.05"
+Grid.Column="17" Grid.Row="3" Grid.RowSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center" Height="50" Width="50">
+            <Button Background="Transparent" Click="btn_25_26_Click" BorderThickness="0"/>
         </Border>
         <!---->
 
         <!--Reihe 10 von Links 30-33-->
-        <Border CornerRadius="30" Background="LightCyan"
-                Grid.Column="20" Grid.ColumnSpan="1" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" Height="25" Width="50">
-            <Button Background="Transparent" Click="btn_30_33_Click"/>
+        <Border CornerRadius="30" Background="LightCyan" Opacity="0.05"
+                Grid.Column="19" Grid.ColumnSpan="3" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Center" Height="50" Width="50">
+            <Button Background="Transparent" Click="btn_30_33_Click" BorderThickness="0"/>
         </Border>
 
         <!--Reihe 10 von Links 29-32-->
-        <Border CornerRadius="30" Background="LightCyan"
-        Grid.Column="20" Grid.Row="2" Grid.ColumnSpan="1" VerticalAlignment="Center" HorizontalAlignment="Center" Height="25" Width="50">
-            <Button Background="Transparent" Click="btn_29_32_Click"/>
+        <Border CornerRadius="30" Background="LightCyan" Opacity="0.05"
+        Grid.Column="19" Grid.Row="3" Grid.ColumnSpan="3" VerticalAlignment="Center" HorizontalAlignment="Center" Height="50" Width="50">
+            <Button Background="Transparent" Click="btn_29_32_Click" BorderThickness="0"/>
         </Border>
 
         <!--Reihe 10 von Links 28-31-->
-        <Border CornerRadius="30" Background="LightCyan"
-Grid.Column="20" Grid.Row="3" Grid.ColumnSpan="1" VerticalAlignment="Center" HorizontalAlignment="Center" Height="25" Width="50">
-            <Button Background="Transparent" Click="btn_28_31_Click"/>
+        <Border CornerRadius="30" Background="LightCyan" Opacity="0.05"
+Grid.Column="19" Grid.Row="4" Grid.ColumnSpan="3" VerticalAlignment="Center" HorizontalAlignment="Center" Height="50" Width="50">
+            <Button Background="Transparent" Click="btn_28_31_Click" BorderThickness="0"/>
         </Border>
 
         <!--Reihe 10 von Links 29-30-32-33-->
-        <Border CornerRadius="30" Background="Cyan" BorderBrush="Transparent"
-Grid.Column="20" Grid.Row="1" Grid.RowSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center" Height="35" Width="60">
-            <Button Background="Transparent" Click="btn_29_30_32_33_Click"/>
+        <Border CornerRadius="30" Background="Cyan" BorderBrush="Transparent" Opacity="0.05"
+Grid.Column="19" Grid.ColumnSpan="3" Grid.Row="2" Grid.RowSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center" Height="35" Width="60">
+            <Button Background="Transparent" Click="btn_29_30_32_33_Click" BorderThickness="0"/>
         </Border>
 
         <!--Reihe 10 von Links 28-29-31-32-->
-        <Border CornerRadius="30" Background="Cyan" BorderBrush="Transparent"
-Grid.Column="20" Grid.Row="2" Grid.RowSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center" Height="35" Width="60">
-            <Button Background="Transparent" Click="btn_28_29_31_32_Click"/>
+        <Border CornerRadius="30" Background="Cyan" BorderBrush="Transparent" Opacity="0.05"
+Grid.Column="19" Grid.ColumnSpan="3" Grid.Row="3" Grid.RowSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center" Height="35" Width="60">
+            <Button Background="Transparent" Click="btn_28_29_31_32_Click" BorderThickness="0"/>
         </Border>
 
         <!--Reihe 10 von Links 29-30-->
-        <Border CornerRadius="30" Background="LightCyan" BorderBrush="Transparent"
-Grid.Column="19" Grid.Row="1" Grid.RowSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center" Height="25" Width="50">
-            <Button Background="Transparent" Click="btn_29_30_Click"/>
+        <Border CornerRadius="30" Background="LightCyan" Opacity="0.05" BorderBrush="Transparent"
+Grid.Column="19" Grid.Row="2" Grid.RowSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center" Height="50" Width="50">
+            <Button Background="Transparent" Click="btn_29_30_Click" BorderThickness="0"/>
         </Border>
 
         <!--Reihe 10 von Links 28-29-->
-        <Border CornerRadius="30" Background="LightCyan"
-Grid.Column="19" Grid.Row="2" Grid.RowSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center" Height="25" Width="50">
-            <Button Background="Transparent" Click="btn_28_29_Click"/>
+        <Border CornerRadius="30" Background="LightCyan" Opacity="0.05"
+Grid.Column="19" Grid.Row="3" Grid.RowSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center" Height="50" Width="50">
+            <Button Background="Transparent" Click="btn_28_29_Click" BorderThickness="0"/>
         </Border>
 
         <!--Reihe 10 von Links 33-36-->
-        <Border CornerRadius="30" Background="LightCyan"
-                Grid.Column="22" Grid.ColumnSpan="1" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" Height="25" Width="50">
-            <Button Background="Transparent" Click="btn_33_36_Click"/>
+        <Border CornerRadius="30" Background="LightCyan" Opacity="0.05"
+                Grid.Column="21" Grid.ColumnSpan="3" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Center" Height="50" Width="50">
+            <Button Background="Transparent" Click="btn_33_36_Click" BorderThickness="0"/>
         </Border>
 
         <!--Reihe 10 von Links 32-35-->
-        <Border CornerRadius="30" Background="LightCyan"
-        Grid.Column="22" Grid.Row="2" Grid.ColumnSpan="1" VerticalAlignment="Center" HorizontalAlignment="Center" Height="25" Width="50">
-            <Button Background="Transparent" Click="btn_32_35_Click"/>
+        <Border CornerRadius="30" Background="LightCyan" Opacity="0.05"
+        Grid.Column="21" Grid.Row="3" Grid.ColumnSpan="3" VerticalAlignment="Center" HorizontalAlignment="Center" Height="50" Width="50">
+            <Button Background="Transparent" Click="btn_32_35_Click" BorderThickness="0"/>
         </Border>
 
         <!--Reihe 10 von Links 31-34-->
-        <Border CornerRadius="30" Background="LightCyan"
-Grid.Column="22" Grid.Row="3" Grid.ColumnSpan="1" VerticalAlignment="Center" HorizontalAlignment="Center" Height="25" Width="50">
-            <Button Background="Transparent" Click="btn_31_34_Click"/>
+        <Border CornerRadius="30" Background="LightCyan" Opacity="0.05"
+Grid.Column="21" Grid.Row="4" Grid.ColumnSpan="3" VerticalAlignment="Center" HorizontalAlignment="Center" Height="50" Width="50">
+            <Button Background="Transparent" Click="btn_31_34_Click" BorderThickness="0"/>
         </Border>
 
         <!--Reihe 10 von Links 32-33-35-36-->
-        <Border CornerRadius="30" Background="Cyan" BorderBrush="Transparent"
-Grid.Column="22" Grid.Row="1" Grid.RowSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center" Height="35" Width="60">
-            <Button Background="Transparent" Click="btn_32_33_35_36_Click"/>
+        <Border CornerRadius="30" Background="Cyan" BorderBrush="Transparent" Opacity="0.05"
+Grid.Column="21" Grid.ColumnSpan="3" Grid.Row="2" Grid.RowSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center" Height="35" Width="60">
+            <Button Background="Transparent" Click="btn_32_33_35_36_Click" BorderThickness="0"/>
         </Border>
 
         <!--Reihe 10 von Links 31-32-34-35-->
-        <Border CornerRadius="30" Background="Cyan" BorderBrush="Transparent"
-Grid.Column="22" Grid.Row="2" Grid.RowSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center" Height="35" Width="60">
-            <Button Background="Transparent" Click="btn_31_32_34_35_Click"/>
+        <Border CornerRadius="30" Background="Cyan" BorderBrush="Transparent" Opacity="0.05"
+Grid.Column="21" Grid.ColumnSpan="3" Grid.Row="3" Grid.RowSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center" Height="35" Width="60">
+            <Button Background="Transparent" Click="btn_31_32_34_35_Click" BorderThickness="0"/>
         </Border>
 
         <!--Reihe 10 von Links 32-33-->
-        <Border CornerRadius="30" Background="LightCyan" BorderBrush="Transparent"
-Grid.Column="21" Grid.Row="1" Grid.RowSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center" Height="25" Width="50">
-            <Button Background="Transparent" Click="btn_32_33_Click"/>
+        <Border CornerRadius="30" Background="LightCyan" Opacity="0.05" BorderBrush="Transparent"
+Grid.Column="21" Grid.Row="2" Grid.RowSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center" Height="50" Width="50">
+            <Button Background="Transparent" Click="btn_32_33_Click" BorderThickness="0"/>
         </Border>
 
         <!--Reihe 10 von Links 31-32-->
-        <Border CornerRadius="30" Background="LightCyan"
-Grid.Column="21" Grid.Row="2" Grid.RowSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center" Height="25" Width="50">
-            <Button Background="Transparent" Click="btn_31_32_Click"/>
+        <Border CornerRadius="30" Background="LightCyan" Opacity="0.05"
+Grid.Column="21" Grid.Row="3" Grid.RowSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center" Height="50" Width="50">
+            <Button Background="Transparent" Click="btn_31_32_Click" BorderThickness="0"/>
         </Border>
 
         <!--Reihe 10 von Links 35-36-->
-        <Border CornerRadius="30" Background="LightCyan" BorderBrush="Transparent"
-Grid.Column="23" Grid.Row="1" Grid.RowSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center" Height="25" Width="50">
-            <Button Background="Transparent" Click="btn_35_36_Click"/>
+        <Border CornerRadius="30" Background="LightCyan" Opacity="0.05" BorderBrush="Transparent"
+Grid.Column="23" Grid.Row="2" Grid.RowSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center" Height="50" Width="50">
+            <Button Background="Transparent" Click="btn_35_36_Click" BorderThickness="0"/>
         </Border>
 
         <!--Reihe 10 von Links 34-35-->
-        <Border CornerRadius="30" Background="LightCyan"
-Grid.Column="23" Grid.Row="2" Grid.RowSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center" Height="25" Width="50">
-            <Button Background="Transparent" Click="btn_34_35_Click"/>
+        <Border CornerRadius="30" Background="LightCyan" Opacity="0.05"
+Grid.Column="23" Grid.Row="3" Grid.RowSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center" Height="50" Width="50">
+            <Button Background="Transparent" Click="btn_34_35_Click" BorderThickness="0"/>
         </Border>
 
         <!--Ende-ZwischenDinger-->
 
+        <!--Reihe 1 von Rechts 34-35-36-->
+        <Button Content="36"
+               HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="45" Grid.Column="23" Grid.Row="2" Width="85" Height="85" Background="Red" Foreground="White" Click="btn_36_Click"/>
+        <Button Content="35"
+       HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="45" Grid.Column="23" Grid.Row="3" Width="85" Height="85" Background="Black" Foreground="White" Click="btn_35_Click"/>
+        <Button Content="34"
+       HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="45" Grid.Column="23" Grid.Row="4" Width="85" Height="85" Background="Red" Foreground="White" Click="btn_34_Click"/>
+
+        <!--Reihe 2 von Rechts 31-32-33-->
+        <Button Content="31"
+       HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="45" Grid.Column="21" Grid.Row="4" Width="85" Height="85" Background="Black" Foreground="White" Click="btn_31_Click"/>
+        <Button Content="32"
+       HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="45" Grid.Column="21" Grid.Row="3" Width="85" Height="85" Background="Red" Foreground="White" Click="btn_32_Click"/>
+        <Button Content="33"
+       HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="45" Grid.Column="21" Grid.Row="2" Width="85" Height="85" Background="Black" Foreground="White" Click="btn_33_Click"/>
+
+        <!--Reihe 3 von Rechts 28-29-30-->
+        <Button Content="28"
+HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="45" Grid.Column="19" Grid.Row="4" Width="85" Height="85" Background="Black" Foreground="White" Click="btn_28_Click"/>
+        <Button Content="29"
+HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="45" Grid.Column="19" Grid.Row="3" Width="85" Height="85" Background="Black" Foreground="White" Click="btn_29_Click"/>
+        <Button Content="30"
+HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="45" Grid.Column="19" Grid.Row="2" Width="85" Height="85" Background="Red" Foreground="White" Click="btn_30_Click"/>
+
+        <!--Reihe 4 von Rechts 25-26-27-->
+        <Button Content="25"
+HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="45" Grid.Column="17" Grid.Row="4" Width="85" Height="85" Background="Red" Foreground="White" Click="btn_25_Click"/>
+        <Button Content="26"
+HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="45" Grid.Column="17" Grid.Row="3" Width="85" Height="85" Background="Black" Foreground="White" Click="btn_26_Click"/>
+        <Button Content="27"
+HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="45" Grid.Column="17" Grid.Row="2" Width="85" Height="85" Background="Red" Foreground="White" Click="btn_27_Click"/>
+
+        <!--Reihe 5 von Rechts 22-23-24-->
+        <Button Content="24"
+HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="45" Grid.Column="15" Grid.Row="2" Width="85" Height="85" Background="Black" Foreground="White" Click="btn_24_Click"/>
+        <Button Content="23"
+HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="45" Grid.Column="15" Grid.Row="3" Width="85" Height="85" Background="Red" Foreground="White" Click="btn_23_Click"/>
+        <Button Content="22"
+HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="45" Grid.Column="15" Grid.Row="4" Width="85" Height="85" Background="Black" Foreground="White" Click="btn_22_Click"/>
+
+        <!--Reihe 6 von Rechts 19-20-21-->
+        <Button Content="21"
+HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="45" Grid.Column="13" Grid.Row="2" Width="85" Height="85" Background="Red" Foreground="White" Click="btn_21_Click"/>
+        <Button Content="20"
+HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="45" Grid.Column="13" Grid.Row="3" Width="85" Height="85" Background="Black" Foreground="White" Click="btn_20_Click"/>
+        <Button Content="19"
+HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="45" Grid.Column="13" Grid.Row="4" Width="85" Height="85" Background="Red" Foreground="White" Click="btn_19_Click"/>
+
+        <!--Reihe 7 von Rechts 16-17-38-->
+        <Button Content="18"
+HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="45" Grid.Column="11" Grid.Row="2" Width="85" Height="85" Background="Red" Foreground="White" Click="btn_18_Click"/>
+        <Button Content="17"
+HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="45" Grid.Column="11" Grid.Row="3" Width="85" Height="85" Background="Black" Foreground="White" Click="btn_17_Click"/>
+        <Button Content="16"
+HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="45" Grid.Column="11" Grid.Row="4" Width="85" Height="85" Background="Red" Foreground="White" Click="btn_16_Click"/>
+
+        <!--Reihe 8 von Rechts 13-14-15-->
+        <Button Content="15"
+HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="45" Grid.Column="9" Grid.Row="2" Width="85" Height="85" Background="Black" Foreground="White" Click="btn_15_Click"/>
+        <Button Content="14"
+HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="45" Grid.Column="9" Grid.Row="3" Width="85" Height="85" Background="Red" Foreground="White" Click="btn_14_Click"/>
+        <Button Content="13"
+HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="45" Grid.Column="9" Grid.Row="4"  Width="85" Height="85" Background="Black" Foreground="White" Click="btn_13_Click"/>
+
+        <!--Reihe 9 von Rechts 10-11-12-->
+        <Button Content="12"
+HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="45" Grid.Column="7" Grid.Row="2" Width="85" Height="85" Background="Red" Foreground="White" Click="btn_12_Click"/>
+        <Button Content="11"
+HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="45" Grid.Column="7" Grid.Row="3" Width="85" Height="85" Background="Black" Foreground="White" Click="btn_11_Click"/>
+        <Button Content="10"
+HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="45" Grid.Column="7" Grid.Row="4" Width="85" Height="85" Background="Black" Foreground="White" Click="btn_10_Click"/>
+
+        <!--Reihe 10 von Rechts 7-8-9-->
+        <Button Content="9"
+HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" FontSize="45" Grid.Column="5" Grid.Row="2" Width="85" Height="85" Background="Red" Foreground="White" Click="btn_9_Click"/>
+        <Button Content="8"
+HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" FontSize="45" Grid.Column="5" Grid.Row="3" Width="85" Height="85" Background="Black" Foreground="White" Click="btn_8_Click"/>
+        <Button Content="7"
+HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" FontSize="45" Grid.Column="5" Grid.Row="4" Width="85" Height="85" Background="Red" Foreground="White" Click="btn_7_Click"/>
+
+        <!--Reihe 11 von Rechts 4-5-6-->
+        <Button Content="6"
+HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" FontSize="45" Grid.Column="3" Grid.Row="2" Width="85" Height="85" Background="Black" Foreground="White" Click="btn_6_Click"/>
+        <Button Content="5"
+HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" FontSize="45" Grid.Column="3" Grid.Row="3" Width="85" Height="85" Background="Red" Foreground="White" Click="btn_5_Click"/>
+        <Button Content="4"
+HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" FontSize="45" Grid.Column="3" Grid.Row="4" Width="85" Height="85" Background="Black" Foreground="White" Click="btn_4_Click"/>
+
+        <!--Reihe 12 von Rechts 1-2-3-->
+        <Button Content="3"
+HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" FontSize="45" Grid.Column="1" Grid.Row="2" Width="85" Height="85" Background="Red" Foreground="White" Click="btn_3_Click"/>
+        <Button Content="2"
+HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" FontSize="45" Grid.Column="1" Grid.Row="3" Width="85" Height="85" Background="Black" Foreground="White" Click="btn_2_Click"/>
+        <Button Content="1"
+HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" FontSize="45" Grid.Column="1" Grid.Row="4" Width="85" Height="85" Background="Red" Foreground="White" Click="btn_1_Click"/>
+
         <!--Spalte 11-->
         <Button Content="0"
-HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="50" Grid.Column="0" Grid.RowSpan="3" Grid.Row="1" Foreground="Violet" FontWeight="DemiBold" Background="#07734D" Click="btn_0_Click" BorderBrush="Transparent"/>
+HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="50" Grid.Column="0" Grid.RowSpan="3" Grid.Row="2" Foreground="Violet" FontWeight="DemiBold" Background="#07734D" Click="btn_0_Click" BorderBrush="Transparent"/>
         <!--Reihe 1-->
         <Button Content="1st 12"
-               HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="1" Grid.Row="4" Grid.ColumnSpan="4" Click="btn_1st12"
-               FontSize="30" FontWeight="Bold"/>
+               HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="1" Grid.Row="5" Grid.ColumnSpan="4" Click="btn_1st12"
+               FontSize="30" FontWeight="Bold">
+            <Button.Background>
+                <LinearGradientBrush StartPoint="0,0.5" EndPoint="1,0.5">
+                    <GradientStop Color="SkyBlue" Offset="0.1"/>
+                    <GradientStop Color="PaleVioletRed" Offset="0.5"/>
+                    <GradientStop Color="BlueViolet" Offset="1"/>
+                </LinearGradientBrush>
+            </Button.Background>
+        </Button>
         <!--Reihe 2-->
         <Button Content="2st 12"
-       HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="9" Grid.Row="4" Grid.ColumnSpan="5" Click="btn_2nd12"
-       FontSize="30" FontWeight="Bold"/>
+       HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="9" Grid.Row="5" Grid.ColumnSpan="5" Click="btn_2nd12"
+       FontSize="30" FontWeight="Bold">
+            <Button.Background>
+                <LinearGradientBrush StartPoint="0,0.5" EndPoint="1,0.5">
+                    <GradientStop Color="SkyBlue" Offset="0.1"/>
+                    <GradientStop Color="PaleVioletRed" Offset="0.5"/>
+                    <GradientStop Color="BlueViolet" Offset="1"/>
+                </LinearGradientBrush>
+            </Button.Background>
+        </Button>
         <!--Reihe 3, Spalte 2-4-->
         <Button Content="3st 12"
-       HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="20" Grid.Row="4" Grid.ColumnSpan="5" Click="btn_3rd12"
-       FontSize="30" FontWeight="Bold" Margin="0,0,75,0"/>
+       HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="20" Grid.Row="5" Grid.ColumnSpan="5" Click="btn_3rd12"
+       FontSize="30" FontWeight="Bold" Margin="0,0,85,0">
+            <Button.Background>
+                <LinearGradientBrush StartPoint="0,0.5" EndPoint="1,0.5">
+                    <GradientStop Color="SkyBlue" Offset="0.1"/>
+                    <GradientStop Color="PaleVioletRed" Offset="0.5"/>
+                    <GradientStop Color="BlueViolet" Offset="1"/>
+                </LinearGradientBrush>
+            </Button.Background>
+        </Button>
 
         <!--Reihe 5, Spalte 5-8-->
         <Button Content="19-36"
-       VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="5" Grid.Column="14" Grid.ColumnSpan="2" Click="btn_19_36"
-       FontSize="30" FontWeight="Bold"/>
+       VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="6" Grid.Column="14" Grid.ColumnSpan="2" Click="btn_19_36"
+       FontSize="30" FontWeight="Bold">
+            <Button.Background>
+                <LinearGradientBrush StartPoint="0,0.5" EndPoint="1,0.5">
+                    <GradientStop Color="SkyBlue" Offset="0.1"/>
+                    <GradientStop Color="PaleVioletRed" Offset="0.5"/>
+                    <GradientStop Color="BlueViolet" Offset="1"/>
+                </LinearGradientBrush>
+            </Button.Background>
+        </Button>
         <!--Reihe 5, Spalte 8-12-->
         <Button Content="1-18"
-       VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="5" Grid.Column="4" Grid.ColumnSpan="2" Click="btn_1_18"
-       FontSize="30" FontWeight="Bold"/>
+       VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="6" Grid.Column="4" Grid.ColumnSpan="2" Click="btn_1_18"
+       FontSize="30" FontWeight="Bold">
+            <Button.Background>
+                <LinearGradientBrush StartPoint="0,0.5" EndPoint="1,0.5">
+                    <GradientStop Color="SkyBlue" Offset="0.1"/>
+                    <GradientStop Color="PaleVioletRed" Offset="0.5"/>
+                    <GradientStop Color="BlueViolet" Offset="1"/>
+                </LinearGradientBrush>
+            </Button.Background>
+        </Button>
+
+        <!--Reihe Odd-->
+        <Button Content="Odd"
+VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="6" Grid.Column="7" Click="btn_Odd"
+FontSize="30" FontWeight="Bold">
+            <Button.Background>
+                <LinearGradientBrush StartPoint="0,0.5" EndPoint="1,0.5">
+                    <GradientStop Color="SkyBlue" Offset="0.1"/>
+                    <GradientStop Color="PaleVioletRed" Offset="0.5"/>
+                    <GradientStop Color="BlueViolet" Offset="1"/>
+                </LinearGradientBrush>
+            </Button.Background>
+        </Button>
+
+        <!--Reihe Odd-->
+        <Button Content="Even"
+VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="6" Grid.Column="13" Click="btn_Even"
+FontSize="30" FontWeight="Bold">
+            <Button.Background>
+                <LinearGradientBrush StartPoint="0,0.5" EndPoint="1,0.5">
+                    <GradientStop Color="SkyBlue" Offset="0.1"/>
+                    <GradientStop Color="PaleVioletRed" Offset="0.5"/>
+                    <GradientStop Color="BlueViolet" Offset="1"/>
+                </LinearGradientBrush>
+            </Button.Background>
+        </Button>
         <!--Reihe 4, Spalte 2,5, 5-8-->
 
         <!--Dreier-Satz-->
 
-        <Border CornerRadius="30" Background="LightCyan" BorderBrush="Transparent"
-Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center" Height="50" Width="25">
-            <Button Background="Transparent" Click="btn_3_2_1_Click"/>
+        <Border x:Name="dreiReihe1" CornerRadius="30" Background="Blue" BorderBrush="Transparent" Opacity="0.03"
+Grid.Column="1" Grid.Row="1" Grid.RowSpan="2" VerticalAlignment="Top" HorizontalAlignment="Center" Height="90" Width="50">
+            <Button Background="Transparent" Click="btn_3_2_1_Click"  BorderThickness="0"/>
         </Border>
 
-        <Border CornerRadius="30" Background="LightCyan" BorderBrush="Transparent"
-Grid.Column="3" Grid.Row="0" Grid.RowSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center" Height="50" Width="25">
-            <Button Background="Transparent" Click="btn_6_5_4_Click"/>
+        <Border x:Name="dreiReihe2" CornerRadius="30" Background="Blue" BorderBrush="Transparent" Opacity="0.03"
+Grid.Column="3" Grid.Row="1" Grid.RowSpan="2" VerticalAlignment="Top" HorizontalAlignment="Center" Height="90" Width="50">
+            <Button Background="Transparent" Click="btn_6_5_4_Click"  BorderThickness="0"/>
         </Border>
 
-        <Border CornerRadius="30" Background="LightCyan" BorderBrush="Transparent"
-Grid.Column="5" Grid.Row="0" Grid.RowSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center" Height="50" Width="25">
-            <Button Background="Transparent" Click="btn_9_8_7_Click"/>
+        <Border x:Name="dreiReihe3" CornerRadius="30" Background="Blue" BorderBrush="Transparent" Opacity="0.03"
+Grid.Column="5" Grid.Row="1" Grid.RowSpan="2" VerticalAlignment="Top" HorizontalAlignment="Center" Height="90" Width="50">
+            <Button Background="Transparent" Click="btn_9_8_7_Click"  BorderThickness="0"/>
         </Border>
 
-        <Border CornerRadius="30" Background="LightCyan" BorderBrush="Transparent"
-Grid.Column="7" Grid.Row="0" Grid.RowSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center" Height="50" Width="25">
-            <Button Background="Transparent" Click="btn_12_11_10_Click"/>
+        <Border x:Name="dreiReihe4" CornerRadius="30" Background="Blue" BorderBrush="Transparent" Opacity="0.03"
+Grid.Column="7" Grid.Row="1" Grid.RowSpan="2" VerticalAlignment="Top" HorizontalAlignment="Center" Height="90" Width="50">
+            <Button Background="Transparent" Click="btn_12_11_10_Click"  BorderThickness="0"/>
         </Border>
 
-        <Border CornerRadius="30" Background="LightCyan" BorderBrush="Transparent"
-Grid.Column="9" Grid.Row="0" Grid.RowSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center" Height="50" Width="25">
-            <Button Background="Transparent" Click="btn_15_14_13_Click"/>
+        <Border x:Name="dreiReihe5" CornerRadius="30" Background="Blue" BorderBrush="Transparent" Opacity="0.03"
+Grid.Column="9" Grid.Row="1" Grid.RowSpan="2" VerticalAlignment="Top" HorizontalAlignment="Center" Height="90" Width="50">
+            <Button Background="Transparent" Click="btn_15_14_13_Click"  BorderThickness="0"/>
         </Border>
 
-        <Border CornerRadius="30" Background="LightCyan" BorderBrush="Transparent"
-Grid.Column="11" Grid.Row="0" Grid.RowSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center" Height="50" Width="25">
-            <Button Background="Transparent" Click="btn_18_17_16_Click"/>
+        <Border x:Name="dreiReihe6" CornerRadius="30" Background="Blue" BorderBrush="Transparent" Opacity="0.03"
+Grid.Column="11" Grid.Row="1" Grid.RowSpan="2" VerticalAlignment="Top" HorizontalAlignment="Center" Height="90" Width="50">
+            <Button Background="Transparent" Click="btn_18_17_16_Click"  BorderThickness="0"/>
         </Border>
 
-        <Border CornerRadius="30" Background="LightCyan" BorderBrush="Transparent"
-Grid.Column="13" Grid.Row="0" Grid.RowSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center" Height="50" Width="25">
-            <Button Background="Transparent" Click="btn_21_20_19_Click"/>
+        <Border x:Name="dreiReihe7" CornerRadius="30" Background="Blue" BorderBrush="Transparent" Opacity="0.03"
+Grid.Column="13" Grid.Row="1" Grid.RowSpan="2" VerticalAlignment="Top" HorizontalAlignment="Center" Height="90" Width="50">
+            <Button Background="Transparent" Click="btn_21_20_19_Click"  BorderThickness="0"/>
         </Border>
 
-        <Border CornerRadius="30" Background="LightCyan" BorderBrush="Transparent"
-Grid.Column="15" Grid.Row="0" Grid.RowSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center" Height="50" Width="25">
-            <Button Background="Transparent" Click="btn_24_23_22_Click"/>
+        <Border x:Name="dreiReihe8" CornerRadius="30" Background="Blue" BorderBrush="Transparent" Opacity="0.03"
+Grid.Column="15" Grid.Row="1" Grid.RowSpan="2" VerticalAlignment="Top" HorizontalAlignment="Center" Height="90" Width="50">
+            <Button Background="Transparent" Click="btn_24_23_22_Click"  BorderThickness="0"/>
         </Border>
 
-        <Border CornerRadius="30" Background="LightCyan" BorderBrush="Transparent"
-Grid.Column="17" Grid.Row="0" Grid.RowSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center" Height="50" Width="25">
-            <Button Background="Transparent" Click="btn_27_26_25_Click"/>
+        <Border x:Name="dreiReihe9" CornerRadius="30" Background="Blue" BorderBrush="Transparent" Opacity="0.03"
+Grid.Column="17" Grid.Row="1" Grid.RowSpan="2" VerticalAlignment="Top" HorizontalAlignment="Center" Height="90" Width="50">
+            <Button Background="Transparent" Click="btn_27_26_25_Click"  BorderThickness="0"/>
         </Border>
 
-        <Border CornerRadius="30" Background="LightCyan" BorderBrush="Transparent"
-Grid.Column="19" Grid.Row="0" Grid.RowSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center" Height="50" Width="25">
-            <Button Background="Transparent" Click="btn_30_29_28_Click"/>
+        <Border x:Name="dreiReihe10" CornerRadius="30" Background="Blue" BorderBrush="Transparent" Opacity="0.03"
+Grid.Column="19" Grid.Row="1" Grid.RowSpan="2" VerticalAlignment="Top" HorizontalAlignment="Center" Height="90" Width="50">
+            <Button Background="Transparent" Click="btn_30_29_28_Click"  BorderThickness="0"/>
         </Border>
 
-        <Border CornerRadius="30" Background="LightCyan" BorderBrush="Transparent"
-Grid.Column="21" Grid.Row="0" Grid.RowSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center" Height="50" Width="25">
-            <Button Background="Transparent" Click="btn_33_32_31_Click"/>
+        <Border x:Name="dreiReihe11" CornerRadius="30" Background="Blue" BorderBrush="Transparent" Opacity="0.03"
+Grid.Column="21" Grid.Row="1" Grid.RowSpan="2" VerticalAlignment="Top" HorizontalAlignment="Center" Height="90" Width="50">
+            <Button Background="Transparent" Click="btn_33_32_31_Click"  BorderThickness="0"/>
         </Border>
 
-        <Border CornerRadius="30" Background="LightCyan" BorderBrush="Transparent"
-Grid.Column="23" Grid.Row="0" Grid.RowSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center" Height="50" Width="25">
-            <Button Background="Transparent" Click="btn_36_35_34_Click"/>
+        <Border x:Name="dreiReihe12" CornerRadius="30" Background="Blue" BorderBrush="Transparent" Opacity="0.03"
+Grid.Column="23" Grid.Row="1" Grid.RowSpan="2" VerticalAlignment="Top" HorizontalAlignment="Center" Height="90" Width="50">
+            <Button Background="Transparent" Click="btn_36_35_34_Click"  BorderThickness="0"/>
         </Border>
 
         <!---->
         <!--Button-->
 
-        <Button x:Name="btn_rot" Grid.Column="9" Grid.Row="5" FontSize="25" Click="btn_rot_Click" BorderBrush="Transparent">
+        <Button x:Name="btn_rot" Grid.Column="9" Grid.Row="6" FontSize="25" Click="btn_rot_Click" BorderBrush="Transparent">
             <Button.Background>
                 <ImageBrush ImageSource="./Bilder_Roulette/Rotes_VierEck.png"/>
             </Button.Background>
         </Button>
         <!--Button-->
-        <Button x:Name="btn_schwarz" Grid.Column="11" Grid.Row="5" FontSize="25" Click="btn_schwarz_Click" BorderBrush="Transparent">
+        <Button x:Name="btn_schwarz" Grid.Column="11" Grid.Row="6" FontSize="25" Click="btn_schwarz_Click" BorderBrush="Transparent">
             <Button.Background>
                 <ImageBrush ImageSource="/Bilder_Roulette/Schwarzes_VierEck.png"/>
             </Button.Background>
         </Button>
 
         <Label Content="Einsatz:"
-                 Grid.Row="6" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center"
+                 Grid.Row="7" Grid.Column="18" Grid.ColumnSpan="2" VerticalAlignment="Center" HorizontalAlignment="Left"
                  FontSize="25" Foreground="White"/>
         <TextBox x:Name="lbl_einsatz" Text="aktueller Einsatz"
-         Grid.Row="6" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center"
+         Grid.Row="7" Grid.Column="20" Grid.ColumnSpan="4" VerticalAlignment="Center" HorizontalAlignment="Left"
          FontSize="18" Foreground="White" Background="Transparent" BorderBrush="Transparent" TextWrapping="Wrap"/>
 
         <Label Content="Guthaben:"
-         Grid.Row="6" Grid.Column="11" VerticalAlignment="Center" HorizontalAlignment="Center"
+         Grid.Row="6" Grid.Column="18" Grid.ColumnSpan="2" VerticalAlignment="Center" HorizontalAlignment="Left"
          FontSize="15" Foreground="White"/>
-        
-        <TextBox x:Name="lbl_guthaben" Text="aktuelles Guthaben" TextWrapping="Wrap"
- Grid.Row="6"  Grid.Column="13" VerticalAlignment="Center" HorizontalAlignment="Center"
+
+        <TextBox x:Name="txtb_guthaben" Text="aktuelles Guthaben" TextWrapping="Wrap"
+ Grid.Row="6"  Grid.Column="20" Grid.ColumnSpan="4" VerticalAlignment="Center" HorizontalAlignment="Left"
  FontSize="15" Foreground="White" Background="Transparent" BorderBrush="Transparent"/>
 
-        <Button x:Name="btn_Coint50" Content="50" Grid.Column="3" Grid.Row="6" FontSize="20" Click="btn_Coint50_Click" BorderBrush="Transparent">
+        <Button x:Name="btn_Coint50" Content="50" Grid.Column="5" Grid.ColumnSpan="2" Grid.Row="7" FontSize="20" Height="80" Width="80" Click="btn_Coint50_Click" BorderBrush="Transparent">
             <Button.Background>
                 <ImageBrush ImageSource="./Bilder_Roulette/hellblau.png"/>
             </Button.Background>
         </Button>
 
-        <Button x:Name="btn_Coint100" Content="100" Grid.Column="5" Grid.Row="6" FontSize="20" Click="btn_Coint100_Click" BorderBrush="Transparent">
+        <Button x:Name="btn_Coint100" Content="100" Grid.Column="7" Grid.ColumnSpan="2" Grid.Row="7" FontSize="20" Height="80" Width="80" Click="btn_Coint100_Click" BorderBrush="Transparent">
             <Button.Background>
                 <ImageBrush ImageSource="./Bilder_Roulette/pink.png"/>
             </Button.Background>
         </Button>
 
-        <Button x:Name="btn_Coint500" Content="500" Grid.Column="7" Grid.Row="6" FontSize="20" Click="btn_Coint500_Click" BorderBrush="Transparent">
+        <Button x:Name="btn_Coint500" Content="500" Grid.Column="12" Grid.ColumnSpan="2" Grid.Row="7" FontSize="20" Height="80" Width="80" Click="btn_Coint500_Click" BorderBrush="Transparent">
             <Button.Background>
                 <ImageBrush ImageSource="./Bilder_Roulette/dunkelblau.png"/>
             </Button.Background>
         </Button>
 
-        <Button x:Name="btn_Coint1000" Content="1000" Grid.Column="9" Grid.Row="6" FontSize="20" Click="btn_Coint1000_Click" BorderBrush="Transparent">
+        <Button x:Name="btn_Coint1000" Content="1000" Grid.Column="15" Grid.ColumnSpan="2" Grid.Row="7" FontSize="20" Height="80" Width="80" Click="btn_Coint1000_Click" BorderBrush="Transparent">
             <Button.Background>
                 <ImageBrush ImageSource="./Bilder_Roulette/rot.png"/>
             </Button.Background>
         </Button>
         <!---->
         <Label x:Name="lbl_Infofeld" Content="Infofeld"
-               Grid.ColumnSpan="14" Grid.Row="7"
+               Grid.ColumnSpan="14" Grid.Row="8"
                VerticalAlignment="Center" HorizontalAlignment="Left" FontSize="20"
                FontWeight="Bold"/>
         <!-- Overlay um Spielbrett während Spin lahmzulegen-->
-        <Grid x:Name="Overlay" Background="Transparent" Opacity="0.5" Visibility="Hidden" IsHitTestVisible="True"  Grid.RowSpan="7" Grid.ColumnSpan="26"/>
+        <Grid x:Name="Overlay" Background="Transparent" Opacity="0.5" Visibility="Hidden" IsHitTestVisible="True"  Grid.RowSpan="8" Grid.ColumnSpan="26"/>
     </Grid>
 </Window>
