@@ -6,11 +6,12 @@ using System.Numerics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
 namespace Roulette
 {
     /// <summary>
-    /// höchsteinsatz passt nicht! || 🌞testlauf
+    /// 🌞testlauf
     /// </summary>
     public partial class MainWindow : Window
     {
@@ -40,6 +41,7 @@ namespace Roulette
         bool checkFarbe = false;
         bool checkRot = false;
         public string pfad = null;
+        bool checkMusik = true;
 
         Random rnd = new Random();
         MediaPlayer player = null;
@@ -58,6 +60,7 @@ namespace Roulette
             File.Delete(pfad);
             pfad = Path.Combine(Environment.CurrentDirectory, "Geldfluss.txt");
             File.Delete(pfad);
+            player.Volume = 0.2;
         }
 
         ////////// vereinen und entfernen durch bj
@@ -181,6 +184,7 @@ namespace Roulette
                 guthabenBank_ += Einsatz_;
                 lbl_einsatz.Text = Einsatz_.ToString();
                 txtb_guthaben.Text = guthabenPlayer_.ToString();
+                Protokoll("VerlaufSpezifisch", "Einsatz: ", Einsatz_);
             }
         }
 
@@ -189,6 +193,7 @@ namespace Roulette
             if (guthabenPlayer_ - 500 < 0)
             {
                 lbl_Infofeld.Content = ("Fehler: Guthaben zu niedrig!");
+                Protokoll("VerlaufSpezifisch.txt", "Einsatz: ", Einsatz_);
             }
             else
             {
@@ -197,6 +202,7 @@ namespace Roulette
                 guthabenBank_ += Einsatz_;
                 lbl_einsatz.Text = Einsatz_.ToString();
                 txtb_guthaben.Text = guthabenPlayer_.ToString();
+                Protokoll("VerlaufSpezifisch", "Einsatz: ", Einsatz_);
             }
         }
 
@@ -213,6 +219,7 @@ namespace Roulette
                 guthabenBank_ += Einsatz_;
                 lbl_einsatz.Text = Einsatz_.ToString();
                 txtb_guthaben.Text = guthabenPlayer_.ToString();
+                Protokoll("VerlaufSpezifisch", "Einsatz: ", Einsatz_);
             }
         }
 
@@ -229,6 +236,7 @@ namespace Roulette
                 guthabenBank_ += Einsatz_;
                 lbl_einsatz.Text = Einsatz_.ToString();
                 txtb_guthaben.Text = guthabenPlayer_.ToString();
+                Protokoll("VerlaufSpezifisch", "Einsatz: ", Einsatz_);
             }
         }
 
@@ -313,36 +321,42 @@ namespace Roulette
                     guthabenPlayer_ += Einsatz_ + Einsatz_ * 35;//inkl. Rückzahlung Einsatz
                     guthabenBank_ -= Einsatz_ * 35;
                     lbl_Infofeld.Content = $"Jackpot!!! Zahl getroffen. Auszahlung 1:35\n{Einsatz_ * 35}";
+                    Protokoll("VerlaufSpezifisch", "Gewonnen! +", Einsatz_*35);
                 }
                 else
                 {
-                    if (mengeUnderscore == 2)
+                    if (mengeUnderscore == 2 && !checkFarbe)
                     {
                         lbl_Infofeld.Content = $"Zahl getroffen! Auszahlung 1:17\n{Einsatz_ * 17}";
+                        Protokoll("VerlaufSpezifisch", "Gewonnen! +", Einsatz_ * 17);
                         guthabenPlayer_ += Einsatz_ + Einsatz_ * 17;//inkl. Rückzahlung Einsatz
                         guthabenBank_ -= Einsatz_ * 17;
                     }
-                    else if (mengeUnderscore == 3)
+                    else if (mengeUnderscore == 3 && !checkFarbe)
                     {
                         lbl_Infofeld.Content = $"Zahl getroffen! Auszahlung 1:11\n{Einsatz_ * 11}";
+                        Protokoll("VerlaufSpezifisch", "Gewonnen! +", Einsatz_ * 11);
                         guthabenPlayer_ += Einsatz_ + Einsatz_ * 11;//inkl. Rückzahlung Einsatz
                         guthabenBank_ -= Einsatz_ * 11;
                     }
-                    else if (mengeUnderscore == 4)
+                    else if (mengeUnderscore == 4 && !checkFarbe)
                     {
                         lbl_Infofeld.Content = $"Zahl getroffen! Auszahlung 1:8\n{Einsatz_ * 1}";
+                        Protokoll("VerlaufSpezifisch", "Gewonnen! +", Einsatz_ * 1);
                         guthabenPlayer_ += Einsatz_ + Einsatz_ * 8;//inkl. Rückzahlung Einsatz
                         guthabenBank_ -= Einsatz_ * 8;
                     }
-                    else if (mengeUnderscore == 6)
+                    else if (mengeUnderscore == 6 && !checkFarbe)
                     {
                         lbl_Infofeld.Content = $"Zahl getroffen! Auszahlung 1:5\n{Einsatz_ * 5}";
+                        Protokoll("VerlaufSpezifisch", "Gewonnen! +", Einsatz_ * 5);
                         guthabenPlayer_ += Einsatz_ + Einsatz_ * 5;//inkl. Rückzahlung Einsatz
                         guthabenBank_ -= Einsatz_ * 5;
                     }
                     else if (mengeUnderscore == 12 && checkFarbe == false)
                     {
                         lbl_Infofeld.Content = $"Zahl getroffen! Auszahlung 1:2\n{Einsatz_ * 2}";
+                        Protokoll("VerlaufSpezifisch", "Gewonnen! +", Einsatz_ * 2);
                         guthabenPlayer_ += Einsatz_ + Einsatz_ * 2;//inkl. Rückzahlung Einsatz
                         guthabenBank_ -= Einsatz_ * 2;
                     }
@@ -354,7 +368,7 @@ namespace Roulette
                     //    checkFarbe = false;
                     //    checkRot = false;
                     //}
-                    else if (mengeUnderscore == 18 || mengeUnderscore == 19 && (!checkFarbe))//+Farbe+Un/Gerade
+                    else if ((mengeUnderscore == 18 || mengeUnderscore == 19) && (!checkFarbe))//+Farbe+Un/Gerade
                     {
                         bool zahlGefunden = false;
                         foreach (string zahlStr in zahlen)
@@ -372,6 +386,7 @@ namespace Roulette
                             {
                                 case 19:
                                     lbl_Infofeld.Content = $"Zahl getroffen! Auszahlung 1:1\n{Einsatz_ * 1}";
+                                    Protokoll("VerlaufSpezifisch", "Gewonnen! +", Einsatz_ * 1);
                                     guthabenPlayer_ += Einsatz_ * 1;
                                     guthabenBank_ -= Einsatz_ * 1;
                                     Einsatz_ = 0;
@@ -380,6 +395,7 @@ namespace Roulette
                                     return;
                                 case 18:
                                     lbl_Infofeld.Content = $"Zahl getroffen! Auszahlung 1:1\n{Einsatz_ * 1}";
+                                    Protokoll("VerlaufSpezifisch", "Gewonnen! +", Einsatz_ * 1);
                                     guthabenPlayer_ += Einsatz_ * 1;
                                     guthabenBank_ -= Einsatz_ * 1;
                                     Einsatz_ = 0;
@@ -391,6 +407,7 @@ namespace Roulette
                         else
                         {
                             lbl_Infofeld.Content = $"Leider nicht getroffen.";
+                            Protokoll("VerlaufSpezifisch", "Verloren! Zufallszahl: ", zufallszahl_);
                             //guthabenPlayer_ -= Einsatz_; wurde breits abgezogen bei btn_zahl
                             guthabenBank_ += Einsatz_;
                         }
@@ -418,6 +435,7 @@ namespace Roulette
                             case 34:
                             case 36:
                                 lbl_Infofeld.Content = $"Farbe getroffen! Auszahlung 1:1\n{Einsatz_ * 1}";
+                                Protokoll("VerlaufSpezifisch", "Gewonnen! Farbe: +", Einsatz_ * 1);
                                 guthabenPlayer_ += Einsatz_ * 2;
                                 guthabenBank_ -= Einsatz_ * 1; //inkl. Rückzahlung Einsatz
                                 txtb_guthaben.Text = guthabenPlayer_.ToString(); // Guthaben aktualisieren
@@ -428,6 +446,7 @@ namespace Roulette
                                 return;
                             default:
                                 lbl_Infofeld.Content = "Nein! Farbe leider nicht getroffen";
+                                Protokoll("VerlaufSpezifisch", "Verloren! Zufallszahlfarbe: ", zufallszahl_);
                                 //guthabenPlayer_ -= Einsatz_ * 1;//Abzug Einsatz
                                 txtb_guthaben.Text = guthabenPlayer_.ToString(); // Guthaben aktualisieren
                                 guthabenBank_ += Einsatz_ * 1;
@@ -461,6 +480,7 @@ namespace Roulette
                             case 33:
                             case 35:
                                 lbl_Infofeld.Content = $"Farbe getroffen! Auszahlung 1:1\n{Einsatz_ * 1}";
+                                Protokoll("VerlaufSpezifisch", "Gewonnen! Farbe: +", Einsatz_ * 1);
                                 guthabenPlayer_ += Einsatz_ * 2;//inkl. Rückzahlung Einsatz
                                 txtb_guthaben.Text = guthabenPlayer_.ToString(); // Guthaben aktualisieren
                                 guthabenBank_ -= Einsatz_ * 1;
@@ -471,6 +491,7 @@ namespace Roulette
                                 break;
                             default:
                                 lbl_Infofeld.Content = "Nein! Farbe leider nicht getroffen";
+                                Protokoll("VerlaufSpezifisch", "Verloren! Zufallszahlfarbe: ", zufallszahl_);
                                 //guthabenPlayer_ -= Einsatz_ * 1;//Abzug Einsatz
                                 txtb_guthaben.Text = guthabenPlayer_.ToString(); // Guthaben aktualisieren
                                 guthabenBank_ += Einsatz_ * 1;
@@ -485,6 +506,7 @@ namespace Roulette
                     else
                     {
                         lbl_Infofeld.Content = $"Nein! Zahl nicht getroffen: {zufallszahl_}";
+                        Protokoll("VerlaufSpezifisch", "Verloren! Zufallszahl: ", zufallszahl_);
                         //lbl_Infofeld.Content = "Nein! Farbe leider nicht getroffen";
                         //guthabenPlayer_ -= Einsatz;
                         //guthabenBank += Einsatz;
@@ -498,13 +520,13 @@ namespace Roulette
             else
             {
                 lbl_Infofeld.Content = $"Nein! Zahl nicht getroffen: {zufallszahl_}";
+                Protokoll("VerlaufSpezifisch", "Verloren! Zufallszahl: ", zufallszahl_);
                 //guthabenPlayer_ -= Einsatz;
                 //guthabenBank += Einsatz;
                 checkFarbe = false;
                 checkRot = false;
             }
 
-            Protokoll("VerlaufSpezifisch", Einsatz_);
             txtb_guthaben.Text = guthabenPlayer_.ToString(); // Guthaben aktualisieren
             lbl_einsatz.Text = "0"; // Einsatz zurücksetzen
             Einsatz_ = 0;
@@ -1352,6 +1374,12 @@ namespace Roulette
             AuswahlZahl(); Zufallszahl();
         }
 
+        private void btn_6_3_Click(object sender, RoutedEventArgs e)
+        {
+            ratezahlStr_ = "3_6";
+            AuswahlZahl(); Zufallszahl();
+        }
+
         private void btn_2_1_Click(object sender, RoutedEventArgs e)
         {
             ratezahlStr_ = "1_2";
@@ -1573,7 +1601,7 @@ namespace Roulette
             }
         }
 
-        public void Protokoll(string dateiname, int einsatz)
+        public void Protokoll(string dateiname, string status, double gewinn)
         {
             //Prolog: Gezogene Karte mitschreiben
             pfad = Path.Combine(Environment.CurrentDirectory, dateiname + ".txt");
@@ -1596,7 +1624,7 @@ namespace Roulette
                 sw = new StreamWriter(fs);
 
                 //Speichert im "Puffer", bis Flush (gespült wird)
-                sw.WriteLine($"Einsatz: {einsatz}");
+                sw.WriteLine($"{status}{gewinn}");
 
                 //"Schreiben ins Dokument"
                 sw.Flush();
@@ -1615,6 +1643,22 @@ namespace Roulette
                 {
                     fs.Close();
                 }
+            }
+        }
+
+        private void btn_MusikRegelung_Click(object sender, RoutedEventArgs e)
+        {
+            if (!checkMusik)
+            {
+                btn_musikregeler.ImageSource = new BitmapImage(new Uri($"./Bilder_Roulette/mute.png", UriKind.Relative));
+                player.Volume = 0;
+                checkMusik = true;
+            }
+            else
+            {
+                btn_musikregeler.ImageSource = new BitmapImage(new Uri($"./Bilder_Roulette/laut.png", UriKind.Relative));
+                player.Volume = 0.2;
+                checkMusik = false;
             }
         }
     }

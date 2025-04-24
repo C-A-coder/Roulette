@@ -6,7 +6,8 @@
         xmlns:local="clr-namespace:Roulette"
         mc:Ignorable="d"
         Title="MainWindow" Height="830" Width="1550" Background="#07734D"
-        WindowStartupLocation="CenterScreen">
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize">
 
     <Grid>
         <Grid.ColumnDefinitions>
@@ -62,6 +63,13 @@
          Width="85" Height="35" 
          Background="SteelBlue" FontSize="20"/>
         </StackPanel>
+        
+        <!-- Musikplayer Lautstärke -->
+        <Button Click="btn_MusikRegelung_Click" Grid.Column="24" Grid.Row="8" Height="50" Width="50" BorderBrush="Transparent" BorderThickness="0">
+            <Button.Background>
+                <ImageBrush ImageSource="./Bilder_Roulette/laut.png"  x:Name="btn_musikregeler"/>
+            </Button.Background>
+        </Button>
 
         <!--<Button x:Name="btn_runde" Content="Runde"
                 Grid.Column="6" Grid.ColumnSpan="2" Grid.Row="7" VerticalAlignment="Center" HorizontalAlignment="Center"
@@ -105,7 +113,7 @@ HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20" Grid.Colum
         <!--Reihe 1 von Links 3-6-->
         <Border CornerRadius="30" Background="LightCyan" Opacity="0.05"
         Grid.Column="1" Grid.ColumnSpan="3" VerticalAlignment="Center" Grid.Row="2" HorizontalAlignment="Center" Height="50" Width="50">
-            <Button Background="Transparent" Click="btn_6_9_Click" BorderThickness="0"/>
+            <Button Background="Transparent" Click="btn_6_3_Click" BorderThickness="0"/>
         </Border>
 
         <!--Reihe 1 von Links 2-5-->
@@ -693,8 +701,8 @@ HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignme
         <Button Content="0"
 HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="50" Grid.Column="0" Grid.RowSpan="3" Grid.Row="2" Foreground="Violet" FontWeight="DemiBold" Background="#07734D" Click="btn_0_Click" BorderBrush="Transparent"/>
         <!--Reihe 1-->
-        <Button Content="1st 12"
-               HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="1" Grid.Row="5" Grid.ColumnSpan="4" Click="btn_1st12"
+        <Button Content="1st 12" Height="50"
+               HorizontalContentAlignment="Center" VerticalAlignment="Center" Grid.Column="1" Grid.Row="5" Grid.ColumnSpan="7" Click="btn_1st12" BorderBrush="DarkViolet" BorderThickness="1.5"
                FontSize="30" FontWeight="Bold">
             <Button.Background>
                 <LinearGradientBrush StartPoint="0,0.5" EndPoint="1,0.5">
@@ -705,8 +713,8 @@ HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="50" Grid.Colum
             </Button.Background>
         </Button>
         <!--Reihe 2-->
-        <Button Content="2st 12"
-       HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="9" Grid.Row="5" Grid.ColumnSpan="5" Click="btn_2nd12"
+        <Button Content="2st 12" Height="50"
+       HorizontalContentAlignment="Center" VerticalAlignment="Center" Grid.Column="9" Grid.Row="5" Grid.ColumnSpan="7" Click="btn_2nd12" BorderBrush="DarkViolet" BorderThickness="1.5"
        FontSize="30" FontWeight="Bold">
             <Button.Background>
                 <LinearGradientBrush StartPoint="0,0.5" EndPoint="1,0.5">
@@ -717,9 +725,9 @@ HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="50" Grid.Colum
             </Button.Background>
         </Button>
         <!--Reihe 3, Spalte 2-4-->
-        <Button Content="3st 12"
-       HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="20" Grid.Row="5" Grid.ColumnSpan="5" Click="btn_3rd12"
-       FontSize="30" FontWeight="Bold" Margin="0,0,85,0">
+        <Button Content="3st 12" Height="50"
+       HorizontalContentAlignment="Center" VerticalAlignment="Center" Grid.Column="17" Grid.Row="5" Grid.ColumnSpan="7" Click="btn_3rd12" BorderBrush="DarkViolet" BorderThickness="1.5"
+       FontSize="30" FontWeight="Bold">
             <Button.Background>
                 <LinearGradientBrush StartPoint="0,0.5" EndPoint="1,0.5">
                     <GradientStop Color="SkyBlue" Offset="0.1"/>
@@ -731,7 +739,7 @@ HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="50" Grid.Colum
 
         <!--Reihe 5, Spalte 5-8-->
         <Button Content="19-36"
-       VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="6" Grid.Column="14" Grid.ColumnSpan="2" Click="btn_19_36"
+       VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="6" Grid.Column="14" Grid.ColumnSpan="2" Click="btn_19_36" 
        FontSize="30" FontWeight="Bold">
             <Button.Background>
                 <LinearGradientBrush StartPoint="0,0.5" EndPoint="1,0.5">

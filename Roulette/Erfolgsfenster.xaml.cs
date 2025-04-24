@@ -16,14 +16,13 @@ namespace Roulette
         {
             InitializeComponent();
             mw_ = mw;
-            Abbruch();
         }
 
         public void Abbruch()
         {
             string currentDirectory = System.IO.Directory.GetCurrentDirectory();
             string filePath = null;
-
+            mw_.Protokoll("VerlaufSpezifisch", "Beendet mit: ", mw_.guthabenPlayer_);
 
             if (mw_.guthabenPlayer_ > 1000) //Ursprungswert
             {

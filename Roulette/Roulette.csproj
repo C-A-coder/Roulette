@@ -18,6 +18,8 @@
     <None Remove="Audio\violin.m4a" />
     <None Remove="Bilder_Roulette\dunkelblau.png" />
     <None Remove="Bilder_Roulette\hellblau.png" />
+    <None Remove="Bilder_Roulette\laut.png" />
+    <None Remove="Bilder_Roulette\mute.png" />
     <None Remove="Bilder_Roulette\pink.png" />
     <None Remove="Bilder_Roulette\Rot.png" />
     <None Remove="Bilder_Roulette\Rotes_VierEck.png" />
@@ -47,11 +49,17 @@
     <Content Include="Audio\violin.m4a">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Bilder_Roulette\laut.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>
     <Resource Include="Bilder_Roulette\dunkelblau.png" />
     <Resource Include="Bilder_Roulette\hellblau.png" />
+    <Content Include="Bilder_Roulette\mute.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Resource Include="Bilder_Roulette\pink.png" />
     <Resource Include="Bilder_Roulette\Rot.png" />
     <Resource Include="Bilder_Roulette\Rotes_VierEck.png">
