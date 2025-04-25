@@ -7,7 +7,8 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="830" Width="1550" Background="#07734D"
         WindowStartupLocation="CenterScreen"
-        ResizeMode="NoResize">
+        ResizeMode="NoResize"
+        Icon="/Bilder_Roulette/icon_32x32.ico">
 
     <Grid>
         <Grid.ColumnDefinitions>

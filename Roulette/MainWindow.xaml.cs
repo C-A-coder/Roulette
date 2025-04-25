@@ -41,7 +41,7 @@ namespace Roulette
         bool checkFarbe = false;
         bool checkRot = false;
         public string pfad = null;
-        bool checkMusik = true;
+        bool checkMusik = false;
 
         Random rnd = new Random();
         MediaPlayer player = null;
