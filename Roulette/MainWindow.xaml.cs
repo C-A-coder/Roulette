@@ -281,6 +281,7 @@ namespace Roulette
             //zufallszahl = 1; //Testwert, um die Logik zu demonstrieren
             //Zufallszahl();
             bool zahlGetroffen = false;
+            int gerateneZahl = 0;
 
             //Speicherung von Max-Einsatz
             if (Einsatz_ > guthabenPlayerMax_)
@@ -290,22 +291,25 @@ namespace Roulette
 
             foreach (string zahlStr in zahlen)
             {
-                if (Int32.TryParse(zahlStr, out int gerateneZahl))
+                if (Int32.TryParse(zahlStr, out gerateneZahl))
                 {
                     if (gerateneZahl == zufallszahl_)
                     {
                         zahlGetroffen = true;
+                        Protokoll("VerlaufSpezifisch", "Ausgewählte Zahl: ", gerateneZahl);
                         break; // Sobald Zahl getroffen, Schleife verlassen
                     }
                     else if (checkFarbe == true)
                     {
                         zahlGetroffen = true;
+                        Protokoll("VerlaufSpezifisch", "Ausgewählt: Farbe", 0);
                         break;
                     }
                 }
                 else if (checkFarbe || zahlStr == "")//Farbe
                 {
                     zahlGetroffen = true;
+                    Protokoll("VerlaufSpezifisch", "Ausgewählte Zahl: Farbe", 0);
                 }
                 else
                 {
@@ -313,6 +317,8 @@ namespace Roulette
                     return;
                 }
             }
+
+            Protokoll("VerlaufSpezifisch", "Zufallszahl: ", zufallszahl_);
 
             if (zahlGetroffen)
             {
@@ -521,6 +527,7 @@ namespace Roulette
             {
                 lbl_Infofeld.Content = $"Nein! Zahl nicht getroffen: {zufallszahl_}";
                 Protokoll("VerlaufSpezifisch", "Verloren! Zufallszahl: ", zufallszahl_);
+                Protokoll("VerlaufSpezifisch", "Ausgewählte Zahl: ", gerateneZahl);
                 //guthabenPlayer_ -= Einsatz;
                 //guthabenBank += Einsatz;
                 checkFarbe = false;
