@@ -3,6 +3,7 @@ using System.Configuration;
 using System.Diagnostics;
 using System.IO;
 using System.Numerics;
+using System.Printing;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -11,12 +12,14 @@ using System.Windows.Media.Imaging;
 namespace Roulette
 {
     /// <summary>
-    /// 🌞testlauf
+    /// "Entscheidung" GPT fertig stellen || Prüfen
     /// </summary>
     public partial class MainWindow : Window
     {
 
         private int Einsatz_ = 0;
+        private int GesGewinn_ = 0;
+        private int GesEinsatz_ = 0;
         public double guthabenPlayer_ = 1000;
         double guthabenBank_ = 1000000;
         int zufallszahl_ = 0;
@@ -37,6 +40,7 @@ namespace Roulette
         string zahl11Str = "";
         string zahl12Str = "";
         string[] zahlen = new string[36];
+        Dictionary<string, int> auswahlZahlen = new Dictionary<string, int>(); //Dic, einmal menge "_" und Zahl(en) selber speichern
         int mengeUnderscore = 0;
         bool checkFarbe = false;
         bool checkRot = false;
@@ -50,7 +54,7 @@ namespace Roulette
         public MainWindow()
         {
             InitializeComponent();
-            txtb_guthaben.Text = guthabenPlayer_.ToString();
+
             StartMediaPlayer();
             erfolgsfenster = new Erfolgsfenster(this);
 
@@ -61,6 +65,8 @@ namespace Roulette
             pfad = Path.Combine(Environment.CurrentDirectory, "Geldfluss.txt");
             File.Delete(pfad);
             player.Volume = 0.2;
+            MessageBox.Show("Viel Spaß! Beachte, Einsatz wird NICHT zurückbezahlt, wenn investiert, aber auf KEINE ZAHl gesetzt wird.\nEbenfalls kann man bei mehreren Sätzen den Einsatz nur erhöhen - nicht niedriger als Erster Satz!");
+            Timer();
         }
 
         ////////// vereinen und entfernen durch bj
@@ -109,30 +115,12 @@ namespace Roulette
                 MessageBox.Show("Fehler beim Abspielen der Audiodatei: " + ex.Message);
             }
         }
-        //////////
-
-        //public int einsatz
-        //{
-        //    get { return Einsatz_; }
-        //    set
-        //    {
-        //        //Hier wird der Mindesteinsatz von 50 € festgelegt, nicht der Button!
-        //        if (value < 50)
-        //        {
-        //            lbl_Infofeld.Content=("Mindesteinsatz ist: 50 €");
-        //        }
-        //        else
-        //        {
-        //            Einsatz_ = value;
-        //        }
-        //    }
-        //}
 
         private async void Zufallszahl()
         {
             if (Einsatz_ <= 0)
             {
-                lbl_Infofeld.Content = ("Bitte zuerst Einsatz setzen!");
+                lbl_Infofeld.Content = ("Bitte Einsatz setzen!");
                 return;
             }
 
@@ -152,11 +140,40 @@ namespace Roulette
             // Generation finale Zufallszahl
             zufallszahl_ = rnd.Next(0, 37);
             lbl_Infofeld.Content = "Zufallszahl: " + zufallszahl_;
-            await Task.Delay(2500);
-            //zufallszahl_ = 25;
+            //await Task.Delay(5000);
+            zufallszahl_ = 2;
 
             Overlay.Visibility = Visibility.Hidden;
+
+
             Entscheidung();
+
+            //erst aufrufen, wenn (10 sek) alles gesetzt ist --> ev. eigene Methode: nach 10 sek wird aufgerufen bis spin, dann erneut...diese dann bei jedem Feld einfügen
+            foreach (string durchlaufZahlen in auswahlZahlen.Keys)
+            {
+                Debug.WriteLine(durchlaufZahlen);
+            }
+
+            auswahlZahlen.Clear();
+        }
+
+        private async void Timer()
+        {
+            while (true)
+            {
+                //Timer für 10 sek
+                for (int i = 10; i > 0; i--)
+                {
+                    lbl_Infofeld_Delay.Content = "Noch " + i + " Sekunden bis zum Spin!";
+                    await Task.Delay(1000);
+                }
+                lbl_Infofeld_Delay.Content = "Spin!";
+                Zufallszahl();
+                //Delay nach zufallszahl
+
+                //berechnet mit 25*Delay(1500) --> Zufallszahlsdauer zur Entscheidung
+                await Task.Delay(4000);
+            }
         }
 
         private void Pleite()
@@ -180,10 +197,11 @@ namespace Roulette
             else
             {
                 Einsatz_ += 1000;
+                GesEinsatz_ += 1000;
                 guthabenPlayer_ -= 1000;
                 guthabenBank_ += Einsatz_;
-                lbl_einsatz.Text = Einsatz_.ToString();
-                txtb_guthaben.Text = guthabenPlayer_.ToString();
+                lbl_einsatz.Text = GesEinsatz_.ToString(); txtb_guthaben.Text = guthabenPlayer_.ToString();
+
                 Protokoll("VerlaufSpezifisch", "Einsatz: ", Einsatz_);
             }
         }
@@ -198,10 +216,11 @@ namespace Roulette
             else
             {
                 Einsatz_ += 500;
+                GesEinsatz_ += 500;
                 guthabenPlayer_ -= 500;
                 guthabenBank_ += Einsatz_;
-                lbl_einsatz.Text = Einsatz_.ToString();
-                txtb_guthaben.Text = guthabenPlayer_.ToString();
+                lbl_einsatz.Text = GesEinsatz_.ToString(); txtb_guthaben.Text = guthabenPlayer_.ToString();
+
                 Protokoll("VerlaufSpezifisch", "Einsatz: ", Einsatz_);
             }
         }
@@ -215,10 +234,11 @@ namespace Roulette
             else
             {
                 Einsatz_ += 100;
+                GesEinsatz_ += 100;
                 guthabenPlayer_ -= 100;
                 guthabenBank_ += Einsatz_;
-                lbl_einsatz.Text = Einsatz_.ToString();
-                txtb_guthaben.Text = guthabenPlayer_.ToString();
+                lbl_einsatz.Text = GesEinsatz_.ToString(); txtb_guthaben.Text = guthabenPlayer_.ToString();
+
                 Protokoll("VerlaufSpezifisch", "Einsatz: ", Einsatz_);
             }
         }
@@ -231,57 +251,23 @@ namespace Roulette
             }
             else
             {
-                Einsatz_ += 50;
-                guthabenPlayer_ -= 50;
-                guthabenBank_ += Einsatz_;
-                lbl_einsatz.Text = Einsatz_.ToString();
-                txtb_guthaben.Text = guthabenPlayer_.ToString();
+                Einsatz_ = 50;
+                lbl_Infofeld.Content = $"Einsatzbetrag auf {Einsatz_} gesetzt.";
+                //Einsatz_ += 50;
+                //GesEinsatz_ += 50;
+                //guthabenPlayer_ -= 50;
+                //guthabenBank_ += Einsatz_;
+                //lbl_einsatz.Text = GesEinsatz_.ToString(); txtb_guthaben.Text = guthabenPlayer_.ToString();
+
                 Protokoll("VerlaufSpezifisch", "Einsatz: ", Einsatz_);
             }
         }
 
-        //private void Entscheidung() //Entscheidung treffen
-        //{
-        //    AuswahlZahl();
-
-        //    //Zahl treffen gibt 1:36
-        //    zufallszahl = 1;
-        //    if (Int32.TryParse(ratezahlStr, out ratezahl)) //Zahlen von 1-36 und falsche
-        //    {
-        //        if (ratezahl == zufallszahl)
-        //        {
-        //            lbl_Infofeld.Content = "Jackpot!!! Zahl getroffen. Auszahlung 1:36";
-        //            guthabenPlayer += einsatz * 36;
-        //            guthabenBank -= einsatz * 36;
-        //        }
-        //        else if (ratezahl != zufallszahl)
-        //        {
-        //            lbl_Infofeld.Content = "Falsch! Zahl nicht getroffen";
-        //            guthabenPlayer -= einsatz;
-        //            guthabenBank += einsatz;
-        //        }
-        //    }
-        //    else //prüfen für größerer Zahlen mit _
-        //    {
-        //        if (ratezahl == zufallszahl)//Wie komme ich zur richtigen Zahl?
-        //        {
-        //            lbl_Infofeld.Content = "Jackpot!!! Zahl getroffen. Auszahlung 1:36";
-        //            guthabenPlayer += einsatz * 36;
-        //            guthabenBank -= einsatz * 36;
-        //        }
-        //    }
-
-        //    Pleite();
-        //}
-
         private void Entscheidung()
         {
-            //AuswahlZahl();
-            //Zahl treffen gibt 1:36
-            //zufallszahl = 1; //Testwert, um die Logik zu demonstrieren
-            //Zufallszahl();
             bool zahlGetroffen = false;
             int gerateneZahl = 0;
+            int zaehler = 0;
 
             //Speicherung von Max-Einsatz
             if (Einsatz_ > guthabenPlayerMax_)
@@ -289,126 +275,251 @@ namespace Roulette
                 guthabenPlayerMax_ = Einsatz_;
             }
 
-            foreach (string zahlStr in zahlen)
+            foreach (string zahlStr in auswahlZahlen.Keys)
             {
-                if (Int32.TryParse(zahlStr, out gerateneZahl))
-                {
-                    if (gerateneZahl == zufallszahl_)
-                    {
-                        zahlGetroffen = true;
-                        Protokoll("VerlaufSpezifisch", "Ausgewählte Zahl: ", gerateneZahl);
-                        break; // Sobald Zahl getroffen, Schleife verlassen
-                    }
-                    else if (checkFarbe == true)
-                    {
-                        zahlGetroffen = true;
-                        Protokoll("VerlaufSpezifisch", "Ausgewählt: Farbe", 0);
-                        break;
-                    }
-                }
-                else if (checkFarbe || zahlStr == "")//Farbe
-                {
-                    zahlGetroffen = true;
-                    Protokoll("VerlaufSpezifisch", "Ausgewählte Zahl: Farbe", 0);
-                }
-                else
-                {
-                    lbl_Infofeld.Content = "Ungültige Eingabe: " + zahlStr;
-                    return;
-                }
-            }
+                // Prüfen, ob Eintrag mehrere Zahlen enthält
+                string[] einzelneZahlen = zahlStr.Split('_');
+                bool gruppenTreffer = false;
+                zaehler++;
 
-            Protokoll("VerlaufSpezifisch", "Zufallszahl: ", zufallszahl_);
-
-            if (zahlGetroffen)
-            {
-                if (mengeUnderscore == 1 && checkFarbe == false)
+                foreach (string einzelneZahl in einzelneZahlen)
                 {
-                    guthabenPlayer_ += Einsatz_ + Einsatz_ * 35;//inkl. Rückzahlung Einsatz
-                    guthabenBank_ -= Einsatz_ * 35;
-                    lbl_Infofeld.Content = $"Jackpot!!! Zahl getroffen. Auszahlung 1:35\n{Einsatz_ * 35}";
-                    Protokoll("VerlaufSpezifisch", "Gewonnen! +", Einsatz_*35);
-                }
-                else
-                {
-                    if (mengeUnderscore == 2 && !checkFarbe)
+                    if (Int32.TryParse(einzelneZahl, out gerateneZahl) && !checkFarbe)
                     {
-                        lbl_Infofeld.Content = $"Zahl getroffen! Auszahlung 1:17\n{Einsatz_ * 17}";
-                        Protokoll("VerlaufSpezifisch", "Gewonnen! +", Einsatz_ * 17);
-                        guthabenPlayer_ += Einsatz_ + Einsatz_ * 17;//inkl. Rückzahlung Einsatz
-                        guthabenBank_ -= Einsatz_ * 17;
-                    }
-                    else if (mengeUnderscore == 3 && !checkFarbe)
-                    {
-                        lbl_Infofeld.Content = $"Zahl getroffen! Auszahlung 1:11\n{Einsatz_ * 11}";
-                        Protokoll("VerlaufSpezifisch", "Gewonnen! +", Einsatz_ * 11);
-                        guthabenPlayer_ += Einsatz_ + Einsatz_ * 11;//inkl. Rückzahlung Einsatz
-                        guthabenBank_ -= Einsatz_ * 11;
-                    }
-                    else if (mengeUnderscore == 4 && !checkFarbe)
-                    {
-                        lbl_Infofeld.Content = $"Zahl getroffen! Auszahlung 1:8\n{Einsatz_ * 1}";
-                        Protokoll("VerlaufSpezifisch", "Gewonnen! +", Einsatz_ * 1);
-                        guthabenPlayer_ += Einsatz_ + Einsatz_ * 8;//inkl. Rückzahlung Einsatz
-                        guthabenBank_ -= Einsatz_ * 8;
-                    }
-                    else if (mengeUnderscore == 6 && !checkFarbe)
-                    {
-                        lbl_Infofeld.Content = $"Zahl getroffen! Auszahlung 1:5\n{Einsatz_ * 5}";
-                        Protokoll("VerlaufSpezifisch", "Gewonnen! +", Einsatz_ * 5);
-                        guthabenPlayer_ += Einsatz_ + Einsatz_ * 5;//inkl. Rückzahlung Einsatz
-                        guthabenBank_ -= Einsatz_ * 5;
-                    }
-                    else if (mengeUnderscore == 12 && checkFarbe == false)
-                    {
-                        lbl_Infofeld.Content = $"Zahl getroffen! Auszahlung 1:2\n{Einsatz_ * 2}";
-                        Protokoll("VerlaufSpezifisch", "Gewonnen! +", Einsatz_ * 2);
-                        guthabenPlayer_ += Einsatz_ + Einsatz_ * 2;//inkl. Rückzahlung Einsatz
-                        guthabenBank_ -= Einsatz_ * 2;
-                    }
-                    //else if (mengeUnderscore == 18 || (checkFarbe && checkRot))//+Farbe
-                    //{
-                    //    lbl_Infofeld.Content = $"Zahl oder Farbe getroffen! Auszahlung 1:1\n{Einsatz * 1}";
-                    //    guthabenPlayer += Einsatz * 1;
-                    //    guthabenBank -= Einsatz * 1;
-                    //    checkFarbe = false;
-                    //    checkRot = false;
-                    //}
-                    else if ((mengeUnderscore == 18 || mengeUnderscore == 19) && (!checkFarbe))//+Farbe+Un/Gerade
-                    {
-                        bool zahlGefunden = false;
-                        foreach (string zahlStr in zahlen)
+                        //Da unten bei Auswahl Zahl auf = 1 gesetzt wird
+                        if (gerateneZahl == zufallszahl_)
                         {
-                            if (int.TryParse(zahlStr, out int gewaehlteZahl) && gewaehlteZahl == zufallszahl_)
-                            {
-                                zahlGefunden = true;
-                                break;
-                            }
-                        }
+                            zahlGetroffen = true;
+                            Protokoll("VerlaufSpezifisch", "Ausgewählte Zahl: ", gerateneZahl);
+                            bool containsValue1 = auswahlZahlen.ContainsValue(1);
+                            bool containsValue2 = auswahlZahlen.ContainsValue(2);
+                            bool containsValue3 = auswahlZahlen.ContainsValue(3);
+                            bool containsValue4 = auswahlZahlen.ContainsValue(4);
+                            bool containsValue5 = auswahlZahlen.ContainsValue(5);
+                            bool containsValue6 = auswahlZahlen.ContainsValue(6);
+                            bool containsValue7 = auswahlZahlen.ContainsValue(7);
+                            bool containsValue8 = auswahlZahlen.ContainsValue(8);
+                            bool containsValue9 = auswahlZahlen.ContainsValue(9);
+                            bool containsValue10 = auswahlZahlen.ContainsValue(10);
+                            bool containsValue11 = auswahlZahlen.ContainsValue(11);
+                            bool containsValue12 = auswahlZahlen.ContainsValue(12);
 
-                        if (zahlGefunden && !checkFarbe)
-                        {
-                            switch (mengeUnderscore)
+                            if (containsValue1 && checkFarbe == false)
                             {
-                                case 19:
-                                    lbl_Infofeld.Content = $"Zahl getroffen! Auszahlung 1:1\n{Einsatz_ * 1}";
-                                    Protokoll("VerlaufSpezifisch", "Gewonnen! +", Einsatz_ * 1);
-                                    guthabenPlayer_ += Einsatz_ * 1;
-                                    guthabenBank_ -= Einsatz_ * 1;
-                                    Einsatz_ = 0;
-                                    lbl_einsatz.Text = Einsatz_.ToString(); // Einsatz zurücksetzen
-                                    txtb_guthaben.Text = guthabenPlayer_.ToString(); // Guthaben aktualisieren
-                                    return;
-                                case 18:
-                                    lbl_Infofeld.Content = $"Zahl getroffen! Auszahlung 1:1\n{Einsatz_ * 1}";
-                                    Protokoll("VerlaufSpezifisch", "Gewonnen! +", Einsatz_ * 1);
-                                    guthabenPlayer_ += Einsatz_ * 1;
-                                    guthabenBank_ -= Einsatz_ * 1;
-                                    Einsatz_ = 0;
-                                    lbl_einsatz.Text = Einsatz_.ToString(); // Einsatz zurücksetzen
-                                    txtb_guthaben.Text = guthabenPlayer_.ToString(); // Guthaben aktualisieren
-                                    return;
+                                lbl_Infofeld.Content = $"Jackpot!!! Zahl getroffen: {zufallszahl_} Auszahlung 1:35\n{Einsatz_ * 35}";
+                                Protokoll("VerlaufSpezifisch", "Gewonnen! +", Einsatz_ * 35);
+                                GesGewinn_ = GesEinsatz_;
+                                guthabenPlayer_ += GesEinsatz_ + GesGewinn_ * 35;//inkl. Rückzahlung Einsatz
+                                guthabenBank_ -= Einsatz_ * 35;
+                                containsValue1 = false;
+                                lbl_einsatz.Text = GesEinsatz_.ToString(); txtb_guthaben.Text = guthabenPlayer_.ToString(); // Einsatz zurücksetzen                                                                                          // Guthaben aktualisieren
                             }
+                            else if (mengeUnderscore == 2 && !checkFarbe)
+                            {
+                                lbl_Infofeld.Content = $"Zahl getroffen: {zufallszahl_} Auszahlung 1:17\n{Einsatz_ * 17}";
+                                Protokoll("VerlaufSpezifisch", "Gewonnen! +", Einsatz_ * 17);
+                                GesGewinn_ = GesEinsatz_;
+                                guthabenPlayer_ += GesEinsatz_ + GesGewinn_ * 17;//inkl. Rückzahlung Einsatz
+                                guthabenBank_ -= Einsatz_ * 17;
+                                containsValue2 = false;
+                                lbl_einsatz.Text = GesEinsatz_.ToString(); txtb_guthaben.Text = guthabenPlayer_.ToString(); // Einsatz zurücksetzen
+                                                                                                                            // Guthaben aktualisieren
+                            }
+                            else if (mengeUnderscore == 3 && !checkFarbe)
+                            {
+                                lbl_Infofeld.Content = $"Zahl getroffen: {zufallszahl_} Auszahlung 1:11\n{Einsatz_ * 11}";
+                                Protokoll("VerlaufSpezifisch", "Gewonnen! +", Einsatz_ * 11);
+                                GesGewinn_ = GesEinsatz_;
+                                guthabenPlayer_ += GesEinsatz_ + GesGewinn_ * 11;//inkl. Rückzahlung Einsatz
+                                guthabenBank_ -= Einsatz_ * 11;
+                                containsValue3 = false;
+                                lbl_einsatz.Text = GesEinsatz_.ToString(); txtb_guthaben.Text = guthabenPlayer_.ToString(); // Einsatz zurücksetzen
+                                                                                                                            // Guthaben aktualisieren
+                            }
+                            else if (mengeUnderscore == 4 && !checkFarbe)
+                            {
+                                lbl_Infofeld.Content = $"Zahl getroffen: {zufallszahl_} Auszahlung 1:8\n{Einsatz_ * 1}";
+                                Protokoll("VerlaufSpezifisch", "Gewonnen! +", Einsatz_ * 1);
+                                GesGewinn_ = GesEinsatz_;
+                                guthabenPlayer_ += GesEinsatz_ + GesGewinn_ * 1;//inkl. Rückzahlung Einsatz
+                                guthabenBank_ -= Einsatz_ * 1;
+                                containsValue4 = false;
+                                lbl_einsatz.Text = GesEinsatz_.ToString(); txtb_guthaben.Text = guthabenPlayer_.ToString(); // Einsatz zurücksetzen
+                                                                                                                            // Guthaben aktualisieren
+                            }
+                            else if (mengeUnderscore == 6 && !checkFarbe)
+                            {
+                                lbl_Infofeld.Content = $"Zahl getroffen: {zufallszahl_} Auszahlung 1:5\n{Einsatz_ * 5}";
+                                Protokoll("VerlaufSpezifisch", "Gewonnen! +", Einsatz_ * 5);
+                                GesGewinn_ = GesEinsatz_;
+                                guthabenPlayer_ += GesEinsatz_ + GesGewinn_ * 5;//inkl. Rückzahlung Einsatz
+                                guthabenBank_ -= Einsatz_ * 5;
+                                containsValue6 = false;
+                                lbl_einsatz.Text = GesEinsatz_.ToString(); txtb_guthaben.Text = guthabenPlayer_.ToString(); // Einsatz zurücksetzen
+                                                                                                                            // Guthaben aktualisieren
+                            }
+                            else if (containsValue12 && checkFarbe == false)
+                            {
+                                lbl_Infofeld.Content = $"Zahl getroffen: {zufallszahl_} Auszahlung 1:2\n{Einsatz_ * 2}";
+                                Protokoll("VerlaufSpezifisch", "Gewonnen! +", Einsatz_ * 2);
+                                GesGewinn_ = GesEinsatz_;
+                                guthabenPlayer_ += GesEinsatz_ + GesGewinn_;//inkl. Rückzahlung Einsatz
+                                guthabenBank_ -= Einsatz_ * 2;
+                                containsValue12 = false;
+                                lbl_einsatz.Text = GesEinsatz_.ToString(); txtb_guthaben.Text = guthabenPlayer_.ToString(); // Einsatz zurücksetzen
+                                                                                                                            // Guthaben aktualisieren
+                            }
+                            else if ((mengeUnderscore == 18 || mengeUnderscore == 19) && (!checkFarbe))//+Farbe+Un/Gerade
+                            {
+                                bool zahlGefunden = false;
+                                foreach (string zahlStr2 in zahlen)
+                                {
+                                    if (int.TryParse(zahlStr2, out int gewaehlteZahl) && gewaehlteZahl == zufallszahl_)
+                                    {
+                                        zahlGefunden = true;
+                                        break;
+                                    }
+                                }
+
+                                if (zahlGefunden && !checkFarbe)
+                                {
+                                    switch (mengeUnderscore)
+                                    {
+                                        case 19:
+                                            lbl_Infofeld.Content = $"Zahl getroffen: {zufallszahl_} Auszahlung 1:1\n{Einsatz_ * 1}";
+                                            Protokoll("VerlaufSpezifisch", "Gewonnen! +", Einsatz_ * 1);
+                                            GesGewinn_ = GesEinsatz_;
+                                            guthabenPlayer_ += GesEinsatz_ + GesGewinn_;//inkl. Rückzahlung Einsatz
+                                            guthabenBank_ -= Einsatz_ * 1;
+                                            Einsatz_ = 0;
+                                            lbl_einsatz.Text = GesEinsatz_.ToString(); txtb_guthaben.Text = guthabenPlayer_.ToString(); // Einsatz zurücksetzen
+                                                                                                                                        // Guthaben aktualisieren
+                                            return;
+                                        case 18:
+                                            lbl_Infofeld.Content = $"Zahl getroffen: {zufallszahl_} Auszahlung 1:1\n{Einsatz_ * 1}";
+                                            Protokoll("VerlaufSpezifisch", "Gewonnen! +", Einsatz_ * 1);
+                                            GesGewinn_ = GesEinsatz_;
+                                            guthabenPlayer_ += GesEinsatz_ + GesGewinn_;//inkl. Rückzahlung Einsatz
+                                            guthabenBank_ -= Einsatz_ * 1;
+                                            Einsatz_ = 0;
+                                            lbl_einsatz.Text = GesEinsatz_.ToString(); txtb_guthaben.Text = guthabenPlayer_.ToString(); // Einsatz zurücksetzen
+                                                                                                                                        // Guthaben aktualisieren
+                                            return;
+                                    }
+                                }
+                                else
+                                {
+                                    lbl_Infofeld.Content = $"Leider nicht getroffen.";
+                                    Protokoll("VerlaufSpezifisch", "Verloren! Zufallszahl: ", zufallszahl_);
+                                    //guthabenPlayer_ -= Einsatz_; wurde breits abgezogen bei btn_zahl
+                                    guthabenBank_ += Einsatz_;
+                                }
+                            }
+                            //else if (checkRot)
+                            //{
+                            //    switch (zufallszahl_)//rot
+                            //    {
+                            //        case 1:
+                            //        case 3:
+                            //        case 5:
+                            //        case 7:
+                            //        case 9:
+                            //        case 12:
+                            //        case 14:
+                            //        case 16:
+                            //        case 18:
+                            //        case 19:
+                            //        case 21:
+                            //        case 23:
+                            //        case 25:
+                            //        case 27:
+                            //        case 30:
+                            //        case 32:
+                            //        case 34:
+                            //        case 36:
+                            //            lbl_Infofeld.Content = $"Farbe getroffen! Auszahlung 1:1\n{Einsatz_ * 1}";
+                            //            Protokoll("VerlaufSpezifisch", "Gewonnen! Farbe: +", Einsatz_ * 1);
+                            //            guthabenPlayer_ += Einsatz_ * 2;
+                            //            guthabenBank_ -= Einsatz_ * 1; //inkl. Rückzahlung Einsatz
+                            //             // Guthaben aktualisieren
+                            //            Einsatz_ = 0;
+                            //                            lbl_einsatz.Text = GesEinsatz_.ToString();                 txtb_guthaben.Text = guthabenPlayer_.ToString(); // Einsatz zurücksetzen
+                            //            checkFarbe = false;
+                            //            checkRot = false;
+                            //            return;
+                            //        default:
+                            //            lbl_Infofeld.Content = "Nein! Farbe leider nicht getroffen";
+                            //            Protokoll("VerlaufSpezifisch", "Verloren! Zufallszahlfarbe: ", zufallszahl_);
+                            //            //guthabenPlayer_ -= Einsatz_ * 1;//Abzug Einsatz
+                            //             // Guthaben aktualisieren
+                            //            guthabenBank_ += Einsatz_ * 1;
+                            //            Einsatz_ = 0;
+                            //                            lbl_einsatz.Text = GesEinsatz_.ToString();                 txtb_guthaben.Text = guthabenPlayer_.ToString(); // Einsatz zurücksetzen
+                            //            checkFarbe = false;
+                            //            checkRot = false;
+                            //            return;
+                            //    }
+                            //}
+                            //else if (!checkRot)
+                            //{
+                            //    switch (zufallszahl_)//schwarz
+                            //    {
+                            //        case 2:
+                            //        case 4:
+                            //        case 6:
+                            //        case 8:
+                            //        case 10:
+                            //        case 11:
+                            //        case 13:
+                            //        case 15:
+                            //        case 17:
+                            //        case 20:
+                            //        case 22:
+                            //        case 24:
+                            //        case 26:
+                            //        case 28:
+                            //        case 29:
+                            //        case 31:
+                            //        case 33:
+                            //        case 35:
+                            //            lbl_Infofeld.Content = $"Farbe getroffen! Auszahlung 1:1\n{Einsatz_ * 1}";
+                            //            Protokoll("VerlaufSpezifisch", "Gewonnen! Farbe: +", Einsatz_ * 1);
+                            //            GesGewinn_ = GesEinsatz_;
+                            //            guthabenPlayer_ += GesEinsatz_ + GesGewinn_;//inkl. Rückzahlung Einsatz
+                            //            guthabenBank_ -= Einsatz_ * 1;
+                            //             // Guthaben aktualisieren
+                            //            Einsatz_ = 0;
+                            //                            lbl_einsatz.Text = GesEinsatz_.ToString();                 txtb_guthaben.Text = guthabenPlayer_.ToString(); // Einsatz zurücksetzen
+                            //            checkFarbe = false;
+                            //            checkRot = false;
+                            //            break;
+                            //        default:
+                            //            lbl_Infofeld.Content = "Nein! Farbe leider nicht getroffen";
+                            //            Protokoll("VerlaufSpezifisch", "Verloren! Zufallszahlfarbe: ", zufallszahl_);
+                            //            //guthabenPlayer_ -= Einsatz_ * 1;//Abzug Einsatz
+                            //             // Guthaben aktualisieren
+                            //            guthabenBank_ += GesEinsatz_;
+                            //            Einsatz_ = 0;
+                            //                            lbl_einsatz.Text = GesEinsatz_.ToString();                 txtb_guthaben.Text = guthabenPlayer_.ToString(); // Einsatz zurücksetzen
+                            //            checkFarbe = false;
+                            //            checkRot = false;
+                            //            break;
+
+                            //    }
+                            //}
+                            else
+                            {
+                                lbl_Infofeld.Content = $"Nein! Zahl nicht getroffen: {zufallszahl_}";
+                                Protokoll("VerlaufSpezifisch", "Verloren! Zufallszahl: ", zufallszahl_);
+                                //lbl_Infofeld.Content = "Nein! Farbe leider nicht getroffen";
+                                //guthabenPlayer_ -= Einsatz;
+                                //guthabenBank += Einsatz;
+                                checkFarbe = false;
+                                checkRot = false;
+                            }
+
+                            gruppenTreffer = true;
+                            break;
                         }
                         else
                         {
@@ -444,9 +555,9 @@ namespace Roulette
                                 Protokoll("VerlaufSpezifisch", "Gewonnen! Farbe: +", Einsatz_ * 1);
                                 guthabenPlayer_ += Einsatz_ * 2;
                                 guthabenBank_ -= Einsatz_ * 1; //inkl. Rückzahlung Einsatz
-                                txtb_guthaben.Text = guthabenPlayer_.ToString(); // Guthaben aktualisieren
+                                                               // Guthaben aktualisieren
                                 Einsatz_ = 0;
-                                lbl_einsatz.Text = Einsatz_.ToString(); // Einsatz zurücksetzen
+                                lbl_einsatz.Text = GesEinsatz_.ToString(); txtb_guthaben.Text = guthabenPlayer_.ToString(); // Einsatz zurücksetzen
                                 checkFarbe = false;
                                 checkRot = false;
                                 return;
@@ -454,10 +565,12 @@ namespace Roulette
                                 lbl_Infofeld.Content = "Nein! Farbe leider nicht getroffen";
                                 Protokoll("VerlaufSpezifisch", "Verloren! Zufallszahlfarbe: ", zufallszahl_);
                                 //guthabenPlayer_ -= Einsatz_ * 1;//Abzug Einsatz
-                                txtb_guthaben.Text = guthabenPlayer_.ToString(); // Guthaben aktualisieren
+                                GesGewinn_ = 0;
+                                GesEinsatz_ = 0;
+                                // Guthaben aktualisieren
                                 guthabenBank_ += Einsatz_ * 1;
                                 Einsatz_ = 0;
-                                lbl_einsatz.Text = Einsatz_.ToString(); // Einsatz zurücksetzen
+                                lbl_einsatz.Text = GesEinsatz_.ToString(); txtb_guthaben.Text = guthabenPlayer_.ToString(); // Einsatz zurücksetzen
                                 checkFarbe = false;
                                 checkRot = false;
                                 return;
@@ -487,11 +600,14 @@ namespace Roulette
                             case 35:
                                 lbl_Infofeld.Content = $"Farbe getroffen! Auszahlung 1:1\n{Einsatz_ * 1}";
                                 Protokoll("VerlaufSpezifisch", "Gewonnen! Farbe: +", Einsatz_ * 1);
-                                guthabenPlayer_ += Einsatz_ * 2;//inkl. Rückzahlung Einsatz
-                                txtb_guthaben.Text = guthabenPlayer_.ToString(); // Guthaben aktualisieren
+                                GesGewinn_ = GesEinsatz_;
+                                guthabenPlayer_ += GesEinsatz_ + GesGewinn_;//inkl. Rückzahlung Einsatz
                                 guthabenBank_ -= Einsatz_ * 1;
+                                GesGewinn_ = 0;
+                                GesEinsatz_ = 0;
+                                // Guthaben aktualisieren
                                 Einsatz_ = 0;
-                                lbl_einsatz.Text = Einsatz_.ToString(); // Einsatz zurücksetzen
+                                lbl_einsatz.Text = GesEinsatz_.ToString(); txtb_guthaben.Text = guthabenPlayer_.ToString(); // Einsatz zurücksetzen
                                 checkFarbe = false;
                                 checkRot = false;
                                 break;
@@ -499,10 +615,12 @@ namespace Roulette
                                 lbl_Infofeld.Content = "Nein! Farbe leider nicht getroffen";
                                 Protokoll("VerlaufSpezifisch", "Verloren! Zufallszahlfarbe: ", zufallszahl_);
                                 //guthabenPlayer_ -= Einsatz_ * 1;//Abzug Einsatz
-                                txtb_guthaben.Text = guthabenPlayer_.ToString(); // Guthaben aktualisieren
-                                guthabenBank_ += Einsatz_ * 1;
+                                GesGewinn_ = 0;
+                                GesEinsatz_ = 0;
+                                // Guthaben aktualisieren
+                                guthabenBank_ += GesEinsatz_;
                                 Einsatz_ = 0;
-                                lbl_einsatz.Text = Einsatz_.ToString(); // Einsatz zurücksetzen
+                                lbl_einsatz.Text = GesEinsatz_.ToString(); txtb_guthaben.Text = guthabenPlayer_.ToString(); // Einsatz zurücksetzen
                                 checkFarbe = false;
                                 checkRot = false;
                                 break;
@@ -511,53 +629,34 @@ namespace Roulette
                     }
                     else
                     {
-                        lbl_Infofeld.Content = $"Nein! Zahl nicht getroffen: {zufallszahl_}";
-                        Protokoll("VerlaufSpezifisch", "Verloren! Zufallszahl: ", zufallszahl_);
-                        //lbl_Infofeld.Content = "Nein! Farbe leider nicht getroffen";
-                        //guthabenPlayer_ -= Einsatz;
-                        //guthabenBank += Einsatz;
-                        checkFarbe = false;
-                        checkRot = false;
+                        lbl_Infofeld.Content = "Unbehandelter Fall: " + einzelneZahl;
+                        return;
                     }
                 }
 
-                //Zufallszahl(); // Neue Zufallszahl für die nächste Runde generieren
-            }
-            else
-            {
-                lbl_Infofeld.Content = $"Nein! Zahl nicht getroffen: {zufallszahl_}";
-                Protokoll("VerlaufSpezifisch", "Verloren! Zufallszahl: ", zufallszahl_);
-                Protokoll("VerlaufSpezifisch", "Ausgewählte Zahl: ", gerateneZahl);
-                //guthabenPlayer_ -= Einsatz;
-                //guthabenBank += Einsatz;
-                checkFarbe = false;
-                checkRot = false;
+                if (!gruppenTreffer)
+                {
+                    Protokoll("VerlaufSpezifisch", "Kein Treffer in Gruppe: ", 0);
+                }
             }
 
-            txtb_guthaben.Text = guthabenPlayer_.ToString(); // Guthaben aktualisieren
+            Protokoll("VerlaufSpezifisch", "Zufallszahl: ", zufallszahl_);
+
+            // Guthaben aktualisieren
             lbl_einsatz.Text = "0"; // Einsatz zurücksetzen
+
+            //gewinne & Einsätze zurücksetzten
+            GesGewinn_ = 0;
+            GesEinsatz_ = 0;
+
             Einsatz_ = 0;
             Pleite();
         }
 
-        //private async void btn_runde_Click(object sender, RoutedEventArgs e)
-        //{
-        //    if(Einsatz <= 0)
-        //    {
-        //        lbl_Infofeld.Content=("Bitte zuerst Einsatz setzen!");
-        //        return;
-        //    }
-        //    //Spannung aufbauen, durch versch. Zahl darstellen
-        //    for (int i = 0; i < 25; i++)
-        //    {
-        //        Zufallszahl();
-        //        await Task.Delay(150);
-        //    }
-        //}
-
         //Ausgewählte Zahl
-        private void AuswahlZahl() //Ki Geschrieben
+        private void AuswahlZahl()
         {
+            //Teilt die EIngaben nach _ und "Zählt"
             zahlen = ratezahlStr_.Split('_');
             mengeUnderscore = 1;
 
@@ -728,221 +827,326 @@ namespace Roulette
         //    }
         //}
 
+        private void Test()
+        {
+            if (Einsatz_ <= 0)
+            {
+                lbl_Infofeld.Content = "Bitte zuerst einen Einsatzbetrag wählen!";
+                return;
+            }
+
+            if (guthabenPlayer_ < Einsatz_)
+            {
+                lbl_Infofeld.Content = "Nicht ausreichend Guthaben für mehr Einsatz auf disem Niveau!";
+                return;
+            }
+
+            GesEinsatz_ += Einsatz_;
+            guthabenPlayer_ -= Einsatz_;
+            guthabenBank_ += Einsatz_;
+            lbl_einsatz.Text = GesEinsatz_.ToString();
+            txtb_guthaben.Text = guthabenPlayer_.ToString();
+
+            //doppelte vermeiden
+            if (auswahlZahlen.ContainsKey(ratezahlStr_))
+            {
+                mengeUnderscore = 1;
+                lbl_einsatz.Text = GesEinsatz_.ToString(); txtb_guthaben.Text = guthabenPlayer_.ToString();
+                Protokoll("VerlaufSpezifisch", "Einsatz: ", Einsatz_);
+            }
+            else
+            {
+                auswahlZahlen.Add(ratezahlStr_, mengeUnderscore);
+            }
+        }
+
         private void btn_1_Click(object sender, RoutedEventArgs e)
         {
             ratezahlStr_ = "1";
             AuswahlZahl();
-            Zufallszahl();
+
+
+            Test();
         }
 
         private void btn_2_Click(object sender, RoutedEventArgs e)
         {
             ratezahlStr_ = "2";
-            AuswahlZahl(); Zufallszahl();
+            AuswahlZahl();
+
+            Test();
         }
 
         private void btn_3_Click(object sender, RoutedEventArgs e)
         {
             ratezahlStr_ = "3";
-            AuswahlZahl(); Zufallszahl();
+            AuswahlZahl();
+
+            Test();
         }
 
         private void btn_4_Click(object sender, RoutedEventArgs e)
         {
             ratezahlStr_ = "4";
-            AuswahlZahl(); Zufallszahl();
+            AuswahlZahl();
+
+            Test();
         }
 
         private void btn_5_Click(object sender, RoutedEventArgs e)
         {
             ratezahlStr_ = "5";
-            AuswahlZahl(); Zufallszahl();
+            AuswahlZahl();
+
+            Test();
         }
 
         private void btn_6_Click(object sender, RoutedEventArgs e)
         {
             ratezahlStr_ = "6";
-            AuswahlZahl(); Zufallszahl();
+            AuswahlZahl();
+
+            Test();
         }
 
         private void btn_7_Click(object sender, RoutedEventArgs e)
         {
             ratezahlStr_ = "7";
-            AuswahlZahl(); Zufallszahl();
+            AuswahlZahl();
+
+            Test();
         }
 
         private void btn_8_Click(object sender, RoutedEventArgs e)
         {
             ratezahlStr_ = "8";
-            AuswahlZahl(); Zufallszahl();
+            AuswahlZahl();
+
+            Test();
         }
 
         private void btn_9_Click(object sender, RoutedEventArgs e)
         {
             ratezahlStr_ = "9";
-            AuswahlZahl(); Zufallszahl();
+            AuswahlZahl();
+
+            Test();
         }
 
         private void btn_10_Click(object sender, RoutedEventArgs e)
         {
             ratezahlStr_ = "10";
-            AuswahlZahl(); Zufallszahl();
+            AuswahlZahl();
+
+            Test();
         }
 
         private void btn_11_Click(object sender, RoutedEventArgs e)
         {
             ratezahlStr_ = "11";
-            AuswahlZahl(); Zufallszahl();
+            AuswahlZahl();
+
+            Test();
         }
 
         private void btn_12_Click(object sender, RoutedEventArgs e)
         {
             ratezahlStr_ = "12";
-            AuswahlZahl(); Zufallszahl();
+            AuswahlZahl();
+
+            Test();
         }
 
         private void btn_13_Click(object sender, RoutedEventArgs e)
         {
             ratezahlStr_ = "13";
-            AuswahlZahl(); Zufallszahl();
+            AuswahlZahl();
+
+            Test();
         }
 
         private void btn_14_Click(object sender, RoutedEventArgs e)
         {
             ratezahlStr_ = "14";
-            AuswahlZahl(); Zufallszahl();
+            AuswahlZahl();
+
+            Test();
         }
 
         private void btn_15_Click(object sender, RoutedEventArgs e)
         {
             ratezahlStr_ = "15";
-            AuswahlZahl(); Zufallszahl();
+            AuswahlZahl();
+
+            Test();
         }
 
         private void btn_16_Click(object sender, RoutedEventArgs e)
         {
             ratezahlStr_ = "16";
-            AuswahlZahl(); Zufallszahl();
+            AuswahlZahl();
+
+            Test();
         }
 
         private void btn_17_Click(object sender, RoutedEventArgs e)
         {
             ratezahlStr_ = "17";
-            AuswahlZahl(); Zufallszahl();
+            AuswahlZahl();
+
+            Test();
         }
 
         private void btn_18_Click(object sender, RoutedEventArgs e)
         {
             ratezahlStr_ = "18";
-            AuswahlZahl(); Zufallszahl();
+            AuswahlZahl();
+
+            Test();
         }
 
         private void btn_19_Click(object sender, RoutedEventArgs e)
         {
             ratezahlStr_ = "19";
-            AuswahlZahl(); Zufallszahl();
+            AuswahlZahl();
+
+            Test();
         }
 
         private void btn_20_Click(object sender, RoutedEventArgs e)
         {
             ratezahlStr_ = "20";
-            AuswahlZahl(); Zufallszahl();
+            AuswahlZahl();
+
+            Test();
         }
 
         private void btn_21_Click(object sender, RoutedEventArgs e)
         {
             ratezahlStr_ = "21";
-            AuswahlZahl(); Zufallszahl();
+            AuswahlZahl();
+
+            Test();
         }
 
         private void btn_22_Click(object sender, RoutedEventArgs e)
         {
             ratezahlStr_ = "22";
-            AuswahlZahl(); Zufallszahl();
+            AuswahlZahl();
+
+            Test();
         }
 
         private void btn_23_Click(object sender, RoutedEventArgs e)
         {
             ratezahlStr_ = "23";
-            AuswahlZahl(); Zufallszahl();
+            AuswahlZahl();
+
+            Test();
         }
 
         private void btn_24_Click(object sender, RoutedEventArgs e)
         {
             ratezahlStr_ = "24";
-            AuswahlZahl(); Zufallszahl();
+            AuswahlZahl();
+
+            Test();
         }
 
         private void btn_25_Click(object sender, RoutedEventArgs e)
         {
             ratezahlStr_ = "25";
-            AuswahlZahl(); Zufallszahl();
+            AuswahlZahl();
+
+            Test();
         }
 
         private void btn_26_Click(object sender, RoutedEventArgs e)
         {
             ratezahlStr_ = "26";
-            AuswahlZahl(); Zufallszahl();
+            AuswahlZahl();
+
+            Test();
         }
 
         private void btn_27_Click(object sender, RoutedEventArgs e)
         {
             ratezahlStr_ = "27";
-            AuswahlZahl(); Zufallszahl();
+            AuswahlZahl();
+
+            Test();
         }
 
         private void btn_28_Click(object sender, RoutedEventArgs e)
         {
             ratezahlStr_ = "28";
-            AuswahlZahl(); Zufallszahl();
+            AuswahlZahl();
+
+            Test();
         }
 
         private void btn_29_Click(object sender, RoutedEventArgs e)
         {
             ratezahlStr_ = "29";
-            AuswahlZahl(); Zufallszahl();
+            AuswahlZahl();
+
+            Test();
         }
 
         private void btn_30_Click(object sender, RoutedEventArgs e)
         {
             ratezahlStr_ = "30";
-            AuswahlZahl(); Zufallszahl();
+            AuswahlZahl();
+
+            Test();
         }
 
         private void btn_31_Click(object sender, RoutedEventArgs e)
         {
             ratezahlStr_ = "31";
-            AuswahlZahl(); Zufallszahl();
+            AuswahlZahl();
+
+            Test();
         }
 
         private void btn_32_Click(object sender, RoutedEventArgs e)
         {
             ratezahlStr_ = "32";
-            AuswahlZahl(); Zufallszahl();
+            AuswahlZahl();
+
+            Test();
         }
 
         private void btn_33_Click(object sender, RoutedEventArgs e)
         {
             ratezahlStr_ = "33";
-            AuswahlZahl(); Zufallszahl();
+            AuswahlZahl();
+
+            Test();
         }
 
         private void btn_34_Click(object sender, RoutedEventArgs e)
         {
             ratezahlStr_ = "34";
-            AuswahlZahl(); Zufallszahl();
+            AuswahlZahl();
+
+            Test();
         }
 
         private void btn_35_Click(object sender, RoutedEventArgs e)
         {
             ratezahlStr_ = "35";
-            AuswahlZahl(); Zufallszahl();
+            AuswahlZahl();
+
+            Test();
         }
 
         private void btn_36_Click(object sender, RoutedEventArgs e)
         {
             ratezahlStr_ = "36";
-            AuswahlZahl(); Zufallszahl();
+            AuswahlZahl();
+
+            Test();
         }
 
         //--
@@ -952,633 +1156,888 @@ namespace Roulette
         private void btn_34_35_Click(object sender, RoutedEventArgs e)
         {
             ratezahlStr_ = "34_35";
-            AuswahlZahl(); Zufallszahl();
+            AuswahlZahl();
+
+            Test();
         }
 
         private void btn_35_36_Click(object sender, RoutedEventArgs e)
         {
             ratezahlStr_ = "35_36";
-            AuswahlZahl(); Zufallszahl();
+            AuswahlZahl();//doppelte vermeiden
+
+            Test();
         }
 
         private void btn_31_32_Click(object sender, RoutedEventArgs e)
         {
             ratezahlStr_ = "31_32";
-            AuswahlZahl(); Zufallszahl();
+            AuswahlZahl();//doppelte vermeiden
+
+            Test();
         }
 
         private void btn_32_33_Click(object sender, RoutedEventArgs e)
         {
             ratezahlStr_ = "32_33";
-            AuswahlZahl(); Zufallszahl();
+            AuswahlZahl();//doppelte vermeiden
+
+            Test();
         }
 
         private void btn_31_32_34_35_Click(object sender, RoutedEventArgs e)
         {
             ratezahlStr_ = "31_32_34_35";
-            AuswahlZahl(); Zufallszahl();
+            AuswahlZahl();//doppelte vermeiden
+
+            Test();
         }
 
         private void btn_32_33_35_36_Click(object sender, RoutedEventArgs e)
         {
             ratezahlStr_ = "32_33_35_36";
-            AuswahlZahl(); Zufallszahl();
+            AuswahlZahl();//doppelte vermeiden
+
+            Test();
         }
 
         private void btn_31_34_Click(object sender, RoutedEventArgs e)
         {
             ratezahlStr_ = "31_34";
-            AuswahlZahl(); Zufallszahl();
+            AuswahlZahl();//doppelte vermeiden
+
+            Test();
         }
 
         private void btn_32_35_Click(object sender, RoutedEventArgs e)
         {
             ratezahlStr_ = "32_35";
-            AuswahlZahl(); Zufallszahl();
+            AuswahlZahl();//doppelte vermeiden
+
+            Test();
         }
 
         private void btn_33_36_Click(object sender, RoutedEventArgs e)
         {
             ratezahlStr_ = "33_36";
-            AuswahlZahl(); Zufallszahl();
+            AuswahlZahl();//doppelte vermeiden
+
+            Test();
         }
 
         private void btn_28_29_Click(object sender, RoutedEventArgs e)
         {
             ratezahlStr_ = "28_29";
-            AuswahlZahl(); Zufallszahl();
+            AuswahlZahl();//doppelte vermeiden
+
+            Test();
         }
 
         private void btn_29_30_Click(object sender, RoutedEventArgs e)
         {
             ratezahlStr_ = "29_30";
-            AuswahlZahl(); Zufallszahl();
+            AuswahlZahl();//doppelte vermeiden
+
+            Test();
         }
 
         private void btn_28_29_31_32_Click(object sender, RoutedEventArgs e)
         {
             ratezahlStr_ = "28_29_31_32";
-            AuswahlZahl(); Zufallszahl();
+            AuswahlZahl();//doppelte vermeiden
+
+            Test();
         }
 
         private void btn_29_30_32_33_Click(object sender, RoutedEventArgs e)
         {
             ratezahlStr_ = "29_30_32_33";
-            AuswahlZahl(); Zufallszahl();
+            AuswahlZahl();//doppelte vermeiden
+
+            Test();
         }
 
         private void btn_28_31_Click(object sender, RoutedEventArgs e)
         {
             ratezahlStr_ = "28_31";
-            AuswahlZahl(); Zufallszahl();
+            AuswahlZahl();//doppelte vermeiden
+
+            Test();
         }
 
         private void btn_29_32_Click(object sender, RoutedEventArgs e)
         {
             ratezahlStr_ = "29_32";
-            AuswahlZahl(); Zufallszahl();
+            AuswahlZahl();//doppelte vermeiden
+
+            Test();
         }
 
         private void btn_30_33_Click(object sender, RoutedEventArgs e)
         {
             ratezahlStr_ = "30_33";
-            AuswahlZahl(); Zufallszahl();
+            AuswahlZahl();//doppelte vermeiden
+
+            Test();
         }
 
         private void btn_25_26_Click(object sender, RoutedEventArgs e)
         {
             ratezahlStr_ = "25_26";
-            AuswahlZahl(); Zufallszahl();
+            AuswahlZahl();//doppelte vermeiden
+
+            Test();
         }
 
         private void btn_26_27_Click(object sender, RoutedEventArgs e)
         {
             ratezahlStr_ = "26_27";
-            AuswahlZahl(); Zufallszahl();
+            AuswahlZahl();//doppelte vermeiden
+
+            Test();
         }
 
         private void btn_25_26_28_29_Click(object sender, RoutedEventArgs e)
         {
             ratezahlStr_ = "25_26_28_29";
-            AuswahlZahl(); Zufallszahl();
+            AuswahlZahl();//doppelte vermeiden
+
+            Test();
         }
 
         private void btn_26_27_29_30_Click(object sender, RoutedEventArgs e)
         {
             ratezahlStr_ = "26_27_29_30";
-            AuswahlZahl(); Zufallszahl();
+            AuswahlZahl();//doppelte vermeiden
+
+            Test();
         }
 
         private void btn_25_28_Click(object sender, RoutedEventArgs e)
         {
             ratezahlStr_ = "25_28";
-            AuswahlZahl(); Zufallszahl();
+            AuswahlZahl();//doppelte vermeiden
+
+            Test();
         }
 
         private void btn_26_29_Click(object sender, RoutedEventArgs e)
         {
             ratezahlStr_ = "26_29";
-            AuswahlZahl(); Zufallszahl();
+            AuswahlZahl();//doppelte vermeiden
+
+            Test();
         }
 
         private void btn_27_30_Click(object sender, RoutedEventArgs e)
         {
             ratezahlStr_ = "27_30";
-            AuswahlZahl(); Zufallszahl();
+            AuswahlZahl();//doppelte vermeiden
+
+            Test();
         }
 
         private void btn_22_23_Click(object sender, RoutedEventArgs e)
         {
             ratezahlStr_ = "22_23";
-            AuswahlZahl(); Zufallszahl();
+            AuswahlZahl();//doppelte vermeiden
+
+            Test();
         }
 
         private void btn_23_24_Click(object sender, RoutedEventArgs e)
         {
             ratezahlStr_ = "23_24";
-            AuswahlZahl(); Zufallszahl();
+            AuswahlZahl();//doppelte vermeiden
+
+            Test();
         }
 
         private void btn_22_23_25_26_Click(object sender, RoutedEventArgs e)
         {
             ratezahlStr_ = "22_23_25_26";
-            AuswahlZahl(); Zufallszahl();
+            AuswahlZahl();//doppelte vermeiden
+
+            Test();
         }
 
         private void btn_23_24_26_27_Click(object sender, RoutedEventArgs e)
         {
             ratezahlStr_ = "23_24_26_27";
-            AuswahlZahl(); Zufallszahl();
+            AuswahlZahl();//doppelte vermeiden
+
+            Test();
         }
 
         private void btn_22_25_Click(object sender, RoutedEventArgs e)
         {
             ratezahlStr_ = "22_25";
-            AuswahlZahl(); Zufallszahl();
+            AuswahlZahl();//doppelte vermeiden
+
+            Test();
         }
 
         private void btn_23_26_Click(object sender, RoutedEventArgs e)
         {
             ratezahlStr_ = "23_26";
-            AuswahlZahl(); Zufallszahl();
+            AuswahlZahl();//doppelte vermeiden
+
+            Test();
         }
 
         private void btn_24_27_Click(object sender, RoutedEventArgs e)
         {
             ratezahlStr_ = "24_27";
-            AuswahlZahl(); Zufallszahl();
+            AuswahlZahl();//doppelte vermeiden
+
+            Test();
         }
 
         private void btn_19_20_Click(object sender, RoutedEventArgs e)
         {
             ratezahlStr_ = "19_20";
-            AuswahlZahl(); Zufallszahl();
+            AuswahlZahl();//doppelte vermeiden
+
+            Test();
         }
 
         private void btn_20_21_Click(object sender, RoutedEventArgs e)
         {
             ratezahlStr_ = "20_21";
-            AuswahlZahl(); Zufallszahl();
+            AuswahlZahl();//doppelte vermeiden
+
+            Test();
         }
 
         private void btn_19_20_22_23_Click(object sender, RoutedEventArgs e)
         {
             ratezahlStr_ = "19_20_22_23";
-            AuswahlZahl(); Zufallszahl();
+            AuswahlZahl();//doppelte vermeiden
+
+            Test();
         }
 
         private void btn_20_21_23_24_Click(object sender, RoutedEventArgs e)
         {
             ratezahlStr_ = "20_21_23_24";
-            AuswahlZahl(); Zufallszahl();
+            AuswahlZahl();//doppelte vermeiden
+
+            Test();
         }
 
         private void btn_19_22_Click(object sender, RoutedEventArgs e)
         {
             ratezahlStr_ = "19_22";
-            AuswahlZahl(); Zufallszahl();
+            AuswahlZahl();//doppelte vermeiden
+
+            Test();
         }
 
         private void btn_20_23_Click(object sender, RoutedEventArgs e)
         {
             ratezahlStr_ = "20_23";
-            AuswahlZahl(); Zufallszahl();
+            AuswahlZahl();//doppelte vermeiden
+
+            Test();
         }
 
         private void btn_21_24_Click(object sender, RoutedEventArgs e)
         {
             ratezahlStr_ = "21_24";
-            AuswahlZahl(); Zufallszahl();
+            AuswahlZahl();//doppelte vermeiden
+
+            Test();
         }
 
         private void btn_16_17_Click(object sender, RoutedEventArgs e)
         {
             ratezahlStr_ = "16_17";
-            AuswahlZahl(); Zufallszahl();
+            AuswahlZahl();//doppelte vermeiden
+
+            Test();
         }
 
         private void btn_17_18_Click(object sender, RoutedEventArgs e)
         {
             ratezahlStr_ = "17_18";
-            AuswahlZahl(); Zufallszahl();
+
+            Test();
         }
 
         private void btn_16_17_19_20_Click(object sender, RoutedEventArgs e)
         {
             ratezahlStr_ = "16_17_19_20";
-            AuswahlZahl(); Zufallszahl();
+            AuswahlZahl();//doppelte vermeiden
+
+            Test();
         }
 
         private void btn_17_18_20_21_Click(object sender, RoutedEventArgs e)
         {
             ratezahlStr_ = "17_18_20_21";
-            AuswahlZahl(); Zufallszahl();
+            AuswahlZahl();//doppelte vermeiden
+
+            Test();
         }
 
         private void btn_16_19_Click(object sender, RoutedEventArgs e)
         {
             ratezahlStr_ = "16_19";
-            AuswahlZahl(); Zufallszahl();
+            AuswahlZahl();//doppelte vermeiden
+
+            Test();
         }
 
         private void btn_17_20_Click(object sender, RoutedEventArgs e)
         {
             ratezahlStr_ = "17_20";
-            AuswahlZahl(); Zufallszahl();
+            AuswahlZahl();//doppelte vermeiden
+
+            Test();
         }
 
         private void btn_18_21_Click(object sender, RoutedEventArgs e)
         {
             ratezahlStr_ = "18_21";
-            AuswahlZahl(); Zufallszahl();
+            AuswahlZahl();//doppelte vermeiden
+
+            Test();
         }
 
         private void btn_13_14_Click(object sender, RoutedEventArgs e)
         {
             ratezahlStr_ = "13_14";
-            AuswahlZahl(); Zufallszahl();
+            AuswahlZahl();//doppelte vermeiden
+
+            Test();
         }
 
         private void btn_14_15_Click(object sender, RoutedEventArgs e)
         {
             ratezahlStr_ = "14_15";
-            AuswahlZahl(); Zufallszahl();
+            AuswahlZahl();//doppelte vermeiden
+
+            Test();
         }
 
         private void btn_13_14_16_17_Click(object sender, RoutedEventArgs e)
         {
             ratezahlStr_ = "13_14_16_17";
-            AuswahlZahl(); Zufallszahl();
+            AuswahlZahl();//doppelte vermeiden
+
+            Test();
         }
 
         private void btn_14_15_17_18_Click(object sender, RoutedEventArgs e)
         {
             ratezahlStr_ = "14_15_17_18";
-            AuswahlZahl(); Zufallszahl();
+            AuswahlZahl();//doppelte vermeiden
+
+            Test();
         }
 
         private void btn_13_16_Click(object sender, RoutedEventArgs e)
         {
             ratezahlStr_ = "13_16";
-            AuswahlZahl(); Zufallszahl();
+            AuswahlZahl();//doppelte vermeiden
+
+            Test();
         }
 
         private void btn_14_17_Click(object sender, RoutedEventArgs e)
         {
             ratezahlStr_ = "14_17";
-            AuswahlZahl(); Zufallszahl();
+            AuswahlZahl();//doppelte vermeiden
+
+            Test();
         }
 
         private void btn_15_18_Click(object sender, RoutedEventArgs e)
         {
             ratezahlStr_ = "15_18";
-            AuswahlZahl(); Zufallszahl();
+            AuswahlZahl();//doppelte vermeiden
+
+            Test();
         }
 
         private void btn_10_11_Click(object sender, RoutedEventArgs e)
         {
             ratezahlStr_ = "10_11";
-            AuswahlZahl(); Zufallszahl();
+            AuswahlZahl();//doppelte vermeiden
+
+            Test();
         }
 
         private void btn_11_12_Click(object sender, RoutedEventArgs e)
         {
             ratezahlStr_ = "11_12";
-            AuswahlZahl(); Zufallszahl();
+            AuswahlZahl();//doppelte vermeiden
+
+            Test();
         }
 
         private void btn_10_11_13_14_Click(object sender, RoutedEventArgs e)
         {
             ratezahlStr_ = "10_11_13_14";
-            AuswahlZahl(); Zufallszahl();
+            AuswahlZahl();//doppelte vermeiden
+
+            Test();
         }
 
         private void btn_11_12_14_15_Click(object sender, RoutedEventArgs e)
         {
             ratezahlStr_ = "11_12_14_15";
-            AuswahlZahl(); Zufallszahl();
+            AuswahlZahl();//doppelte vermeiden
+
+            Test();
         }
 
         private void btn_10_13_Click(object sender, RoutedEventArgs e)
         {
             ratezahlStr_ = "10_13";
-            AuswahlZahl(); Zufallszahl();
+            AuswahlZahl();//doppelte vermeiden
+
+            Test();
         }
 
         private void btn_11_14_Click(object sender, RoutedEventArgs e)
         {
             ratezahlStr_ = "11_14";
-            AuswahlZahl(); Zufallszahl();
+            AuswahlZahl();//doppelte vermeiden
+
+            Test();
         }
 
         private void btn_12_15_Click(object sender, RoutedEventArgs e)
         {
             ratezahlStr_ = "12_15";
-            AuswahlZahl(); Zufallszahl();
+            AuswahlZahl();//doppelte vermeiden
+
+            Test();
         }
 
         private void btn_7_8_Click(object sender, RoutedEventArgs e)
         {
             ratezahlStr_ = "7_8";
-            AuswahlZahl(); Zufallszahl();
+            AuswahlZahl();//doppelte vermeiden
+
+            Test();
         }
 
         private void btn_8_9_Click(object sender, RoutedEventArgs e)
         {
             ratezahlStr_ = "8_9";
-            AuswahlZahl(); Zufallszahl();
+            AuswahlZahl();//doppelte vermeiden
+
+            Test();
         }
 
         private void btn_7_8_10_11_Click(object sender, RoutedEventArgs e)
         {
             ratezahlStr_ = "7_8_10_11";
-            AuswahlZahl(); Zufallszahl();
+            AuswahlZahl();//doppelte vermeiden
+
+            Test();
         }
 
         private void btn_8_9_11_12_Click(object sender, RoutedEventArgs e)
         {
             ratezahlStr_ = "8_9_11_12";
-            AuswahlZahl(); Zufallszahl();
+            AuswahlZahl();//doppelte vermeiden
+
+            Test();
         }
 
         private void btn_7_10_Click(object sender, RoutedEventArgs e)
         {
             ratezahlStr_ = "7_10";
-            AuswahlZahl(); Zufallszahl();
+            AuswahlZahl();//doppelte vermeiden
+
+            Test();
         }
 
         private void btn_8_11_Click(object sender, RoutedEventArgs e)
         {
             ratezahlStr_ = "8_11";
-            AuswahlZahl(); Zufallszahl();
+            AuswahlZahl();//doppelte vermeiden
+
+            Test();
         }
 
         private void btn_9_12_Click(object sender, RoutedEventArgs e)
         {
             ratezahlStr_ = "9_12";
-            AuswahlZahl(); Zufallszahl();
+            AuswahlZahl();//doppelte vermeiden
+
+            Test();
         }
 
         private void btn_4_5_Click(object sender, RoutedEventArgs e)
         {
             ratezahlStr_ = "4_5";
-            AuswahlZahl(); Zufallszahl();
+            AuswahlZahl();//doppelte vermeiden
+
+            Test();
         }
 
         private void btn_5_6_Click(object sender, RoutedEventArgs e)
         {
             ratezahlStr_ = "5_6";
-            AuswahlZahl(); Zufallszahl();
+            AuswahlZahl();//doppelte vermeiden
+
+            Test();
         }
 
         private void btn_4_5_7_8_Click(object sender, RoutedEventArgs e)
         {
             ratezahlStr_ = "4_5_7_8";
-            AuswahlZahl(); Zufallszahl();
+            AuswahlZahl();//doppelte vermeiden
+
+            Test();
         }
 
         private void btn_5_6_8_9_Click(object sender, RoutedEventArgs e)
         {
             ratezahlStr_ = "5_6_8_9";
-            AuswahlZahl(); Zufallszahl();
+            AuswahlZahl();//doppelte vermeiden
+
+            Test();
         }
 
         private void btn_4_7_Click(object sender, RoutedEventArgs e)
         {
             ratezahlStr_ = "4_7";
-            AuswahlZahl(); Zufallszahl();
+            AuswahlZahl();//doppelte vermeiden
+
+            Test();
         }
 
         private void btn_5_8_Click(object sender, RoutedEventArgs e)
         {
             ratezahlStr_ = "5_8";
-            AuswahlZahl(); Zufallszahl();
+            AuswahlZahl();//doppelte vermeiden
+
+            Test();
         }
 
         private void btn_6_9_Click(object sender, RoutedEventArgs e)
         {
             ratezahlStr_ = "6_9";
-            AuswahlZahl(); Zufallszahl();
+            AuswahlZahl();//doppelte vermeiden
+
+            Test();
         }
 
         private void btn_6_3_Click(object sender, RoutedEventArgs e)
         {
             ratezahlStr_ = "3_6";
-            AuswahlZahl(); Zufallszahl();
+            AuswahlZahl();//doppelte vermeiden
+
+            Test();
         }
 
         private void btn_2_1_Click(object sender, RoutedEventArgs e)
         {
             ratezahlStr_ = "1_2";
-            AuswahlZahl(); Zufallszahl();
+            AuswahlZahl();//doppelte vermeiden
+
+            Test();
         }
 
         private void btn_3_2_Click(object sender, RoutedEventArgs e)
         {
             ratezahlStr_ = "2_3";
-            AuswahlZahl(); Zufallszahl();
+            AuswahlZahl();//doppelte vermeiden
+
+            Test();
         }
 
         private void btn_1_2_4_5_Click(object sender, RoutedEventArgs e)
         {
             ratezahlStr_ = "1_2_4_5";
-            AuswahlZahl(); Zufallszahl();
+            AuswahlZahl();//doppelte vermeiden
+
+            Test();
         }
 
         private void btn_2_3_5_6_Click(object sender, RoutedEventArgs e)
         {
             ratezahlStr_ = "2_3_5_6";
-            AuswahlZahl(); Zufallszahl();
+            AuswahlZahl();//doppelte vermeiden
+
+            Test();
         }
 
         private void btn_1_4_Click(object sender, RoutedEventArgs e)
         {
             ratezahlStr_ = "1_4";
-            AuswahlZahl(); Zufallszahl();
+            AuswahlZahl();//doppelte vermeiden
+
+            Test();
         }
 
         private void btn_2_5_Click(object sender, RoutedEventArgs e)
         {
             ratezahlStr_ = "2_5";
-            AuswahlZahl(); Zufallszahl();
+            AuswahlZahl();//doppelte vermeiden
+
+            Test();
         }
 
         private void btn_3_6_Click(object sender, RoutedEventArgs e)
         {
             ratezahlStr_ = "3_6";
-            AuswahlZahl(); Zufallszahl();
+            AuswahlZahl();//doppelte vermeiden
+
+            Test();
         }
 
         private void btn_1st12(object sender, RoutedEventArgs e)
         {
             ratezahlStr_ = "1_2_3_4_5_6_7_8_9_10_11_12";
-            AuswahlZahl(); Zufallszahl();
+            AuswahlZahl();
+
+            Test();
         }
+        //private void btn_1st12(object sender, RoutedEventArgs e)
+        //{
+        //    ratezahlStr_ = "1_2_3_4_5_6_7_8_9_10_11_12";
+        //    AuswahlZahl();
+
+        //    AuswahlZahl();//doppelte vermeiden
+        //    if (auswahlZahlen.ContainsKey(ratezahlStr_))
+        //    {
+        //        mengeUnderscore = 1;
+
+        //        GesEinsatz_ += Einsatz_;
+        //        guthabenPlayer_ -= Einsatz_;
+
+
+        //        guthabenBank_ += Einsatz_;
+        //        lbl_einsatz.Text = GesEinsatz_.ToString(); txtb_guthaben.Text = guthabenPlayer_.ToString();
+
+        //        Protokoll("VerlaufSpezifisch", "Einsatz: ", Einsatz_);
+        //    }
+        //    else
+        //    {
+        //        auswahlZahlen.Add(ratezahlStr_, mengeUnderscore);
+        //    }
+        //}
 
         private void btn_2nd12(object sender, RoutedEventArgs e)
         {
             ratezahlStr_ = "13_14_15_16_17_18_19_20_21_22_23_24";
-            AuswahlZahl(); Zufallszahl();
+            AuswahlZahl();//doppelte vermeiden
+
+            Test();
         }
 
         private void btn_3rd12(object sender, RoutedEventArgs e)
         {
             ratezahlStr_ = "25_26_27_28_29_30_31_32_33_34_35_36";
-            AuswahlZahl(); Zufallszahl();
+            AuswahlZahl();//doppelte vermeiden
+
+            Test();
         }
 
         private void btn_1_18(object sender, RoutedEventArgs e)
         {
             ratezahlStr_ = "1_2_3_4_5_6_7_8_9_10_11_12_13_14_15_16_17_18";
-            AuswahlZahl(); Zufallszahl();
+            AuswahlZahl();//doppelte vermeiden
+
+            Test();
         }
 
         private void btn_19_36(object sender, RoutedEventArgs e)
         {
             ratezahlStr_ = "19_20_21_22_23_24_25_26_27_28_29_30_31_32_33_34_35_36";
-            AuswahlZahl(); Zufallszahl();
+
+            AuswahlZahl();//doppelte vermeiden
+
+            Test();
         }
 
         private void btn_0_Click(object sender, RoutedEventArgs e)
         {
             ratezahlStr_ = "0";
-            AuswahlZahl(); Zufallszahl();
+
+            AuswahlZahl();//doppelte vermeiden
+
+            Test();
         }
 
         private void btn_rot_Click(object sender, RoutedEventArgs e)
         {
+            ratezahlStr_ = "rot";
             checkFarbe = true;
             checkRot = true;
-            AuswahlZahl(); Zufallszahl();
+
+            AuswahlZahl();//doppelte vermeiden
+           Test();
         }
 
         private void btn_schwarz_Click(object sender, RoutedEventArgs e)
         {
+            ratezahlStr_ = "schwarz";
             checkFarbe = true;
             checkRot = false;
-            AuswahlZahl(); Zufallszahl();
+
+            AuswahlZahl();//doppelte vermeiden
+
+            Test();
         }
 
         private void btn_3_2_1_Click(object sender, RoutedEventArgs e)
         {
             ratezahlStr_ = "3_2_1";
-            AuswahlZahl(); Zufallszahl();
+
+            AuswahlZahl();//doppelte vermeiden
+
+            Test();
         }
 
         private void btn_6_5_4_Click(object sender, RoutedEventArgs e)
         {
             ratezahlStr_ = "6_5_4";
-            AuswahlZahl(); Zufallszahl();
+
+            AuswahlZahl();//doppelte vermeiden
+
+            Test();
         }
 
         private void btn_9_8_7_Click(object sender, RoutedEventArgs e)
         {
             ratezahlStr_ = "9_8_7";
-            AuswahlZahl(); Zufallszahl();
+
+            AuswahlZahl();//doppelte vermeiden
+
+            Test();
         }
 
         private void btn_12_11_10_Click(object sender, RoutedEventArgs e)
         {
             ratezahlStr_ = "12_11_10";
-            AuswahlZahl(); Zufallszahl();
+
+            AuswahlZahl();//doppelte vermeiden
+
+            Test();
         }
 
         private void btn_15_14_13_Click(object sender, RoutedEventArgs e)
         {
             ratezahlStr_ = "15_14_13";
-            AuswahlZahl(); Zufallszahl();
+
+            AuswahlZahl();//doppelte vermeiden
+
+            Test();
         }
 
         private void btn_18_17_16_Click(object sender, RoutedEventArgs e)
         {
             ratezahlStr_ = "18_17_16";
-            AuswahlZahl(); Zufallszahl();
+
+            AuswahlZahl();//doppelte vermeiden
+
+            Test();
         }
 
         private void btn_21_20_19_Click(object sender, RoutedEventArgs e)
         {
             ratezahlStr_ = "21_20_19";
-            AuswahlZahl(); Zufallszahl();
+
+            AuswahlZahl();//doppelte vermeiden
+
+            Test();
         }
 
         private void btn_24_23_22_Click(object sender, RoutedEventArgs e)
         {
             ratezahlStr_ = "24_23_22";
-            AuswahlZahl(); Zufallszahl();
+
+            AuswahlZahl();//doppelte vermeiden
+
+            Test();
         }
 
         private void btn_27_26_25_Click(object sender, RoutedEventArgs e)
         {
             ratezahlStr_ = "27_26_25";
-            AuswahlZahl(); Zufallszahl();
+
+            AuswahlZahl();//doppelte vermeiden
+
+            Test();
         }
 
         private void btn_30_29_28_Click(object sender, RoutedEventArgs e)
         {
             ratezahlStr_ = "30_29_28";
-            AuswahlZahl(); Zufallszahl();
+
+            AuswahlZahl();//doppelte vermeiden
+
+            Test();
         }
 
         private void btn_33_32_31_Click(object sender, RoutedEventArgs e)
         {
             ratezahlStr_ = "33_32_31";
-            AuswahlZahl(); Zufallszahl();
+
+            AuswahlZahl();//doppelte vermeiden
+
+            Test();
         }
 
         private void btn_36_35_34_Click(object sender, RoutedEventArgs e)
         {
             ratezahlStr_ = "36_35_34";
-            AuswahlZahl(); Zufallszahl();
+
+            AuswahlZahl();//doppelte vermeiden
+
+            Test();
         }
 
         private void btn_2to1(object sender, RoutedEventArgs e)
         {
             ratezahlStr_ = "1_4_7_10_13_16_19_22_25_28_31_34";
-            AuswahlZahl(); Zufallszahl();
+
+            AuswahlZahl();//doppelte vermeiden
+
+            Test();
         }
 
         private void btn_2to2(object sender, RoutedEventArgs e)
         {
             ratezahlStr_ = "2_5_8_11_14_17_20_23_26_29_32_35";
-            AuswahlZahl(); Zufallszahl();
+
+            AuswahlZahl();//doppelte vermeiden
+
+            Test();
         }
 
         private void btn_2to3(object sender, RoutedEventArgs e)
         {
             ratezahlStr_ = "3_6_9_12_15_18_21_24_27_30_33_36";
-            AuswahlZahl(); Zufallszahl();
+
+            AuswahlZahl();//doppelte vermeiden
+
+            Test();
         }
 
         private void btn_Even(object sender, RoutedEventArgs e)
         {
             ratezahlStr_ = "2_4_6_8_10_12_14_16_18_20_22_24_26_28_30_32_34_36";
-            AuswahlZahl(); Zufallszahl();
+
+            AuswahlZahl();//doppelte vermeiden
+
+            Test();
         }
 
         private void btn_Odd(object sender, RoutedEventArgs e)
         {
             ratezahlStr_ = "0_1_3_5_7_9_11_13_15_17_19_21_23_25_27_29_31_33_35";
-            AuswahlZahl(); Zufallszahl();
+
+            AuswahlZahl();//doppelte vermeiden
+
+            Test();
         }
 
         private void btn_beenden_Click(object sender, RoutedEventArgs e)

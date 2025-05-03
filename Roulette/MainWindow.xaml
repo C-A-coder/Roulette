@@ -910,6 +910,12 @@ Grid.Column="23" Grid.Row="1" Grid.RowSpan="2" VerticalAlignment="Top" Horizonta
                Grid.ColumnSpan="14" Grid.Row="8"
                VerticalAlignment="Center" HorizontalAlignment="Left" FontSize="20"
                FontWeight="Bold"/>
+        
+        <!--Delay-->
+        <Label x:Name="lbl_Infofeld_Delay" Content="Infofeld"
+        Grid.Column="0" Grid.ColumnSpan="14" Grid.Row="7"
+        VerticalAlignment="Center" HorizontalAlignment="Left" FontSize="20"
+        FontWeight="Bold"/>
         <!-- Overlay um Spielbrett während Spin lahmzulegen-->
         <Grid x:Name="Overlay" Background="Transparent" Opacity="0.5" Visibility="Hidden" IsHitTestVisible="True"  Grid.RowSpan="8" Grid.ColumnSpan="26"/>
     </Grid>
