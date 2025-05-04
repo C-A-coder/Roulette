@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Roulette"
         mc:Ignorable="d"
-        Title="MainWindow" Height="830" Width="1550" Background="#07734D"
+        Title="Roulette" Height="830" Width="1550" Background="#07734D"
         WindowStartupLocation="CenterScreen"
         ResizeMode="NoResize"
         Icon="/Bilder_Roulette/icon_32x32.ico">
@@ -44,10 +44,10 @@
             <RowDefinition Height="12.5*"/>
             <RowDefinition Height="12.5*"/>
             <RowDefinition Height="12.5*"/>
-            <RowDefinition Height="12.5*"/>
-            <RowDefinition Height="12.5*"/>
-            <RowDefinition Height="12.5*"/>
-            <RowDefinition Height="12.5*"/>
+            <RowDefinition Height="8.5*"/>
+            <RowDefinition Height="10.5*"/>
+            <RowDefinition Height="10.5*"/>
+            <RowDefinition Height="20.5*"/>
         </Grid.RowDefinitions>
 
         <StackPanel Grid.ColumnSpan="5" Orientation="Horizontal" HorizontalAlignment="Left" >
@@ -906,11 +906,13 @@ Grid.Column="23" Grid.Row="1" Grid.RowSpan="2" VerticalAlignment="Top" Horizonta
             </Button.Background>
         </Button>
         <!---->
-        <Label x:Name="lbl_Infofeld" Content="Infofeld"
-               Grid.ColumnSpan="14" Grid.Row="8"
-               VerticalAlignment="Center" HorizontalAlignment="Left" FontSize="20"
-               FontWeight="Bold"/>
-        
+        <ScrollViewer VerticalScrollBarVisibility="Hidden" Grid.ColumnSpan="24" Grid.Row="8">
+            <Label x:Name="lbl_Infofeld" Content="Infofeld" Foreground="Gray"
+       
+       VerticalAlignment="Center" HorizontalAlignment="Left" FontSize="20"
+       FontWeight="Bold"/>
+        </ScrollViewer>
+
         <!--Delay-->
         <Label x:Name="lbl_Infofeld_Delay" Content="Infofeld"
         Grid.Column="0" Grid.ColumnSpan="14" Grid.Row="7"

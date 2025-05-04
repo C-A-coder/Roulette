@@ -41,6 +41,7 @@ namespace Roulette
         string zahl12Str = "";
         string[] zahlen = new string[36];
         Dictionary<string, int> auswahlZahlen = new Dictionary<string, int>(); //Dic, einmal menge "_" und Zahl(en) selber speichern
+        Dictionary<string, int> einsatzProAuswahl = new Dictionary<string, int>();
         int mengeUnderscore = 0;
         bool checkFarbe = false;
         bool checkRot = false;
@@ -141,7 +142,7 @@ namespace Roulette
             zufallszahl_ = rnd.Next(0, 37);
             lbl_Infofeld.Content = "Zufallszahl: " + zufallszahl_;
             //await Task.Delay(5000);
-            zufallszahl_ = 2;
+            zufallszahl_ = 17;
 
             Overlay.Visibility = Visibility.Hidden;
 
@@ -162,7 +163,7 @@ namespace Roulette
             while (true)
             {
                 //Timer für 10 sek
-                for (int i = 10; i > 0; i--)
+                for (int i = 15; i > 0; i--)
                 {
                     lbl_Infofeld_Delay.Content = "Noch " + i + " Sekunden bis zum Spin!";
                     await Task.Delay(1000);
@@ -196,11 +197,8 @@ namespace Roulette
             }
             else
             {
-                Einsatz_ += 1000;
-                GesEinsatz_ += 1000;
-                guthabenPlayer_ -= 1000;
-                guthabenBank_ += Einsatz_;
-                lbl_einsatz.Text = GesEinsatz_.ToString(); txtb_guthaben.Text = guthabenPlayer_.ToString();
+                Einsatz_ = 1000;
+                lbl_Infofeld.Content = $"Einsatzbetrag auf {Einsatz_} gesetzt.";
 
                 Protokoll("VerlaufSpezifisch", "Einsatz: ", Einsatz_);
             }
@@ -211,15 +209,11 @@ namespace Roulette
             if (guthabenPlayer_ - 500 < 0)
             {
                 lbl_Infofeld.Content = ("Fehler: Guthaben zu niedrig!");
-                Protokoll("VerlaufSpezifisch.txt", "Einsatz: ", Einsatz_);
             }
             else
             {
-                Einsatz_ += 500;
-                GesEinsatz_ += 500;
-                guthabenPlayer_ -= 500;
-                guthabenBank_ += Einsatz_;
-                lbl_einsatz.Text = GesEinsatz_.ToString(); txtb_guthaben.Text = guthabenPlayer_.ToString();
+                Einsatz_ = 500;
+                lbl_Infofeld.Content = $"Einsatzbetrag auf {Einsatz_} gesetzt.";
 
                 Protokoll("VerlaufSpezifisch", "Einsatz: ", Einsatz_);
             }
@@ -233,11 +227,8 @@ namespace Roulette
             }
             else
             {
-                Einsatz_ += 100;
-                GesEinsatz_ += 100;
-                guthabenPlayer_ -= 100;
-                guthabenBank_ += Einsatz_;
-                lbl_einsatz.Text = GesEinsatz_.ToString(); txtb_guthaben.Text = guthabenPlayer_.ToString();
+                Einsatz_ = 100;
+                lbl_Infofeld.Content = $"Einsatzbetrag auf {Einsatz_} gesetzt.";
 
                 Protokoll("VerlaufSpezifisch", "Einsatz: ", Einsatz_);
             }
@@ -267,389 +258,131 @@ namespace Roulette
         {
             bool zahlGetroffen = false;
             int gerateneZahl = 0;
-            int zaehler = 0;
 
-            //Speicherung von Max-Einsatz
+            // Speicherung von Max-Einsatz
             if (Einsatz_ > guthabenPlayerMax_)
             {
                 guthabenPlayerMax_ = Einsatz_;
             }
 
-            foreach (string zahlStr in auswahlZahlen.Keys)
+            // Überprüfung der Farbwette
+            if (checkFarbe)
             {
-                // Prüfen, ob Eintrag mehrere Zahlen enthält
-                string[] einzelneZahlen = zahlStr.Split('_');
-                bool gruppenTreffer = false;
-                zaehler++;
-
-                foreach (string einzelneZahl in einzelneZahlen)
+                if (zufallszahl_ == 0) // Ausnahme: 0 hat keine Farbe
                 {
-                    if (Int32.TryParse(einzelneZahl, out gerateneZahl) && !checkFarbe)
+                    lbl_Infofeld.Content += "\nFarbe nicht getroffen (Zufallszahl: 0)";
+                    Protokoll("VerlaufSpezifisch", "Verloren! Zufallszahlfarbe: ", zufallszahl_);
+                    guthabenBank_ += Einsatz_;
+                }
+                else
+                {
+                    bool farbeGetroffen = false;
+
+                    if (checkRot)
                     {
-                        //Da unten bei Auswahl Zahl auf = 1 gesetzt wird
-                        if (gerateneZahl == zufallszahl_)
+                        int[] roteZahlen = { 1, 3, 5, 7, 9, 12, 14, 16, 18, 19, 21, 23, 25, 27, 30, 32, 34, 36 };
+                        for (int i = 0; i < roteZahlen.Length; i++)
                         {
-                            zahlGetroffen = true;
-                            Protokoll("VerlaufSpezifisch", "Ausgewählte Zahl: ", gerateneZahl);
-                            bool containsValue1 = auswahlZahlen.ContainsValue(1);
-                            bool containsValue2 = auswahlZahlen.ContainsValue(2);
-                            bool containsValue3 = auswahlZahlen.ContainsValue(3);
-                            bool containsValue4 = auswahlZahlen.ContainsValue(4);
-                            bool containsValue5 = auswahlZahlen.ContainsValue(5);
-                            bool containsValue6 = auswahlZahlen.ContainsValue(6);
-                            bool containsValue7 = auswahlZahlen.ContainsValue(7);
-                            bool containsValue8 = auswahlZahlen.ContainsValue(8);
-                            bool containsValue9 = auswahlZahlen.ContainsValue(9);
-                            bool containsValue10 = auswahlZahlen.ContainsValue(10);
-                            bool containsValue11 = auswahlZahlen.ContainsValue(11);
-                            bool containsValue12 = auswahlZahlen.ContainsValue(12);
-
-                            if (containsValue1 && checkFarbe == false)
+                            if (zufallszahl_ == roteZahlen[i])
                             {
-                                lbl_Infofeld.Content = $"Jackpot!!! Zahl getroffen: {zufallszahl_} Auszahlung 1:35\n{Einsatz_ * 35}";
-                                Protokoll("VerlaufSpezifisch", "Gewonnen! +", Einsatz_ * 35);
-                                GesGewinn_ = GesEinsatz_;
-                                guthabenPlayer_ += GesEinsatz_ + GesGewinn_ * 35;//inkl. Rückzahlung Einsatz
-                                guthabenBank_ -= Einsatz_ * 35;
-                                containsValue1 = false;
-                                lbl_einsatz.Text = GesEinsatz_.ToString(); txtb_guthaben.Text = guthabenPlayer_.ToString(); // Einsatz zurücksetzen                                                                                          // Guthaben aktualisieren
-                            }
-                            else if (mengeUnderscore == 2 && !checkFarbe)
-                            {
-                                lbl_Infofeld.Content = $"Zahl getroffen: {zufallszahl_} Auszahlung 1:17\n{Einsatz_ * 17}";
-                                Protokoll("VerlaufSpezifisch", "Gewonnen! +", Einsatz_ * 17);
-                                GesGewinn_ = GesEinsatz_;
-                                guthabenPlayer_ += GesEinsatz_ + GesGewinn_ * 17;//inkl. Rückzahlung Einsatz
-                                guthabenBank_ -= Einsatz_ * 17;
-                                containsValue2 = false;
-                                lbl_einsatz.Text = GesEinsatz_.ToString(); txtb_guthaben.Text = guthabenPlayer_.ToString(); // Einsatz zurücksetzen
-                                                                                                                            // Guthaben aktualisieren
-                            }
-                            else if (mengeUnderscore == 3 && !checkFarbe)
-                            {
-                                lbl_Infofeld.Content = $"Zahl getroffen: {zufallszahl_} Auszahlung 1:11\n{Einsatz_ * 11}";
-                                Protokoll("VerlaufSpezifisch", "Gewonnen! +", Einsatz_ * 11);
-                                GesGewinn_ = GesEinsatz_;
-                                guthabenPlayer_ += GesEinsatz_ + GesGewinn_ * 11;//inkl. Rückzahlung Einsatz
-                                guthabenBank_ -= Einsatz_ * 11;
-                                containsValue3 = false;
-                                lbl_einsatz.Text = GesEinsatz_.ToString(); txtb_guthaben.Text = guthabenPlayer_.ToString(); // Einsatz zurücksetzen
-                                                                                                                            // Guthaben aktualisieren
-                            }
-                            else if (mengeUnderscore == 4 && !checkFarbe)
-                            {
-                                lbl_Infofeld.Content = $"Zahl getroffen: {zufallszahl_} Auszahlung 1:8\n{Einsatz_ * 1}";
-                                Protokoll("VerlaufSpezifisch", "Gewonnen! +", Einsatz_ * 1);
-                                GesGewinn_ = GesEinsatz_;
-                                guthabenPlayer_ += GesEinsatz_ + GesGewinn_ * 1;//inkl. Rückzahlung Einsatz
-                                guthabenBank_ -= Einsatz_ * 1;
-                                containsValue4 = false;
-                                lbl_einsatz.Text = GesEinsatz_.ToString(); txtb_guthaben.Text = guthabenPlayer_.ToString(); // Einsatz zurücksetzen
-                                                                                                                            // Guthaben aktualisieren
-                            }
-                            else if (mengeUnderscore == 6 && !checkFarbe)
-                            {
-                                lbl_Infofeld.Content = $"Zahl getroffen: {zufallszahl_} Auszahlung 1:5\n{Einsatz_ * 5}";
-                                Protokoll("VerlaufSpezifisch", "Gewonnen! +", Einsatz_ * 5);
-                                GesGewinn_ = GesEinsatz_;
-                                guthabenPlayer_ += GesEinsatz_ + GesGewinn_ * 5;//inkl. Rückzahlung Einsatz
-                                guthabenBank_ -= Einsatz_ * 5;
-                                containsValue6 = false;
-                                lbl_einsatz.Text = GesEinsatz_.ToString(); txtb_guthaben.Text = guthabenPlayer_.ToString(); // Einsatz zurücksetzen
-                                                                                                                            // Guthaben aktualisieren
-                            }
-                            else if (containsValue12 && checkFarbe == false)
-                            {
-                                lbl_Infofeld.Content = $"Zahl getroffen: {zufallszahl_} Auszahlung 1:2\n{Einsatz_ * 2}";
-                                Protokoll("VerlaufSpezifisch", "Gewonnen! +", Einsatz_ * 2);
-                                GesGewinn_ = GesEinsatz_;
-                                guthabenPlayer_ += GesEinsatz_ + GesGewinn_;//inkl. Rückzahlung Einsatz
-                                guthabenBank_ -= Einsatz_ * 2;
-                                containsValue12 = false;
-                                lbl_einsatz.Text = GesEinsatz_.ToString(); txtb_guthaben.Text = guthabenPlayer_.ToString(); // Einsatz zurücksetzen
-                                                                                                                            // Guthaben aktualisieren
-                            }
-                            else if ((mengeUnderscore == 18 || mengeUnderscore == 19) && (!checkFarbe))//+Farbe+Un/Gerade
-                            {
-                                bool zahlGefunden = false;
-                                foreach (string zahlStr2 in zahlen)
-                                {
-                                    if (int.TryParse(zahlStr2, out int gewaehlteZahl) && gewaehlteZahl == zufallszahl_)
-                                    {
-                                        zahlGefunden = true;
-                                        break;
-                                    }
-                                }
-
-                                if (zahlGefunden && !checkFarbe)
-                                {
-                                    switch (mengeUnderscore)
-                                    {
-                                        case 19:
-                                            lbl_Infofeld.Content = $"Zahl getroffen: {zufallszahl_} Auszahlung 1:1\n{Einsatz_ * 1}";
-                                            Protokoll("VerlaufSpezifisch", "Gewonnen! +", Einsatz_ * 1);
-                                            GesGewinn_ = GesEinsatz_;
-                                            guthabenPlayer_ += GesEinsatz_ + GesGewinn_;//inkl. Rückzahlung Einsatz
-                                            guthabenBank_ -= Einsatz_ * 1;
-                                            Einsatz_ = 0;
-                                            lbl_einsatz.Text = GesEinsatz_.ToString(); txtb_guthaben.Text = guthabenPlayer_.ToString(); // Einsatz zurücksetzen
-                                                                                                                                        // Guthaben aktualisieren
-                                            return;
-                                        case 18:
-                                            lbl_Infofeld.Content = $"Zahl getroffen: {zufallszahl_} Auszahlung 1:1\n{Einsatz_ * 1}";
-                                            Protokoll("VerlaufSpezifisch", "Gewonnen! +", Einsatz_ * 1);
-                                            GesGewinn_ = GesEinsatz_;
-                                            guthabenPlayer_ += GesEinsatz_ + GesGewinn_;//inkl. Rückzahlung Einsatz
-                                            guthabenBank_ -= Einsatz_ * 1;
-                                            Einsatz_ = 0;
-                                            lbl_einsatz.Text = GesEinsatz_.ToString(); txtb_guthaben.Text = guthabenPlayer_.ToString(); // Einsatz zurücksetzen
-                                                                                                                                        // Guthaben aktualisieren
-                                            return;
-                                    }
-                                }
-                                else
-                                {
-                                    lbl_Infofeld.Content = $"Leider nicht getroffen.";
-                                    Protokoll("VerlaufSpezifisch", "Verloren! Zufallszahl: ", zufallszahl_);
-                                    //guthabenPlayer_ -= Einsatz_; wurde breits abgezogen bei btn_zahl
-                                    guthabenBank_ += Einsatz_;
-                                }
-                            }
-                            //else if (checkRot)
-                            //{
-                            //    switch (zufallszahl_)//rot
-                            //    {
-                            //        case 1:
-                            //        case 3:
-                            //        case 5:
-                            //        case 7:
-                            //        case 9:
-                            //        case 12:
-                            //        case 14:
-                            //        case 16:
-                            //        case 18:
-                            //        case 19:
-                            //        case 21:
-                            //        case 23:
-                            //        case 25:
-                            //        case 27:
-                            //        case 30:
-                            //        case 32:
-                            //        case 34:
-                            //        case 36:
-                            //            lbl_Infofeld.Content = $"Farbe getroffen! Auszahlung 1:1\n{Einsatz_ * 1}";
-                            //            Protokoll("VerlaufSpezifisch", "Gewonnen! Farbe: +", Einsatz_ * 1);
-                            //            guthabenPlayer_ += Einsatz_ * 2;
-                            //            guthabenBank_ -= Einsatz_ * 1; //inkl. Rückzahlung Einsatz
-                            //             // Guthaben aktualisieren
-                            //            Einsatz_ = 0;
-                            //                            lbl_einsatz.Text = GesEinsatz_.ToString();                 txtb_guthaben.Text = guthabenPlayer_.ToString(); // Einsatz zurücksetzen
-                            //            checkFarbe = false;
-                            //            checkRot = false;
-                            //            return;
-                            //        default:
-                            //            lbl_Infofeld.Content = "Nein! Farbe leider nicht getroffen";
-                            //            Protokoll("VerlaufSpezifisch", "Verloren! Zufallszahlfarbe: ", zufallszahl_);
-                            //            //guthabenPlayer_ -= Einsatz_ * 1;//Abzug Einsatz
-                            //             // Guthaben aktualisieren
-                            //            guthabenBank_ += Einsatz_ * 1;
-                            //            Einsatz_ = 0;
-                            //                            lbl_einsatz.Text = GesEinsatz_.ToString();                 txtb_guthaben.Text = guthabenPlayer_.ToString(); // Einsatz zurücksetzen
-                            //            checkFarbe = false;
-                            //            checkRot = false;
-                            //            return;
-                            //    }
-                            //}
-                            //else if (!checkRot)
-                            //{
-                            //    switch (zufallszahl_)//schwarz
-                            //    {
-                            //        case 2:
-                            //        case 4:
-                            //        case 6:
-                            //        case 8:
-                            //        case 10:
-                            //        case 11:
-                            //        case 13:
-                            //        case 15:
-                            //        case 17:
-                            //        case 20:
-                            //        case 22:
-                            //        case 24:
-                            //        case 26:
-                            //        case 28:
-                            //        case 29:
-                            //        case 31:
-                            //        case 33:
-                            //        case 35:
-                            //            lbl_Infofeld.Content = $"Farbe getroffen! Auszahlung 1:1\n{Einsatz_ * 1}";
-                            //            Protokoll("VerlaufSpezifisch", "Gewonnen! Farbe: +", Einsatz_ * 1);
-                            //            GesGewinn_ = GesEinsatz_;
-                            //            guthabenPlayer_ += GesEinsatz_ + GesGewinn_;//inkl. Rückzahlung Einsatz
-                            //            guthabenBank_ -= Einsatz_ * 1;
-                            //             // Guthaben aktualisieren
-                            //            Einsatz_ = 0;
-                            //                            lbl_einsatz.Text = GesEinsatz_.ToString();                 txtb_guthaben.Text = guthabenPlayer_.ToString(); // Einsatz zurücksetzen
-                            //            checkFarbe = false;
-                            //            checkRot = false;
-                            //            break;
-                            //        default:
-                            //            lbl_Infofeld.Content = "Nein! Farbe leider nicht getroffen";
-                            //            Protokoll("VerlaufSpezifisch", "Verloren! Zufallszahlfarbe: ", zufallszahl_);
-                            //            //guthabenPlayer_ -= Einsatz_ * 1;//Abzug Einsatz
-                            //             // Guthaben aktualisieren
-                            //            guthabenBank_ += GesEinsatz_;
-                            //            Einsatz_ = 0;
-                            //                            lbl_einsatz.Text = GesEinsatz_.ToString();                 txtb_guthaben.Text = guthabenPlayer_.ToString(); // Einsatz zurücksetzen
-                            //            checkFarbe = false;
-                            //            checkRot = false;
-                            //            break;
-
-                            //    }
-                            //}
-                            else
-                            {
-                                lbl_Infofeld.Content = $"Nein! Zahl nicht getroffen: {zufallszahl_}";
-                                Protokoll("VerlaufSpezifisch", "Verloren! Zufallszahl: ", zufallszahl_);
-                                //lbl_Infofeld.Content = "Nein! Farbe leider nicht getroffen";
-                                //guthabenPlayer_ -= Einsatz;
-                                //guthabenBank += Einsatz;
-                                checkFarbe = false;
-                                checkRot = false;
-                            }
-
-                            gruppenTreffer = true;
-                            break;
-                        }
-                        else
-                        {
-                            lbl_Infofeld.Content = $"Leider nicht getroffen.";
-                            Protokoll("VerlaufSpezifisch", "Verloren! Zufallszahl: ", zufallszahl_);
-                            //guthabenPlayer_ -= Einsatz_; wurde breits abgezogen bei btn_zahl
-                            guthabenBank_ += Einsatz_;
-                        }
-                    }
-                    else if (checkRot)
-                    {
-                        switch (zufallszahl_)//rot
-                        {
-                            case 1:
-                            case 3:
-                            case 5:
-                            case 7:
-                            case 9:
-                            case 12:
-                            case 14:
-                            case 16:
-                            case 18:
-                            case 19:
-                            case 21:
-                            case 23:
-                            case 25:
-                            case 27:
-                            case 30:
-                            case 32:
-                            case 34:
-                            case 36:
-                                lbl_Infofeld.Content = $"Farbe getroffen! Auszahlung 1:1\n{Einsatz_ * 1}";
-                                Protokoll("VerlaufSpezifisch", "Gewonnen! Farbe: +", Einsatz_ * 1);
-                                guthabenPlayer_ += Einsatz_ * 2;
-                                guthabenBank_ -= Einsatz_ * 1; //inkl. Rückzahlung Einsatz
-                                                               // Guthaben aktualisieren
-                                Einsatz_ = 0;
-                                lbl_einsatz.Text = GesEinsatz_.ToString(); txtb_guthaben.Text = guthabenPlayer_.ToString(); // Einsatz zurücksetzen
-                                checkFarbe = false;
-                                checkRot = false;
-                                return;
-                            default:
-                                lbl_Infofeld.Content = "Nein! Farbe leider nicht getroffen";
-                                Protokoll("VerlaufSpezifisch", "Verloren! Zufallszahlfarbe: ", zufallszahl_);
-                                //guthabenPlayer_ -= Einsatz_ * 1;//Abzug Einsatz
-                                GesGewinn_ = 0;
-                                GesEinsatz_ = 0;
-                                // Guthaben aktualisieren
-                                guthabenBank_ += Einsatz_ * 1;
-                                Einsatz_ = 0;
-                                lbl_einsatz.Text = GesEinsatz_.ToString(); txtb_guthaben.Text = guthabenPlayer_.ToString(); // Einsatz zurücksetzen
-                                checkFarbe = false;
-                                checkRot = false;
-                                return;
-                        }
-                    }
-                    else if (!checkRot)
-                    {
-                        switch (zufallszahl_)//schwarz
-                        {
-                            case 2:
-                            case 4:
-                            case 6:
-                            case 8:
-                            case 10:
-                            case 11:
-                            case 13:
-                            case 15:
-                            case 17:
-                            case 20:
-                            case 22:
-                            case 24:
-                            case 26:
-                            case 28:
-                            case 29:
-                            case 31:
-                            case 33:
-                            case 35:
-                                lbl_Infofeld.Content = $"Farbe getroffen! Auszahlung 1:1\n{Einsatz_ * 1}";
-                                Protokoll("VerlaufSpezifisch", "Gewonnen! Farbe: +", Einsatz_ * 1);
-                                GesGewinn_ = GesEinsatz_;
-                                guthabenPlayer_ += GesEinsatz_ + GesGewinn_;//inkl. Rückzahlung Einsatz
-                                guthabenBank_ -= Einsatz_ * 1;
-                                GesGewinn_ = 0;
-                                GesEinsatz_ = 0;
-                                // Guthaben aktualisieren
-                                Einsatz_ = 0;
-                                lbl_einsatz.Text = GesEinsatz_.ToString(); txtb_guthaben.Text = guthabenPlayer_.ToString(); // Einsatz zurücksetzen
-                                checkFarbe = false;
-                                checkRot = false;
+                                farbeGetroffen = true;
                                 break;
-                            default:
-                                lbl_Infofeld.Content = "Nein! Farbe leider nicht getroffen";
-                                Protokoll("VerlaufSpezifisch", "Verloren! Zufallszahlfarbe: ", zufallszahl_);
-                                //guthabenPlayer_ -= Einsatz_ * 1;//Abzug Einsatz
-                                GesGewinn_ = 0;
-                                GesEinsatz_ = 0;
-                                // Guthaben aktualisieren
-                                guthabenBank_ += GesEinsatz_;
-                                Einsatz_ = 0;
-                                lbl_einsatz.Text = GesEinsatz_.ToString(); txtb_guthaben.Text = guthabenPlayer_.ToString(); // Einsatz zurücksetzen
-                                checkFarbe = false;
-                                checkRot = false;
-                                break;
-
+                            }
                         }
                     }
                     else
                     {
-                        lbl_Infofeld.Content = "Unbehandelter Fall: " + einzelneZahl;
-                        return;
+                        int[] schwarzeZahlen = { 2, 4, 6, 8, 10, 11, 13, 15, 17, 20, 22, 24, 26, 28, 29, 31, 33, 35 };
+                        for (int i = 0; i < schwarzeZahlen.Length; i++)
+                        {
+                            if (zufallszahl_ == schwarzeZahlen[i])
+                            {
+                                farbeGetroffen = true;
+                                break;
+                            }
+                        }
+                    }
+
+                    if (farbeGetroffen)
+                    {
+                        lbl_Infofeld.Content += $"\nFarbe getroffen! Auszahlung 1:1 --> {Einsatz_}";
+                        Protokoll("VerlaufSpezifisch", "Gewonnen! Farbe: +", Einsatz_);
+                        guthabenPlayer_ += Einsatz_ * 2; // inkl. Rückzahlung Einsatz
+                        guthabenBank_ -= Einsatz_;
+                        txtb_guthaben.Text = guthabenPlayer_.ToString(); // Guthaben aktualisieren
+                    }
+                    else
+                    {
+                        lbl_Infofeld.Content += "\nFarbe nicht getroffen";
+                        Protokoll("VerlaufSpezifisch", "Verloren! Zufallszahlfarbe: ", zufallszahl_);
+                        guthabenBank_ += Einsatz_;
+                    }
+                }
+            }
+
+            // Überprüfung der Zahlenauswahl
+            foreach (var auswahl in auswahlZahlen)
+            {
+                string zahlStr = auswahl.Key;
+                int mengeUnderscore = auswahl.Value;
+
+                if (!einsatzProAuswahl.ContainsKey(zahlStr))
+                {
+                    continue;
+                }
+
+                int einsatz = einsatzProAuswahl[zahlStr];
+                string[] einzelneZahlen = zahlStr.Split('_');
+                bool gruppenTreffer = false;
+
+                for (int i = 0; i < einzelneZahlen.Length; i++)
+                {
+                    if (Int32.TryParse(einzelneZahlen[i], out gerateneZahl) && gerateneZahl == zufallszahl_)
+                    {
+                        zahlGetroffen = true;
+
+                        int auszahlungsMultiplikator = 1;
+
+                        if (mengeUnderscore == 1) auszahlungsMultiplikator = 35;
+                        else if (mengeUnderscore == 2) auszahlungsMultiplikator = 17;
+                        else if (mengeUnderscore == 3) auszahlungsMultiplikator = 11;
+                        else if (mengeUnderscore == 4) auszahlungsMultiplikator = 8;
+                        else if (mengeUnderscore == 6) auszahlungsMultiplikator = 5;
+                        else if (mengeUnderscore == 12) auszahlungsMultiplikator = 2;
+
+                        int gewinn = einsatz * auszahlungsMultiplikator;
+                        lbl_Infofeld.Content += $"\nTreffer bei {zahlStr}:\nAuszahlung 1:{auszahlungsMultiplikator} --> {gewinn}";
+                        Protokoll("VerlaufSpezifisch", $"Gewonnen bei {zahlStr}! +", gewinn);
+
+                        guthabenPlayer_ += gewinn + einsatz;
+                        guthabenBank_ -= gewinn;
+
+                        gruppenTreffer = true;
+                        break; // Nur den ersten Treffer pro Auswahl berücksichtigen
                     }
                 }
 
                 if (!gruppenTreffer)
                 {
-                    Protokoll("VerlaufSpezifisch", "Kein Treffer in Gruppe: ", 0);
+                    lbl_Infofeld.Content += $"\nKein Treffer bei {zahlStr}.";
+                    Protokoll("VerlaufSpezifisch", $"Verloren bei {zahlStr}. Zufallszahl: ", zufallszahl_);
                 }
             }
 
-            Protokoll("VerlaufSpezifisch", "Zufallszahl: ", zufallszahl_);
-
-            // Guthaben aktualisieren
-            lbl_einsatz.Text = "0"; // Einsatz zurücksetzen
-
-            //gewinne & Einsätze zurücksetzten
+            // Guthaben und Einsätze zurücksetzen
+            lbl_einsatz.Text = "0";
             GesGewinn_ = 0;
             GesEinsatz_ = 0;
-
             Einsatz_ = 0;
+            txtb_guthaben.Text = guthabenPlayer_.ToString();
+            einsatzProAuswahl.Clear();
+            auswahlZahlen.Clear();
+            checkFarbe = false;
+            checkRot = false;
+
+            // Buttons wieder aktivieren
+            AktiviereAlleButtons();
+
             Pleite();
         }
 
@@ -703,130 +436,6 @@ namespace Roulette
             if (zahlen.Length >= 36) zahl12Str = zahlen[35];
         }
 
-        //Farbe filtern || rot = true, schwarz = false <-- default = alles andere
-        //private bool FarbeFiltern()
-        //{
-        //    switch (zufallszahl)
-        //    {
-        //        case 1:
-        //        case 3:
-        //        case 5:
-        //        case 7:
-        //        case 9:
-        //        case 12:
-        //        case 14:
-        //        case 16:
-        //        case 18:
-        //        case 19:
-        //        case 21:
-        //        case 23:
-        //        case 25:
-        //        case 27:
-        //        case 30:
-        //        case 32:
-        //        case 34:
-        //        case 36:
-        //            return checkFarbe = true;
-        //        default: return checkFarbe = false;
-        //    }
-        //}
-
-        //private void hoverEffekt(object sender, System.Windows.Input.MouseEventArgs e)
-        //{
-        //    if(sender is Button geklickterButton)
-        //    {
-        //        string buttonName = geklickterButton.Name;
-
-        //        //switch (buttonName)
-        //        //{
-        //        //    case "dreiReihe1":
-        //        //        dreiReihe1.Background = Brushes.BlanchedAlmond;
-        //        //        break;
-        //        //    case "dreiReihe2":
-        //        //        dreiReihe2.Background = Brushes.BlanchedAlmond;
-        //        //        break;
-        //        //    case "dreiReihe3":
-        //        //        dreiReihe3.Background = Brushes.BlanchedAlmond;
-        //        //        break;
-        //        //    case "dreiReihe4":
-        //        //        dreiReihe4.Background = Brushes.BlanchedAlmond;
-        //        //        break;
-        //        //    case "dreiReihe5":
-        //        //        dreiReihe5.Background = Brushes.BlanchedAlmond;
-        //        //        break;
-        //        //    case "dreiReihe6":
-        //        //        dreiReihe6.Background = Brushes.BlanchedAlmond;
-        //        //        break;
-        //        //    case "dreiReihe7":
-        //        //        dreiReihe7.Background = Brushes.BlanchedAlmond;
-        //        //        break;
-        //        //    case "dreiReihe8":
-        //        //        dreiReihe8.Background = Brushes.BlanchedAlmond;
-        //        //        break;
-        //        //    case "dreiReihe9":
-        //        //        dreiReihe9.Background = Brushes.BlanchedAlmond;
-        //        //        break;
-        //        //    case "dreiReihe10":
-        //        //        dreiReihe10.Background = Brushes.BlanchedAlmond;
-        //        //        break;
-        //        //    case "dreiReihe11":
-        //        //        dreiReihe11.Background = Brushes.BlanchedAlmond;
-        //        //        break;
-        //        //    case "dreiReihe12":
-        //        //        dreiReihe12.Background = Brushes.BlanchedAlmond;
-        //        //        break;
-        //        //}
-        //    }
-        //}
-
-        //private void leaveEffekt(object sender, System.Windows.Input.MouseEventArgs e)
-        //{
-        //    if (sender is Button geklickterButton)
-        //    {
-        //        string buttonName = geklickterButton.Name;
-
-        //        switch (buttonName)
-        //        {
-        //            case "dreiReihe1":
-        //                dreiReihe1.Background = Brushes.Transparent;
-        //                break;
-        //            case "dreiReihe2":
-        //                dreiReihe2.Background = Brushes.Transparent;
-        //                break;
-        //            case "dreiReihe3":
-        //                dreiReihe3.Background = Brushes.Transparent;
-        //                break;
-        //            case "dreiReihe4":
-        //                dreiReihe4.Background = Brushes.Transparent;
-        //                break;
-        //            case "dreiReihe5":
-        //                dreiReihe5.Background = Brushes.Transparent;
-        //                break;
-        //            case "dreiReihe6":
-        //                dreiReihe6.Background = Brushes.Transparent;
-        //                break;
-        //            case "dreiReihe7":
-        //                dreiReihe7.Background = Brushes.Transparent;
-        //                break;
-        //            case "dreiReihe8":
-        //                dreiReihe8.Background = Brushes.Transparent;
-        //                break;
-        //            case "dreiReihe9":
-        //                dreiReihe9.Background = Brushes.Transparent;
-        //                break;
-        //            case "dreiReihe10":
-        //                dreiReihe10.Background = Brushes.Transparent;
-        //                break;
-        //            case "dreiReihe11":
-        //                dreiReihe11.Background = Brushes.Transparent;
-        //                break;
-        //            case "dreiReihe12":
-        //                dreiReihe12.Background = Brushes.Transparent;
-        //                break;
-        //        }
-        //    }
-        //}
-
         private void Test()
         {
             if (Einsatz_ <= 0)
@@ -837,26 +446,65 @@ namespace Roulette
 
             if (guthabenPlayer_ < Einsatz_)
             {
-                lbl_Infofeld.Content = "Nicht ausreichend Guthaben für mehr Einsatz auf disem Niveau!";
+                lbl_Infofeld.Content = "Nicht ausreichend Guthaben!";
                 return;
             }
 
-            GesEinsatz_ += Einsatz_;
-            guthabenPlayer_ -= Einsatz_;
-            guthabenBank_ += Einsatz_;
-            lbl_einsatz.Text = GesEinsatz_.ToString();
-            txtb_guthaben.Text = guthabenPlayer_.ToString();
-
-            //doppelte vermeiden
             if (auswahlZahlen.ContainsKey(ratezahlStr_))
             {
-                mengeUnderscore = 1;
-                lbl_einsatz.Text = GesEinsatz_.ToString(); txtb_guthaben.Text = guthabenPlayer_.ToString();
-                Protokoll("VerlaufSpezifisch", "Einsatz: ", Einsatz_);
+                auswahlZahlen[ratezahlStr_] += Einsatz_;
             }
             else
             {
                 auswahlZahlen.Add(ratezahlStr_, mengeUnderscore);
+            }
+
+            if (einsatzProAuswahl.ContainsKey(ratezahlStr_))
+            {
+                einsatzProAuswahl[ratezahlStr_] += Einsatz_;
+            }
+            else
+            {
+                einsatzProAuswahl.Add(ratezahlStr_, Einsatz_);
+            }
+
+            guthabenPlayer_ -= Einsatz_;
+            guthabenBank_ += Einsatz_;
+
+            lbl_Infofeld.Content = $"Einsatz auf {ratezahlStr_}: {einsatzProAuswahl[ratezahlStr_]}";
+
+            int gesamtEinsatz = 0;
+            foreach (int einsatz in einsatzProAuswahl.Values)
+            {
+                gesamtEinsatz += einsatz;
+            }
+            lbl_einsatz.Text = gesamtEinsatz.ToString();
+            txtb_guthaben.Text = guthabenPlayer_.ToString();
+
+            Protokoll("VerlaufSpezifisch", $"Einsatz auf {ratezahlStr_}: ", Einsatz_);
+        }
+
+        private void AktiviereAlleButtons()
+        {
+            AktiviereButtonsInContainer(this);
+        }
+
+        private void AktiviereButtonsInContainer(DependencyObject container)// KI
+        {
+            int childCount = VisualTreeHelper.GetChildrenCount(container);
+
+            for (int i = 0; i < childCount; i++)
+            {
+                var child = VisualTreeHelper.GetChild(container, i);
+
+                if (child is Button button)
+                {
+                    button.IsEnabled = true;
+                }
+                else if (child is DependencyObject dependencyObject)
+                {
+                    AktiviereButtonsInContainer(dependencyObject);
+                }
             }
         }
 
@@ -866,7 +514,7 @@ namespace Roulette
             AuswahlZahl();
 
 
-            Test();
+            Test(); ((Button)sender).IsEnabled = false;//ki
         }
 
         private void btn_2_Click(object sender, RoutedEventArgs e)
@@ -874,7 +522,7 @@ namespace Roulette
             ratezahlStr_ = "2";
             AuswahlZahl();
 
-            Test();
+            Test(); ((Button)sender).IsEnabled = false;
         }
 
         private void btn_3_Click(object sender, RoutedEventArgs e)
@@ -882,7 +530,7 @@ namespace Roulette
             ratezahlStr_ = "3";
             AuswahlZahl();
 
-            Test();
+            Test(); ((Button)sender).IsEnabled = false;
         }
 
         private void btn_4_Click(object sender, RoutedEventArgs e)
@@ -890,7 +538,7 @@ namespace Roulette
             ratezahlStr_ = "4";
             AuswahlZahl();
 
-            Test();
+            Test(); ((Button)sender).IsEnabled = false;
         }
 
         private void btn_5_Click(object sender, RoutedEventArgs e)
@@ -898,7 +546,7 @@ namespace Roulette
             ratezahlStr_ = "5";
             AuswahlZahl();
 
-            Test();
+            Test(); ((Button)sender).IsEnabled = false;
         }
 
         private void btn_6_Click(object sender, RoutedEventArgs e)
@@ -906,7 +554,7 @@ namespace Roulette
             ratezahlStr_ = "6";
             AuswahlZahl();
 
-            Test();
+            Test(); ((Button)sender).IsEnabled = false;
         }
 
         private void btn_7_Click(object sender, RoutedEventArgs e)
@@ -914,7 +562,7 @@ namespace Roulette
             ratezahlStr_ = "7";
             AuswahlZahl();
 
-            Test();
+            Test(); ((Button)sender).IsEnabled = false;
         }
 
         private void btn_8_Click(object sender, RoutedEventArgs e)
@@ -922,7 +570,7 @@ namespace Roulette
             ratezahlStr_ = "8";
             AuswahlZahl();
 
-            Test();
+            Test(); ((Button)sender).IsEnabled = false;
         }
 
         private void btn_9_Click(object sender, RoutedEventArgs e)
@@ -930,7 +578,7 @@ namespace Roulette
             ratezahlStr_ = "9";
             AuswahlZahl();
 
-            Test();
+            Test(); ((Button)sender).IsEnabled = false;
         }
 
         private void btn_10_Click(object sender, RoutedEventArgs e)
@@ -938,7 +586,7 @@ namespace Roulette
             ratezahlStr_ = "10";
             AuswahlZahl();
 
-            Test();
+            Test(); ((Button)sender).IsEnabled = false;
         }
 
         private void btn_11_Click(object sender, RoutedEventArgs e)
@@ -946,7 +594,7 @@ namespace Roulette
             ratezahlStr_ = "11";
             AuswahlZahl();
 
-            Test();
+            Test(); ((Button)sender).IsEnabled = false;
         }
 
         private void btn_12_Click(object sender, RoutedEventArgs e)
@@ -954,7 +602,7 @@ namespace Roulette
             ratezahlStr_ = "12";
             AuswahlZahl();
 
-            Test();
+            Test(); ((Button)sender).IsEnabled = false;
         }
 
         private void btn_13_Click(object sender, RoutedEventArgs e)
@@ -962,7 +610,7 @@ namespace Roulette
             ratezahlStr_ = "13";
             AuswahlZahl();
 
-            Test();
+            Test(); ((Button)sender).IsEnabled = false;
         }
 
         private void btn_14_Click(object sender, RoutedEventArgs e)
@@ -970,7 +618,7 @@ namespace Roulette
             ratezahlStr_ = "14";
             AuswahlZahl();
 
-            Test();
+            Test(); ((Button)sender).IsEnabled = false;
         }
 
         private void btn_15_Click(object sender, RoutedEventArgs e)
@@ -978,7 +626,7 @@ namespace Roulette
             ratezahlStr_ = "15";
             AuswahlZahl();
 
-            Test();
+            Test(); ((Button)sender).IsEnabled = false;
         }
 
         private void btn_16_Click(object sender, RoutedEventArgs e)
@@ -986,7 +634,7 @@ namespace Roulette
             ratezahlStr_ = "16";
             AuswahlZahl();
 
-            Test();
+            Test(); ((Button)sender).IsEnabled = false;
         }
 
         private void btn_17_Click(object sender, RoutedEventArgs e)
@@ -994,7 +642,7 @@ namespace Roulette
             ratezahlStr_ = "17";
             AuswahlZahl();
 
-            Test();
+            Test(); ((Button)sender).IsEnabled = false;
         }
 
         private void btn_18_Click(object sender, RoutedEventArgs e)
@@ -1002,7 +650,7 @@ namespace Roulette
             ratezahlStr_ = "18";
             AuswahlZahl();
 
-            Test();
+            Test(); ((Button)sender).IsEnabled = false;
         }
 
         private void btn_19_Click(object sender, RoutedEventArgs e)
@@ -1010,7 +658,7 @@ namespace Roulette
             ratezahlStr_ = "19";
             AuswahlZahl();
 
-            Test();
+            Test(); ((Button)sender).IsEnabled = false;
         }
 
         private void btn_20_Click(object sender, RoutedEventArgs e)
@@ -1018,7 +666,7 @@ namespace Roulette
             ratezahlStr_ = "20";
             AuswahlZahl();
 
-            Test();
+            Test(); ((Button)sender).IsEnabled = false;
         }
 
         private void btn_21_Click(object sender, RoutedEventArgs e)
@@ -1026,7 +674,7 @@ namespace Roulette
             ratezahlStr_ = "21";
             AuswahlZahl();
 
-            Test();
+            Test(); ((Button)sender).IsEnabled = false;
         }
 
         private void btn_22_Click(object sender, RoutedEventArgs e)
@@ -1034,7 +682,7 @@ namespace Roulette
             ratezahlStr_ = "22";
             AuswahlZahl();
 
-            Test();
+            Test(); ((Button)sender).IsEnabled = false;
         }
 
         private void btn_23_Click(object sender, RoutedEventArgs e)
@@ -1042,7 +690,7 @@ namespace Roulette
             ratezahlStr_ = "23";
             AuswahlZahl();
 
-            Test();
+            Test(); ((Button)sender).IsEnabled = false;
         }
 
         private void btn_24_Click(object sender, RoutedEventArgs e)
@@ -1050,7 +698,7 @@ namespace Roulette
             ratezahlStr_ = "24";
             AuswahlZahl();
 
-            Test();
+            Test(); ((Button)sender).IsEnabled = false;
         }
 
         private void btn_25_Click(object sender, RoutedEventArgs e)
@@ -1058,7 +706,7 @@ namespace Roulette
             ratezahlStr_ = "25";
             AuswahlZahl();
 
-            Test();
+            Test(); ((Button)sender).IsEnabled = false;
         }
 
         private void btn_26_Click(object sender, RoutedEventArgs e)
@@ -1066,7 +714,7 @@ namespace Roulette
             ratezahlStr_ = "26";
             AuswahlZahl();
 
-            Test();
+            Test(); ((Button)sender).IsEnabled = false;
         }
 
         private void btn_27_Click(object sender, RoutedEventArgs e)
@@ -1074,7 +722,7 @@ namespace Roulette
             ratezahlStr_ = "27";
             AuswahlZahl();
 
-            Test();
+            Test(); ((Button)sender).IsEnabled = false;
         }
 
         private void btn_28_Click(object sender, RoutedEventArgs e)
@@ -1082,7 +730,7 @@ namespace Roulette
             ratezahlStr_ = "28";
             AuswahlZahl();
 
-            Test();
+            Test(); ((Button)sender).IsEnabled = false;
         }
 
         private void btn_29_Click(object sender, RoutedEventArgs e)
@@ -1090,7 +738,7 @@ namespace Roulette
             ratezahlStr_ = "29";
             AuswahlZahl();
 
-            Test();
+            Test(); ((Button)sender).IsEnabled = false;
         }
 
         private void btn_30_Click(object sender, RoutedEventArgs e)
@@ -1098,7 +746,7 @@ namespace Roulette
             ratezahlStr_ = "30";
             AuswahlZahl();
 
-            Test();
+            Test(); ((Button)sender).IsEnabled = false;
         }
 
         private void btn_31_Click(object sender, RoutedEventArgs e)
@@ -1106,7 +754,7 @@ namespace Roulette
             ratezahlStr_ = "31";
             AuswahlZahl();
 
-            Test();
+            Test(); ((Button)sender).IsEnabled = false;
         }
 
         private void btn_32_Click(object sender, RoutedEventArgs e)
@@ -1114,7 +762,7 @@ namespace Roulette
             ratezahlStr_ = "32";
             AuswahlZahl();
 
-            Test();
+            Test(); ((Button)sender).IsEnabled = false;
         }
 
         private void btn_33_Click(object sender, RoutedEventArgs e)
@@ -1122,7 +770,7 @@ namespace Roulette
             ratezahlStr_ = "33";
             AuswahlZahl();
 
-            Test();
+            Test(); ((Button)sender).IsEnabled = false;
         }
 
         private void btn_34_Click(object sender, RoutedEventArgs e)
@@ -1130,7 +778,7 @@ namespace Roulette
             ratezahlStr_ = "34";
             AuswahlZahl();
 
-            Test();
+            Test(); ((Button)sender).IsEnabled = false;
         }
 
         private void btn_35_Click(object sender, RoutedEventArgs e)
@@ -1138,7 +786,7 @@ namespace Roulette
             ratezahlStr_ = "35";
             AuswahlZahl();
 
-            Test();
+            Test(); ((Button)sender).IsEnabled = false;
         }
 
         private void btn_36_Click(object sender, RoutedEventArgs e)
@@ -1146,7 +794,7 @@ namespace Roulette
             ratezahlStr_ = "36";
             AuswahlZahl();
 
-            Test();
+            Test(); ((Button)sender).IsEnabled = false;
         }
 
         //--
@@ -1158,7 +806,7 @@ namespace Roulette
             ratezahlStr_ = "34_35";
             AuswahlZahl();
 
-            Test();
+            Test(); ((Button)sender).IsEnabled = false;
         }
 
         private void btn_35_36_Click(object sender, RoutedEventArgs e)
@@ -1166,7 +814,7 @@ namespace Roulette
             ratezahlStr_ = "35_36";
             AuswahlZahl();//doppelte vermeiden
 
-            Test();
+            Test(); ((Button)sender).IsEnabled = false;
         }
 
         private void btn_31_32_Click(object sender, RoutedEventArgs e)
@@ -1174,7 +822,7 @@ namespace Roulette
             ratezahlStr_ = "31_32";
             AuswahlZahl();//doppelte vermeiden
 
-            Test();
+            Test(); ((Button)sender).IsEnabled = false;
         }
 
         private void btn_32_33_Click(object sender, RoutedEventArgs e)
@@ -1182,7 +830,7 @@ namespace Roulette
             ratezahlStr_ = "32_33";
             AuswahlZahl();//doppelte vermeiden
 
-            Test();
+            Test(); ((Button)sender).IsEnabled = false;
         }
 
         private void btn_31_32_34_35_Click(object sender, RoutedEventArgs e)
@@ -1190,7 +838,7 @@ namespace Roulette
             ratezahlStr_ = "31_32_34_35";
             AuswahlZahl();//doppelte vermeiden
 
-            Test();
+            Test(); ((Button)sender).IsEnabled = false;
         }
 
         private void btn_32_33_35_36_Click(object sender, RoutedEventArgs e)
@@ -1198,7 +846,7 @@ namespace Roulette
             ratezahlStr_ = "32_33_35_36";
             AuswahlZahl();//doppelte vermeiden
 
-            Test();
+            Test(); ((Button)sender).IsEnabled = false;
         }
 
         private void btn_31_34_Click(object sender, RoutedEventArgs e)
@@ -1206,7 +854,7 @@ namespace Roulette
             ratezahlStr_ = "31_34";
             AuswahlZahl();//doppelte vermeiden
 
-            Test();
+            Test(); ((Button)sender).IsEnabled = false;
         }
 
         private void btn_32_35_Click(object sender, RoutedEventArgs e)
@@ -1214,7 +862,7 @@ namespace Roulette
             ratezahlStr_ = "32_35";
             AuswahlZahl();//doppelte vermeiden
 
-            Test();
+            Test(); ((Button)sender).IsEnabled = false;
         }
 
         private void btn_33_36_Click(object sender, RoutedEventArgs e)
@@ -1222,7 +870,7 @@ namespace Roulette
             ratezahlStr_ = "33_36";
             AuswahlZahl();//doppelte vermeiden
 
-            Test();
+            Test(); ((Button)sender).IsEnabled = false;
         }
 
         private void btn_28_29_Click(object sender, RoutedEventArgs e)
@@ -1230,7 +878,7 @@ namespace Roulette
             ratezahlStr_ = "28_29";
             AuswahlZahl();//doppelte vermeiden
 
-            Test();
+            Test(); ((Button)sender).IsEnabled = false;
         }
 
         private void btn_29_30_Click(object sender, RoutedEventArgs e)
@@ -1238,7 +886,7 @@ namespace Roulette
             ratezahlStr_ = "29_30";
             AuswahlZahl();//doppelte vermeiden
 
-            Test();
+            Test(); ((Button)sender).IsEnabled = false;
         }
 
         private void btn_28_29_31_32_Click(object sender, RoutedEventArgs e)
@@ -1246,7 +894,7 @@ namespace Roulette
             ratezahlStr_ = "28_29_31_32";
             AuswahlZahl();//doppelte vermeiden
 
-            Test();
+            Test(); ((Button)sender).IsEnabled = false;
         }
 
         private void btn_29_30_32_33_Click(object sender, RoutedEventArgs e)
@@ -1254,7 +902,7 @@ namespace Roulette
             ratezahlStr_ = "29_30_32_33";
             AuswahlZahl();//doppelte vermeiden
 
-            Test();
+            Test(); ((Button)sender).IsEnabled = false;
         }
 
         private void btn_28_31_Click(object sender, RoutedEventArgs e)
@@ -1262,7 +910,7 @@ namespace Roulette
             ratezahlStr_ = "28_31";
             AuswahlZahl();//doppelte vermeiden
 
-            Test();
+            Test(); ((Button)sender).IsEnabled = false;
         }
 
         private void btn_29_32_Click(object sender, RoutedEventArgs e)
@@ -1270,7 +918,7 @@ namespace Roulette
             ratezahlStr_ = "29_32";
             AuswahlZahl();//doppelte vermeiden
 
-            Test();
+            Test(); ((Button)sender).IsEnabled = false;
         }
 
         private void btn_30_33_Click(object sender, RoutedEventArgs e)
@@ -1278,7 +926,7 @@ namespace Roulette
             ratezahlStr_ = "30_33";
             AuswahlZahl();//doppelte vermeiden
 
-            Test();
+            Test(); ((Button)sender).IsEnabled = false;
         }
 
         private void btn_25_26_Click(object sender, RoutedEventArgs e)
@@ -1286,7 +934,7 @@ namespace Roulette
             ratezahlStr_ = "25_26";
             AuswahlZahl();//doppelte vermeiden
 
-            Test();
+            Test(); ((Button)sender).IsEnabled = false;
         }
 
         private void btn_26_27_Click(object sender, RoutedEventArgs e)
@@ -1294,7 +942,7 @@ namespace Roulette
             ratezahlStr_ = "26_27";
             AuswahlZahl();//doppelte vermeiden
 
-            Test();
+            Test(); ((Button)sender).IsEnabled = false;
         }
 
         private void btn_25_26_28_29_Click(object sender, RoutedEventArgs e)
@@ -1302,7 +950,7 @@ namespace Roulette
             ratezahlStr_ = "25_26_28_29";
             AuswahlZahl();//doppelte vermeiden
 
-            Test();
+            Test(); ((Button)sender).IsEnabled = false;
         }
 
         private void btn_26_27_29_30_Click(object sender, RoutedEventArgs e)
@@ -1310,7 +958,7 @@ namespace Roulette
             ratezahlStr_ = "26_27_29_30";
             AuswahlZahl();//doppelte vermeiden
 
-            Test();
+            Test(); ((Button)sender).IsEnabled = false;
         }
 
         private void btn_25_28_Click(object sender, RoutedEventArgs e)
@@ -1318,7 +966,7 @@ namespace Roulette
             ratezahlStr_ = "25_28";
             AuswahlZahl();//doppelte vermeiden
 
-            Test();
+            Test(); ((Button)sender).IsEnabled = false;
         }
 
         private void btn_26_29_Click(object sender, RoutedEventArgs e)
@@ -1326,7 +974,7 @@ namespace Roulette
             ratezahlStr_ = "26_29";
             AuswahlZahl();//doppelte vermeiden
 
-            Test();
+            Test(); ((Button)sender).IsEnabled = false;
         }
 
         private void btn_27_30_Click(object sender, RoutedEventArgs e)
@@ -1334,7 +982,7 @@ namespace Roulette
             ratezahlStr_ = "27_30";
             AuswahlZahl();//doppelte vermeiden
 
-            Test();
+            Test(); ((Button)sender).IsEnabled = false;
         }
 
         private void btn_22_23_Click(object sender, RoutedEventArgs e)
@@ -1342,7 +990,7 @@ namespace Roulette
             ratezahlStr_ = "22_23";
             AuswahlZahl();//doppelte vermeiden
 
-            Test();
+            Test(); ((Button)sender).IsEnabled = false;
         }
 
         private void btn_23_24_Click(object sender, RoutedEventArgs e)
@@ -1350,7 +998,7 @@ namespace Roulette
             ratezahlStr_ = "23_24";
             AuswahlZahl();//doppelte vermeiden
 
-            Test();
+            Test(); ((Button)sender).IsEnabled = false;
         }
 
         private void btn_22_23_25_26_Click(object sender, RoutedEventArgs e)
@@ -1358,7 +1006,7 @@ namespace Roulette
             ratezahlStr_ = "22_23_25_26";
             AuswahlZahl();//doppelte vermeiden
 
-            Test();
+            Test(); ((Button)sender).IsEnabled = false;
         }
 
         private void btn_23_24_26_27_Click(object sender, RoutedEventArgs e)
@@ -1366,7 +1014,7 @@ namespace Roulette
             ratezahlStr_ = "23_24_26_27";
             AuswahlZahl();//doppelte vermeiden
 
-            Test();
+            Test(); ((Button)sender).IsEnabled = false;
         }
 
         private void btn_22_25_Click(object sender, RoutedEventArgs e)
@@ -1374,7 +1022,7 @@ namespace Roulette
             ratezahlStr_ = "22_25";
             AuswahlZahl();//doppelte vermeiden
 
-            Test();
+            Test(); ((Button)sender).IsEnabled = false;
         }
 
         private void btn_23_26_Click(object sender, RoutedEventArgs e)
@@ -1382,7 +1030,7 @@ namespace Roulette
             ratezahlStr_ = "23_26";
             AuswahlZahl();//doppelte vermeiden
 
-            Test();
+            Test(); ((Button)sender).IsEnabled = false;
         }
 
         private void btn_24_27_Click(object sender, RoutedEventArgs e)
@@ -1390,7 +1038,7 @@ namespace Roulette
             ratezahlStr_ = "24_27";
             AuswahlZahl();//doppelte vermeiden
 
-            Test();
+            Test(); ((Button)sender).IsEnabled = false;
         }
 
         private void btn_19_20_Click(object sender, RoutedEventArgs e)
@@ -1398,7 +1046,7 @@ namespace Roulette
             ratezahlStr_ = "19_20";
             AuswahlZahl();//doppelte vermeiden
 
-            Test();
+            Test(); ((Button)sender).IsEnabled = false;
         }
 
         private void btn_20_21_Click(object sender, RoutedEventArgs e)
@@ -1406,7 +1054,7 @@ namespace Roulette
             ratezahlStr_ = "20_21";
             AuswahlZahl();//doppelte vermeiden
 
-            Test();
+            Test(); ((Button)sender).IsEnabled = false;
         }
 
         private void btn_19_20_22_23_Click(object sender, RoutedEventArgs e)
@@ -1414,7 +1062,7 @@ namespace Roulette
             ratezahlStr_ = "19_20_22_23";
             AuswahlZahl();//doppelte vermeiden
 
-            Test();
+            Test(); ((Button)sender).IsEnabled = false;
         }
 
         private void btn_20_21_23_24_Click(object sender, RoutedEventArgs e)
@@ -1422,7 +1070,7 @@ namespace Roulette
             ratezahlStr_ = "20_21_23_24";
             AuswahlZahl();//doppelte vermeiden
 
-            Test();
+            Test(); ((Button)sender).IsEnabled = false;
         }
 
         private void btn_19_22_Click(object sender, RoutedEventArgs e)
@@ -1430,7 +1078,7 @@ namespace Roulette
             ratezahlStr_ = "19_22";
             AuswahlZahl();//doppelte vermeiden
 
-            Test();
+            Test(); ((Button)sender).IsEnabled = false;
         }
 
         private void btn_20_23_Click(object sender, RoutedEventArgs e)
@@ -1438,7 +1086,7 @@ namespace Roulette
             ratezahlStr_ = "20_23";
             AuswahlZahl();//doppelte vermeiden
 
-            Test();
+            Test(); ((Button)sender).IsEnabled = false;
         }
 
         private void btn_21_24_Click(object sender, RoutedEventArgs e)
@@ -1446,7 +1094,7 @@ namespace Roulette
             ratezahlStr_ = "21_24";
             AuswahlZahl();//doppelte vermeiden
 
-            Test();
+            Test(); ((Button)sender).IsEnabled = false;
         }
 
         private void btn_16_17_Click(object sender, RoutedEventArgs e)
@@ -1454,14 +1102,14 @@ namespace Roulette
             ratezahlStr_ = "16_17";
             AuswahlZahl();//doppelte vermeiden
 
-            Test();
+            Test(); ((Button)sender).IsEnabled = false;
         }
 
         private void btn_17_18_Click(object sender, RoutedEventArgs e)
         {
             ratezahlStr_ = "17_18";
 
-            Test();
+            Test(); ((Button)sender).IsEnabled = false;
         }
 
         private void btn_16_17_19_20_Click(object sender, RoutedEventArgs e)
@@ -1469,7 +1117,7 @@ namespace Roulette
             ratezahlStr_ = "16_17_19_20";
             AuswahlZahl();//doppelte vermeiden
 
-            Test();
+            Test(); ((Button)sender).IsEnabled = false;
         }
 
         private void btn_17_18_20_21_Click(object sender, RoutedEventArgs e)
@@ -1477,7 +1125,7 @@ namespace Roulette
             ratezahlStr_ = "17_18_20_21";
             AuswahlZahl();//doppelte vermeiden
 
-            Test();
+            Test(); ((Button)sender).IsEnabled = false;
         }
 
         private void btn_16_19_Click(object sender, RoutedEventArgs e)
@@ -1485,7 +1133,7 @@ namespace Roulette
             ratezahlStr_ = "16_19";
             AuswahlZahl();//doppelte vermeiden
 
-            Test();
+            Test(); ((Button)sender).IsEnabled = false;
         }
 
         private void btn_17_20_Click(object sender, RoutedEventArgs e)
@@ -1493,7 +1141,7 @@ namespace Roulette
             ratezahlStr_ = "17_20";
             AuswahlZahl();//doppelte vermeiden
 
-            Test();
+            Test(); ((Button)sender).IsEnabled = false;
         }
 
         private void btn_18_21_Click(object sender, RoutedEventArgs e)
@@ -1501,7 +1149,7 @@ namespace Roulette
             ratezahlStr_ = "18_21";
             AuswahlZahl();//doppelte vermeiden
 
-            Test();
+            Test(); ((Button)sender).IsEnabled = false;
         }
 
         private void btn_13_14_Click(object sender, RoutedEventArgs e)
@@ -1509,7 +1157,7 @@ namespace Roulette
             ratezahlStr_ = "13_14";
             AuswahlZahl();//doppelte vermeiden
 
-            Test();
+            Test(); ((Button)sender).IsEnabled = false;
         }
 
         private void btn_14_15_Click(object sender, RoutedEventArgs e)
@@ -1517,7 +1165,7 @@ namespace Roulette
             ratezahlStr_ = "14_15";
             AuswahlZahl();//doppelte vermeiden
 
-            Test();
+            Test(); ((Button)sender).IsEnabled = false;
         }
 
         private void btn_13_14_16_17_Click(object sender, RoutedEventArgs e)
@@ -1525,7 +1173,7 @@ namespace Roulette
             ratezahlStr_ = "13_14_16_17";
             AuswahlZahl();//doppelte vermeiden
 
-            Test();
+            Test(); ((Button)sender).IsEnabled = false;
         }
 
         private void btn_14_15_17_18_Click(object sender, RoutedEventArgs e)
@@ -1533,7 +1181,7 @@ namespace Roulette
             ratezahlStr_ = "14_15_17_18";
             AuswahlZahl();//doppelte vermeiden
 
-            Test();
+            Test(); ((Button)sender).IsEnabled = false;
         }
 
         private void btn_13_16_Click(object sender, RoutedEventArgs e)
@@ -1541,7 +1189,7 @@ namespace Roulette
             ratezahlStr_ = "13_16";
             AuswahlZahl();//doppelte vermeiden
 
-            Test();
+            Test(); ((Button)sender).IsEnabled = false;
         }
 
         private void btn_14_17_Click(object sender, RoutedEventArgs e)
@@ -1549,7 +1197,7 @@ namespace Roulette
             ratezahlStr_ = "14_17";
             AuswahlZahl();//doppelte vermeiden
 
-            Test();
+            Test(); ((Button)sender).IsEnabled = false;
         }
 
         private void btn_15_18_Click(object sender, RoutedEventArgs e)
@@ -1557,7 +1205,7 @@ namespace Roulette
             ratezahlStr_ = "15_18";
             AuswahlZahl();//doppelte vermeiden
 
-            Test();
+            Test(); ((Button)sender).IsEnabled = false;
         }
 
         private void btn_10_11_Click(object sender, RoutedEventArgs e)
@@ -1565,7 +1213,7 @@ namespace Roulette
             ratezahlStr_ = "10_11";
             AuswahlZahl();//doppelte vermeiden
 
-            Test();
+            Test(); ((Button)sender).IsEnabled = false;
         }
 
         private void btn_11_12_Click(object sender, RoutedEventArgs e)
@@ -1573,7 +1221,7 @@ namespace Roulette
             ratezahlStr_ = "11_12";
             AuswahlZahl();//doppelte vermeiden
 
-            Test();
+            Test(); ((Button)sender).IsEnabled = false;
         }
 
         private void btn_10_11_13_14_Click(object sender, RoutedEventArgs e)
@@ -1581,7 +1229,7 @@ namespace Roulette
             ratezahlStr_ = "10_11_13_14";
             AuswahlZahl();//doppelte vermeiden
 
-            Test();
+            Test(); ((Button)sender).IsEnabled = false;
         }
 
         private void btn_11_12_14_15_Click(object sender, RoutedEventArgs e)
@@ -1589,7 +1237,7 @@ namespace Roulette
             ratezahlStr_ = "11_12_14_15";
             AuswahlZahl();//doppelte vermeiden
 
-            Test();
+            Test(); ((Button)sender).IsEnabled = false;
         }
 
         private void btn_10_13_Click(object sender, RoutedEventArgs e)
@@ -1597,7 +1245,7 @@ namespace Roulette
             ratezahlStr_ = "10_13";
             AuswahlZahl();//doppelte vermeiden
 
-            Test();
+            Test(); ((Button)sender).IsEnabled = false;
         }
 
         private void btn_11_14_Click(object sender, RoutedEventArgs e)
@@ -1605,7 +1253,7 @@ namespace Roulette
             ratezahlStr_ = "11_14";
             AuswahlZahl();//doppelte vermeiden
 
-            Test();
+            Test(); ((Button)sender).IsEnabled = false;
         }
 
         private void btn_12_15_Click(object sender, RoutedEventArgs e)
@@ -1613,7 +1261,7 @@ namespace Roulette
             ratezahlStr_ = "12_15";
             AuswahlZahl();//doppelte vermeiden
 
-            Test();
+            Test(); ((Button)sender).IsEnabled = false;
         }
 
         private void btn_7_8_Click(object sender, RoutedEventArgs e)
@@ -1621,7 +1269,7 @@ namespace Roulette
             ratezahlStr_ = "7_8";
             AuswahlZahl();//doppelte vermeiden
 
-            Test();
+            Test(); ((Button)sender).IsEnabled = false;
         }
 
         private void btn_8_9_Click(object sender, RoutedEventArgs e)
@@ -1629,7 +1277,7 @@ namespace Roulette
             ratezahlStr_ = "8_9";
             AuswahlZahl();//doppelte vermeiden
 
-            Test();
+            Test(); ((Button)sender).IsEnabled = false;
         }
 
         private void btn_7_8_10_11_Click(object sender, RoutedEventArgs e)
@@ -1637,7 +1285,7 @@ namespace Roulette
             ratezahlStr_ = "7_8_10_11";
             AuswahlZahl();//doppelte vermeiden
 
-            Test();
+            Test(); ((Button)sender).IsEnabled = false;
         }
 
         private void btn_8_9_11_12_Click(object sender, RoutedEventArgs e)
@@ -1645,7 +1293,7 @@ namespace Roulette
             ratezahlStr_ = "8_9_11_12";
             AuswahlZahl();//doppelte vermeiden
 
-            Test();
+            Test(); ((Button)sender).IsEnabled = false;
         }
 
         private void btn_7_10_Click(object sender, RoutedEventArgs e)
@@ -1653,7 +1301,7 @@ namespace Roulette
             ratezahlStr_ = "7_10";
             AuswahlZahl();//doppelte vermeiden
 
-            Test();
+            Test(); ((Button)sender).IsEnabled = false;
         }
 
         private void btn_8_11_Click(object sender, RoutedEventArgs e)
@@ -1661,7 +1309,7 @@ namespace Roulette
             ratezahlStr_ = "8_11";
             AuswahlZahl();//doppelte vermeiden
 
-            Test();
+            Test(); ((Button)sender).IsEnabled = false;
         }
 
         private void btn_9_12_Click(object sender, RoutedEventArgs e)
@@ -1669,7 +1317,7 @@ namespace Roulette
             ratezahlStr_ = "9_12";
             AuswahlZahl();//doppelte vermeiden
 
-            Test();
+            Test(); ((Button)sender).IsEnabled = false;
         }
 
         private void btn_4_5_Click(object sender, RoutedEventArgs e)
@@ -1677,7 +1325,7 @@ namespace Roulette
             ratezahlStr_ = "4_5";
             AuswahlZahl();//doppelte vermeiden
 
-            Test();
+            Test(); ((Button)sender).IsEnabled = false;
         }
 
         private void btn_5_6_Click(object sender, RoutedEventArgs e)
@@ -1685,7 +1333,7 @@ namespace Roulette
             ratezahlStr_ = "5_6";
             AuswahlZahl();//doppelte vermeiden
 
-            Test();
+            Test(); ((Button)sender).IsEnabled = false;
         }
 
         private void btn_4_5_7_8_Click(object sender, RoutedEventArgs e)
@@ -1693,7 +1341,7 @@ namespace Roulette
             ratezahlStr_ = "4_5_7_8";
             AuswahlZahl();//doppelte vermeiden
 
-            Test();
+            Test(); ((Button)sender).IsEnabled = false;
         }
 
         private void btn_5_6_8_9_Click(object sender, RoutedEventArgs e)
@@ -1701,7 +1349,7 @@ namespace Roulette
             ratezahlStr_ = "5_6_8_9";
             AuswahlZahl();//doppelte vermeiden
 
-            Test();
+            Test(); ((Button)sender).IsEnabled = false;
         }
 
         private void btn_4_7_Click(object sender, RoutedEventArgs e)
@@ -1709,7 +1357,7 @@ namespace Roulette
             ratezahlStr_ = "4_7";
             AuswahlZahl();//doppelte vermeiden
 
-            Test();
+            Test(); ((Button)sender).IsEnabled = false;
         }
 
         private void btn_5_8_Click(object sender, RoutedEventArgs e)
@@ -1717,7 +1365,7 @@ namespace Roulette
             ratezahlStr_ = "5_8";
             AuswahlZahl();//doppelte vermeiden
 
-            Test();
+            Test(); ((Button)sender).IsEnabled = false;
         }
 
         private void btn_6_9_Click(object sender, RoutedEventArgs e)
@@ -1725,7 +1373,7 @@ namespace Roulette
             ratezahlStr_ = "6_9";
             AuswahlZahl();//doppelte vermeiden
 
-            Test();
+            Test(); ((Button)sender).IsEnabled = false;
         }
 
         private void btn_6_3_Click(object sender, RoutedEventArgs e)
@@ -1733,7 +1381,7 @@ namespace Roulette
             ratezahlStr_ = "3_6";
             AuswahlZahl();//doppelte vermeiden
 
-            Test();
+            Test(); ((Button)sender).IsEnabled = false;
         }
 
         private void btn_2_1_Click(object sender, RoutedEventArgs e)
@@ -1741,7 +1389,7 @@ namespace Roulette
             ratezahlStr_ = "1_2";
             AuswahlZahl();//doppelte vermeiden
 
-            Test();
+            Test(); ((Button)sender).IsEnabled = false;
         }
 
         private void btn_3_2_Click(object sender, RoutedEventArgs e)
@@ -1749,7 +1397,7 @@ namespace Roulette
             ratezahlStr_ = "2_3";
             AuswahlZahl();//doppelte vermeiden
 
-            Test();
+            Test(); ((Button)sender).IsEnabled = false;
         }
 
         private void btn_1_2_4_5_Click(object sender, RoutedEventArgs e)
@@ -1757,7 +1405,7 @@ namespace Roulette
             ratezahlStr_ = "1_2_4_5";
             AuswahlZahl();//doppelte vermeiden
 
-            Test();
+            Test(); ((Button)sender).IsEnabled = false;
         }
 
         private void btn_2_3_5_6_Click(object sender, RoutedEventArgs e)
@@ -1765,7 +1413,7 @@ namespace Roulette
             ratezahlStr_ = "2_3_5_6";
             AuswahlZahl();//doppelte vermeiden
 
-            Test();
+            Test(); ((Button)sender).IsEnabled = false;
         }
 
         private void btn_1_4_Click(object sender, RoutedEventArgs e)
@@ -1773,7 +1421,7 @@ namespace Roulette
             ratezahlStr_ = "1_4";
             AuswahlZahl();//doppelte vermeiden
 
-            Test();
+            Test(); ((Button)sender).IsEnabled = false;
         }
 
         private void btn_2_5_Click(object sender, RoutedEventArgs e)
@@ -1781,7 +1429,7 @@ namespace Roulette
             ratezahlStr_ = "2_5";
             AuswahlZahl();//doppelte vermeiden
 
-            Test();
+            Test(); ((Button)sender).IsEnabled = false;
         }
 
         private void btn_3_6_Click(object sender, RoutedEventArgs e)
@@ -1789,7 +1437,7 @@ namespace Roulette
             ratezahlStr_ = "3_6";
             AuswahlZahl();//doppelte vermeiden
 
-            Test();
+            Test(); ((Button)sender).IsEnabled = false;
         }
 
         private void btn_1st12(object sender, RoutedEventArgs e)
@@ -1797,7 +1445,7 @@ namespace Roulette
             ratezahlStr_ = "1_2_3_4_5_6_7_8_9_10_11_12";
             AuswahlZahl();
 
-            Test();
+            Test(); ((Button)sender).IsEnabled = false;
         }
         //private void btn_1st12(object sender, RoutedEventArgs e)
         //{
@@ -1829,7 +1477,7 @@ namespace Roulette
             ratezahlStr_ = "13_14_15_16_17_18_19_20_21_22_23_24";
             AuswahlZahl();//doppelte vermeiden
 
-            Test();
+            Test(); ((Button)sender).IsEnabled = false;
         }
 
         private void btn_3rd12(object sender, RoutedEventArgs e)
@@ -1837,7 +1485,7 @@ namespace Roulette
             ratezahlStr_ = "25_26_27_28_29_30_31_32_33_34_35_36";
             AuswahlZahl();//doppelte vermeiden
 
-            Test();
+            Test(); ((Button)sender).IsEnabled = false;
         }
 
         private void btn_1_18(object sender, RoutedEventArgs e)
@@ -1845,7 +1493,7 @@ namespace Roulette
             ratezahlStr_ = "1_2_3_4_5_6_7_8_9_10_11_12_13_14_15_16_17_18";
             AuswahlZahl();//doppelte vermeiden
 
-            Test();
+            Test(); ((Button)sender).IsEnabled = false;
         }
 
         private void btn_19_36(object sender, RoutedEventArgs e)
@@ -1854,7 +1502,7 @@ namespace Roulette
 
             AuswahlZahl();//doppelte vermeiden
 
-            Test();
+            Test(); ((Button)sender).IsEnabled = false;
         }
 
         private void btn_0_Click(object sender, RoutedEventArgs e)
@@ -1863,7 +1511,7 @@ namespace Roulette
 
             AuswahlZahl();//doppelte vermeiden
 
-            Test();
+            Test(); ((Button)sender).IsEnabled = false;
         }
 
         private void btn_rot_Click(object sender, RoutedEventArgs e)
@@ -1873,7 +1521,7 @@ namespace Roulette
             checkRot = true;
 
             AuswahlZahl();//doppelte vermeiden
-           Test();
+            Test(); ((Button)sender).IsEnabled = false;
         }
 
         private void btn_schwarz_Click(object sender, RoutedEventArgs e)
@@ -1884,7 +1532,7 @@ namespace Roulette
 
             AuswahlZahl();//doppelte vermeiden
 
-            Test();
+            Test(); ((Button)sender).IsEnabled = false;
         }
 
         private void btn_3_2_1_Click(object sender, RoutedEventArgs e)
@@ -1893,7 +1541,7 @@ namespace Roulette
 
             AuswahlZahl();//doppelte vermeiden
 
-            Test();
+            Test(); ((Button)sender).IsEnabled = false;
         }
 
         private void btn_6_5_4_Click(object sender, RoutedEventArgs e)
@@ -1902,7 +1550,7 @@ namespace Roulette
 
             AuswahlZahl();//doppelte vermeiden
 
-            Test();
+            Test(); ((Button)sender).IsEnabled = false;
         }
 
         private void btn_9_8_7_Click(object sender, RoutedEventArgs e)
@@ -1911,7 +1559,7 @@ namespace Roulette
 
             AuswahlZahl();//doppelte vermeiden
 
-            Test();
+            Test(); ((Button)sender).IsEnabled = false;
         }
 
         private void btn_12_11_10_Click(object sender, RoutedEventArgs e)
@@ -1920,7 +1568,7 @@ namespace Roulette
 
             AuswahlZahl();//doppelte vermeiden
 
-            Test();
+            Test(); ((Button)sender).IsEnabled = false;
         }
 
         private void btn_15_14_13_Click(object sender, RoutedEventArgs e)
@@ -1929,7 +1577,7 @@ namespace Roulette
 
             AuswahlZahl();//doppelte vermeiden
 
-            Test();
+            Test(); ((Button)sender).IsEnabled = false;
         }
 
         private void btn_18_17_16_Click(object sender, RoutedEventArgs e)
@@ -1938,7 +1586,7 @@ namespace Roulette
 
             AuswahlZahl();//doppelte vermeiden
 
-            Test();
+            Test(); ((Button)sender).IsEnabled = false;
         }
 
         private void btn_21_20_19_Click(object sender, RoutedEventArgs e)
@@ -1947,7 +1595,7 @@ namespace Roulette
 
             AuswahlZahl();//doppelte vermeiden
 
-            Test();
+            Test(); ((Button)sender).IsEnabled = false;
         }
 
         private void btn_24_23_22_Click(object sender, RoutedEventArgs e)
@@ -1956,7 +1604,7 @@ namespace Roulette
 
             AuswahlZahl();//doppelte vermeiden
 
-            Test();
+            Test(); ((Button)sender).IsEnabled = false;
         }
 
         private void btn_27_26_25_Click(object sender, RoutedEventArgs e)
@@ -1965,7 +1613,7 @@ namespace Roulette
 
             AuswahlZahl();//doppelte vermeiden
 
-            Test();
+            Test(); ((Button)sender).IsEnabled = false;
         }
 
         private void btn_30_29_28_Click(object sender, RoutedEventArgs e)
@@ -1974,7 +1622,7 @@ namespace Roulette
 
             AuswahlZahl();//doppelte vermeiden
 
-            Test();
+            Test(); ((Button)sender).IsEnabled = false;
         }
 
         private void btn_33_32_31_Click(object sender, RoutedEventArgs e)
@@ -1983,7 +1631,7 @@ namespace Roulette
 
             AuswahlZahl();//doppelte vermeiden
 
-            Test();
+            Test(); ((Button)sender).IsEnabled = false;
         }
 
         private void btn_36_35_34_Click(object sender, RoutedEventArgs e)
@@ -1992,7 +1640,7 @@ namespace Roulette
 
             AuswahlZahl();//doppelte vermeiden
 
-            Test();
+            Test(); ((Button)sender).IsEnabled = false;
         }
 
         private void btn_2to1(object sender, RoutedEventArgs e)
@@ -2001,7 +1649,7 @@ namespace Roulette
 
             AuswahlZahl();//doppelte vermeiden
 
-            Test();
+            Test(); ((Button)sender).IsEnabled = false;
         }
 
         private void btn_2to2(object sender, RoutedEventArgs e)
@@ -2010,7 +1658,7 @@ namespace Roulette
 
             AuswahlZahl();//doppelte vermeiden
 
-            Test();
+            Test(); ((Button)sender).IsEnabled = false;
         }
 
         private void btn_2to3(object sender, RoutedEventArgs e)
@@ -2019,7 +1667,7 @@ namespace Roulette
 
             AuswahlZahl();//doppelte vermeiden
 
-            Test();
+            Test(); ((Button)sender).IsEnabled = false;
         }
 
         private void btn_Even(object sender, RoutedEventArgs e)
@@ -2028,7 +1676,7 @@ namespace Roulette
 
             AuswahlZahl();//doppelte vermeiden
 
-            Test();
+            Test(); ((Button)sender).IsEnabled = false;
         }
 
         private void btn_Odd(object sender, RoutedEventArgs e)
@@ -2037,7 +1685,7 @@ namespace Roulette
 
             AuswahlZahl();//doppelte vermeiden
 
-            Test();
+            Test(); ((Button)sender).IsEnabled = false;
         }
 
         private void btn_beenden_Click(object sender, RoutedEventArgs e)
