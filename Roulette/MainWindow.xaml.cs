@@ -142,7 +142,7 @@ namespace Roulette
             zufallszahl_ = rnd.Next(0, 37);
             lbl_Infofeld.Content = "Zufallszahl: " + zufallszahl_;
             //await Task.Delay(5000);
-            zufallszahl_ = 17;
+            //zufallszahl_ = 17;
 
             Overlay.Visibility = Visibility.Hidden;
 
